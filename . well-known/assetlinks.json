@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.sanoobhassankn.twa",
+    "sha256_cert_fingerprints": ["A9:BC:71:41:95:67:C8:5E:8B:4F:E5:39:61:34:BB:C5:F4:7F:FC:34:85:D1:96:EF:00:73:17:FE:72:D8:04:F0"]
+  }
+}]
