@@ -1,7 +1,7 @@
-const CACHE_NAME = 'kns-pro-v3'; // v3 aakki - update kittan
+const CACHE_NAME = 'kns-pro-v4'; // v4 aakki - ini update kittum
 const urlsToCache = [
-  '/',
-  '/index.html',
+  '/',               // ./ maatti / aakki
+  '/index.html',     // ./ kalayuka
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png'
@@ -12,47 +12,26 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('KNS PRO Cache opened');
-        // oru file fail aayalum baaki cache aakan
-        return cache.addAll(urlsToCache.map(url => new Request(url, {cache: 'reload'})));
+        console.log('KNS PRO: Cache opened');
+        return cache.addAll(urlsToCache);
       })
-      .catch(err => {
-        console.log('Cache addAll failed:', err);
-      })
+      .catch(err => console.log('KNS PRO: Cache failed', err))
   );
-  // Puthiya SW vegeham activate aakan
-  self.skipWaiting();
+  self.skipWaiting(); // Update vannal vegeham activate aakan
 });
 
 // Fetch from cache first, then network
 self.addEventListener('fetch', event => {
-  // Only handle GET requests
-  if (event.request.method !== 'GET') return;
+  if (event.request.method !== 'GET') return; // POST okke skip
   
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Cache il undenkil athu kodukkuka
-        if (response) {
-          return response;
-        }
-        // Illenkil network il ninnu edukkan nokkuka
-        return fetch(event.request).then(response => {
-          // Valid response aanenkil cache cheyyuka
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME)
-            .then(cache => {
-              cache.put(event.request, responseToCache);
-            });
-          return response;
-        });
+        return response || fetch(event.request);
       })
       .catch(() => {
-        // Net um illa, cache um illa - offline page kaanikkan pattum
-        // return caches.match('/offline.html');
+        // Net illenkil error varanda
+        return new Response('KNS PRO Offline Mode');
       })
   );
 });
@@ -71,6 +50,5 @@ self.addEventListener('activate', event => {
       );
     })
   );
-  // Udane control edukkuka
-  self.clients.claim();
+  self.clients.claim(); // Udane control edukkuka
 });
