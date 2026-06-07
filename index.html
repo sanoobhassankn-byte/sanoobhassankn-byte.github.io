@@ -1045,13 +1045,28 @@
         }
     </script>
     <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./service-worker.js')
-            .then(reg => console.log('SW Registered: ', reg.scope))
-            .catch(err => console.log('SW Failed: ', err));
-        });
-      }
-    </script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg => {
+          console.log('SW Registered: ', reg.scope);
+          
+          // Update vannal auto reload
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // Puthiya version ready
+                if (confirm('KNS PRO update ready! Reload cheyyano?')) {
+                  window.location.reload();
+                }
+              }
+            });
+          });
+        })
+        .catch(err => console.log('SW Failed: ', err));
+    });
+  }
+</script>>
 </body>
 </html>
