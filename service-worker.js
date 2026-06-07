@@ -1,10 +1,10 @@
-const CACHE_NAME = 'kns-pro-v4'; // v4 aakki - ini update kittum
+const CACHE_NAME = 'kns-pro-v4'; 
 const urlsToCache = [
-  '/',               // ./ maatti / aakki
-  '/index.html',     // ./ kalayuka
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
+  './',              // ✅ Sheri - repo folder
+  './index.html',    // ✅ Sheri
+  './manifest.json', // ✅ Sheri
+  './icon-192.png',  // ✅ Sheri
+  './icon-512.png'  // ✅ Sheri
 ];
 
 // Install service worker
@@ -17,12 +17,12 @@ self.addEventListener('install', event => {
       })
       .catch(err => console.log('KNS PRO: Cache failed', err))
   );
-  self.skipWaiting(); // Update vannal vegeham activate aakan
+  self.skipWaiting();
 });
 
 // Fetch from cache first, then network
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return; // POST okke skip
+  if (event.request.method !== 'GET') return;
   
   event.respondWith(
     caches.match(event.request)
@@ -30,7 +30,6 @@ self.addEventListener('fetch', event => {
         return response || fetch(event.request);
       })
       .catch(() => {
-        // Net illenkil error varanda
         return new Response('KNS PRO Offline Mode');
       })
   );
@@ -50,5 +49,5 @@ self.addEventListener('activate', event => {
       );
     })
   );
-  self.clients.claim(); // Udane control edukkuka
+  self.clients.claim();
 });
