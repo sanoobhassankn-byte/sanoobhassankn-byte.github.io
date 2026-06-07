@@ -1,12 +1,16 @@
 {
   "name": "KNS PRO Financial Manager",
   "short_name": "KNS PRO",
+  "id": "/",
   "description": "Track income, expenses and manage your personal finances with KNS PRO",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
   "background_color": "#f4f6f9",
   "theme_color": "#3182ce",
   "orientation": "portrait",
+  "categories": ["finance", "productivity"],
   "icons": [
     {
       "src": "icon-192.png",
