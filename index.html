@@ -18,7 +18,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- jsPDF + AutoTable CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     
     <style>
         /* --- DYNAMIC THEME ENGINE VARIABLES --- */
@@ -791,56 +793,204 @@
         function printCurrentDonationReport() { window.print(); }
 
         function printFullSystemReport() {
-            let reportDiv = document.createElement('div');
-            reportDiv.id = 'pdf-full-report';
-            reportDiv.style.padding = '20px';
-            reportDiv.style.background = '#fff';
-            reportDiv.style.color = '#000';
-            
-            let totalBal = getTotalSystemBalance();
-            let bankTotal = getCategoryTotalBalance('bank');
-            let cashTotal = getCategoryTotalBalance('cash');
-            let date = new Date().toLocaleDateString('en-GB');
-            
-            let html = `
-                <h1 style="text-align:center; color:#3182ce; margin-bottom:20px;">KNS PRO - FULL SYSTEM REPORT</h1>
-                <p style="text-align:center; margin-bottom:20px;">Generated on: ${date}</p>
-                <h2 style="border-bottom:2px solid #3182ce; padding-bottom:5px;">1. BALANCE SUMMARY</h2>
-                <table style="width:100%; margin:10px 0 20px 0; border-collapse:collapse;">
-                    <tr><td style="padding:8px; border:1px solid #ddd;"><b>Total System Balance</b></td><td style="padding:8px; border:1px solid #ddd; text-align:right;"><b>${formatCurrency(totalBal)}</b></td></tr>
-                    <tr><td style="padding:8px; border:1px solid #ddd;">Bank Balance</td><td style="padding:8px; border:1px solid #ddd; text-align:right;">${formatCurrency(bankTotal)}</td></tr>
-                    <tr><td style="padding:8px; border:1px solid #ddd;">Cash Balance</td><td style="padding:8px; border:1px solid #ddd; text-align:right;">${formatCurrency(cashTotal)}</td></tr>
-                </table>
-                <h2 style="border-bottom:2px solid #3182ce; padding-bottom:5px;">2. BANK & CASH ACCOUNTS</h2>
-                <table style="width:100%; margin:10px 0 20px 0; border-collapse:collapse;">
-                    <tr style="background:#f0f0f0;"><th style="padding:8px; border:1px solid #ddd; text-align:left;">Account Name</th><th style="padding:8px; border:1px solid #ddd; text-align:left;">Category</th><th style="padding:8px; border:1px solid #ddd; text-align:right;">Balance</th></tr>
-            `;
-            state.accounts.forEach(a => { html += `<tr><td style="padding:8px; border:1px solid #ddd;">${a.name}</td><td style="padding:8px; border:1px solid #ddd;">${a.category.toUpperCase()}</td><td style="padding:8px; border:1px solid #ddd; text-align:right;">${formatCurrency(getAccountBalance(a.id))}</td></tr>`; });
-            
-            html += `</table><h2 style="border-bottom:2px solid #38a169; padding-bottom:5px;">3. PARTIES LEDGER</h2>
-                <table style="width:100%; margin:10px 0 20px 0; border-collapse:collapse;">
-                    <tr style="background:#f0f0f0;"><th style="padding:8px; border:1px solid #ddd; text-align:left;">Party Name</th><th style="padding:8px; border:1px solid #ddd; text-align:left;">Type</th><th style="padding:8px; border:1px solid #ddd; text-align:right;">Balance</th><th style="padding:8px; border:1px solid #ddd; text-align:center;">Status</th></tr>
-            `;
-            state.parties.forEach(p => { let bal = getPartyBalance(p.id); html += `<tr><td style="padding:8px; border:1px solid #ddd;">${p.name}</td><td style="padding:8px; border:1px solid #ddd;">${p.type.toUpperCase()}</td><td style="padding:8px; border:1px solid #ddd; text-align:right;">${formatCurrency(Math.abs(bal))}</td><td style="padding:8px; border:1px solid #ddd; text-align:center;">${bal >= 0 ? 'DR' : 'CR'}</td></tr>`; });
-            
-            html += `</table><h2 style="border-bottom:2px solid #e53e3e; padding-bottom:5px;">4. DONATION FUNDS</h2>
-                <table style="width:100%; margin:10px 0 20px 0; border-collapse:collapse;">
-                    <tr style="background:#f0f0f0;"><th style="padding:8px; border:1px solid #ddd; text-align:left;">Fund Name</th><th style="padding:8px; border:1px solid #ddd; text-align:right;">Available Balance</th></tr>
-            `;
-            state.donations.forEach(d => { html += `<tr><td style="padding:8px; border:1px solid #ddd;">${d.name}</td><td style="padding:8px; border:1px solid #ddd; text-align:right;">${formatCurrency(getDonationBalance(d.id))}</td></tr>`; });
-            
-            html += `</table><h2 style="border-bottom:2px solid #2d3748; padding-bottom:5px;">5. ALL TRANSACTIONS</h2>
-                <table style="width:100%; margin:10px 0; border-collapse:collapse; font-size:11px;">
-                    <tr style="background:#f0f0f0;"><th style="padding:6px; border:1px solid #ddd;">Date</th><th style="padding:6px; border:1px solid #ddd;">Description</th><th style="padding:6px; border:1px solid #ddd;">Type</th><th style="padding:6px; border:1px solid #ddd; text-align:right;">Amount</th></tr>
-            `;
-            state.transactions.forEach(t => { html += `<tr><td style="padding:6px; border:1px solid #ddd;">${t.date}</td><td style="padding:6px; border:1px solid #ddd;">${t.description}</td><td style="padding:6px; border:1px solid #ddd;">${t.type.toUpperCase()}</td><td style="padding:6px; border:1px solid #ddd; text-align:right;">${formatCurrency(t.amount)}</td></tr>`; });
-            
-            html += `</table><p style="text-align:center; margin-top:30px; font-size:10px; color:#666;">--- End of Report | KNS PRO v2.5 ---</p>`;
-            reportDiv.innerHTML = html;
-            document.body.appendChild(reportDiv);
-            
-            html2pdf().from(reportDiv).set({ margin: 10, filename: `KNS_PRO_Full_Report_${date.replace(/\//g,'-')}.pdf`, html2canvas: { scale: 2 }, jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' } }).save().then(() => { document.body.removeChild(reportDiv); });
+    // FIX: Library check first
+    if (typeof window.jspdf === 'undefined') {
+        alert('PDF Library load aayittilla. Page refresh cheythu nokku.\n\nScript tags add cheythe?\n\n1. jspdf.umd.min.js\n2. jspdf.plugin.autotable.min.js');
+        return;
+    }
+
+    // 1. LOADING
+    let loadingDiv = document.createElement('div');
+    loadingDiv.innerHTML = '<div style="text-align:center;"><div style="font-size:40px;margin-bottom:10px;">⏳</div><div>Generating PDF Report...</div></div>';
+    Object.assign(loadingDiv.style, {
+        position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
+        background: 'rgba(0,0,0,0.9)', zIndex: '99999', display: 'flex',
+        alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px'
+    });
+    document.body.appendChild(loadingDiv);
+
+    try {
+        // 2. INIT jsPDF - FIXED DESTRUCTURE
+        const jsPDF = window.jspdf.jsPDF; // FIX: Old style access
+        const doc = new jsPDF('p', 'mm', 'a4');
+        
+        // 3. GET DATA
+        let totalBal = getTotalSystemBalance();
+        let bankTotal = getCategoryTotalBalance('bank');
+        let cashTotal = getCategoryTotalBalance('cash');
+        let date = new Date().toLocaleDateString('en-GB');
+        let time = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        
+        let yPos = 15;
+        
+        // 4. HEADER
+        doc.setFontSize(18);
+        doc.setTextColor(49, 130, 206);
+        doc.text('KNS PRO - FULL SYSTEM REPORT', 105, yPos, { align: 'center' });
+        yPos += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text(`Generated on: ${date} at ${time}`, 105, yPos, { align: 'center' });
+        yPos += 10;
+        
+        // 5. BALANCE SUMMARY
+        doc.setFontSize(14);
+        doc.setTextColor(45, 55, 72);
+        doc.text('1. BALANCE SUMMARY', 14, yPos);
+        yPos += 6;
+        
+        doc.autoTable({
+            startY: yPos,
+            head: [],
+            body: [
+                [{ content: 'Total System Balance', styles: { fontStyle: 'bold' } }, 
+                 { content: formatCurrency(totalBal), styles: { halign: 'right', fontStyle: 'bold' } }],
+                ['Bank Balance', { content: formatCurrency(bankTotal), styles: { halign: 'right' } }],
+                ['Cash Balance', { content: formatCurrency(cashTotal), styles: { halign: 'right' } }]
+            ],
+            theme: 'grid',
+            styles: { fontSize: 10, cellPadding: 3 },
+            columnStyles: { 0: { cellWidth: 130 }, 1: { cellWidth: 52 } }
+        });
+        yPos = doc.lastAutoTable.finalY + 10;
+        
+        // 6. BANK & CASH ACCOUNTS
+        if (yPos > 250) { doc.addPage(); yPos = 15; }
+        doc.setFontSize(14);
+        doc.text('2. BANK & CASH ACCOUNTS', 14, yPos);
+        yPos += 6;
+        
+        let accountData = state.accounts.map(a => [
+            a.name,
+            a.category.toUpperCase(),
+            formatCurrency(getAccountBalance(a.id))
+        ]);
+        
+        doc.autoTable({
+            startY: yPos,
+            head: [['Account Name', 'Category', 'Balance']],
+            body: accountData,
+            theme: 'grid',
+            headStyles: { fillColor: [240, 240, 240], textColor: 0 },
+            styles: { fontSize: 9, cellPadding: 2 },
+            columnStyles: { 2: { halign: 'right' } }
+        });
+        yPos = doc.lastAutoTable.finalY + 10;
+        
+        // 7. PARTIES LEDGER
+        if (yPos > 220) { doc.addPage(); yPos = 15; }
+        doc.setFontSize(14);
+        doc.text('3. PARTIES LEDGER', 14, yPos);
+        yPos += 6;
+        
+        let partyData = state.parties.map(p => {
+            let bal = getPartyBalance(p.id);
+            return [
+                p.name,
+                p.type.toUpperCase(),
+                formatCurrency(Math.abs(bal)),
+                bal >= 0 ? 'DR' : 'CR'
+            ];
+        });
+        
+        doc.autoTable({
+            startY: yPos,
+            head: [['Party Name', 'Type', 'Balance', 'Status']],
+            body: partyData,
+            theme: 'grid',
+            headStyles: { fillColor: [240, 240, 240], textColor: 0 },
+            styles: { fontSize: 9, cellPadding: 2 },
+            columnStyles: { 2: { halign: 'right' }, 3: { halign: 'center' } },
+            didParseCell: function(data) {
+                if (data.column.index === 3 && data.cell.section === 'body') {
+                    data.cell.styles.textColor = data.cell.raw === 'DR' ? [56, 161, 105] : [229, 62, 62];
+                    data.cell.styles.fontStyle = 'bold';
+                }
+            }
+        });
+        yPos = doc.lastAutoTable.finalY + 10;
+        
+        // 8. DONATION FUNDS
+        if (yPos > 240) { doc.addPage(); yPos = 15; }
+        doc.setFontSize(14);
+        doc.text('4. DONATION FUNDS', 14, yPos);
+        yPos += 6;
+        
+        let donationData = state.donations.map(d => [
+            d.name,
+            formatCurrency(getDonationBalance(d.id))
+        ]);
+        
+        doc.autoTable({
+            startY: yPos,
+            head: [['Fund Name', 'Available Balance']],
+            body: donationData,
+            theme: 'grid',
+            headStyles: { fillColor: [240, 240, 240], textColor: 0 },
+            styles: { fontSize: 9, cellPadding: 2 },
+            columnStyles: { 1: { halign: 'right' } }
+        });
+        
+        // 9. TRANSACTIONS - New Page
+        doc.addPage();
+        yPos = 15;
+        doc.setFontSize(14);
+        doc.text('5. ALL TRANSACTIONS', 14, yPos);
+        yPos += 6;
+        
+        let sortedTxns = [...state.transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+        let txnData = sortedTxns.map(t => [
+            t.date,
+            t.description,
+            t.type.toUpperCase(),
+            formatCurrency(t.amount)
+        ]);
+        
+        doc.autoTable({
+            startY: yPos,
+            head: [['Date', 'Description', 'Type', 'Amount']],
+            body: txnData,
+            theme: 'grid',
+            headStyles: { fillColor: [240, 240, 240], textColor: 0 },
+            styles: { fontSize: 8, cellPadding: 1.5 },
+            columnStyles: { 
+                0: { cellWidth: 25 },
+                1: { cellWidth: 95 },
+                2: { cellWidth: 25 },
+                3: { cellWidth: 35, halign: 'right' }
+            },
+            didParseCell: function(data) {
+                if (data.column.index === 2 && data.cell.section === 'body') {
+                    let color = data.cell.raw === 'INCOME' ? [56, 161, 105] : 
+                               data.cell.raw === 'EXPENSE' ? [229, 62, 62] : [49, 130, 206];
+                    data.cell.styles.textColor = color;
+                    data.cell.styles.fontStyle = 'bold';
+                }
+            }
+        });
+        
+        // 10. FOOTER
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.setTextColor(100);
+            doc.text('--- End of Report | KNS PRO v2.5 ---', 105, 287, { align: 'center' });
+            doc.text(`Page ${i} of ${pageCount}`, 195, 287, { align: 'right' });
         }
+        
+        // 11. SAVE
+        doc.save(`KNS_PRO_Full_Report_${date.replace(/\//g,'-')}_${time.replace(/:/g,'-')}.pdf`);
+        
+        loadingDiv.innerHTML = '<div style="text-align:center;"><div style="font-size:40px;margin-bottom:10px;">✅</div><div>PDF Generated Successfully!</div></div>';
+        setTimeout(() => document.body.removeChild(loadingDiv), 1500);
+        
+    } catch (err) {
+        console.error('PDF Error:', err);
+        loadingDiv.innerHTML = '<div style="text-align:center;"><div style="font-size:40px;margin-bottom:10px;">❌</div><div>Error: ' + err.message + '</div></div>';
+        setTimeout(() => document.body.removeChild(loadingDiv), 3000);
+    }
+}
         function triggerBackup() { let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); let a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", `kns_pro_backup.json`); a.click(); a.remove(); }
         function triggerRestore() { let input = document.createElement('input'); input.type = 'file'; input.accept = '.json'; input.onchange = e => { let file = e.target.files[0]; let reader = new FileReader(); reader.readAsText(file,'UTF-8'); reader.onload = r => { try { let c = JSON.parse(r.target.result); if(c.accounts) { state = c; saveDataToStorage(); alert("RESTORED!"); } } catch (err) { alert("ERROR!"); } } }; input.click(); }
         function resetSystemData() { if(confirm("CRITICAL: DATA RESET NOW?")) { localStorage.removeItem('kns_pro_data'); location.reload(); } }
