@@ -1115,6 +1115,154 @@ function printFullSystemReport() {
 
         margin: 10,
 
+        filename: `KNS_PRO_Full_Report_${date.rfunction printFullSystemReport() {
+
+    // Create hidden report div
+
+    let reportDiv = document.createElement('div');
+
+    reportDiv.id = 'pdf-full-report';
+
+    reportDiv.style.padding = '20px';
+
+    reportDiv.style.background = '#fff';
+
+    reportDiv.style.color = '#000';
+
+    
+
+    let totalBal = getTotalSystemBalance();
+
+    let bankTotal = getCategoryTotalBalance('bank');
+
+    let cashTotal = getCategoryTotalBalance('cash');
+
+    let date = new Date().toLocaleDateString('en-GB');
+
+    
+
+    let html = `
+
+        <h1 style="text-align:center; color:#3182ce; margin-bottom:20px;">KNS PRO - FULL SYSTEM REPORT</h1>
+
+        <p style="text-align:center; margin-bottom:20px;">Generated on: ${date}</p>
+
+        
+
+        <h2 style="border-bottom:2px solid #3182ce; padding-bottom:5px;">1. BALANCE SUMMARY</h2>
+
+        <table style="width:100%; margin:10px 0 20px 0; border-collapse:collapse;">
+
+            <tr><td style="padding:8px; border:1px solid #ddd;"><b>Total System Balance</b></td><td style="padding:8px; border:1px solid #ddd; text-align:right;"><b>${formatCurrency(totalBal)}</b></td></tr>
+
+            <tr><td style="padding:8px; border:1px solid #ddd;">Bank Balance</td><td style="padding:8px; border:1px solid #ddd; text-align:right;">${formatCurrency(bankTotal)}</td></tr>
+
+            <tr><td style="padding:8px; border:1px solid #ddd;">Cash Balance</td><td style="padding:8px; border:1px solid #ddd; text-align:right;">${formatCurrency(cashTotal)}</td></tr>
+
+        </table>
+
+
+
+        <h2 style="border-bottom:2px solid #3182ce; padding-bottom:5px;">2. BANK & CASH ACCOUNTS</h2>
+
+        <table style="width:100%; margin:10px 0 20px 0; border-collapse:collapse;">
+
+            <tr style="background:#f0f0f0;"><th style="padding:8px; border:1px solid #ddd; text-align:left;">Account Name</th><th style="padding:8px; border:1px solid #ddd; text-align:left;">Category</th><th style="padding:8px; border:1px solid #ddd; text-align:right;">Balance</th></tr>
+
+    `;
+
+    
+
+    state.accounts.forEach(a => {
+
+        html += `<tr><td style="padding:8px; border:1px solid #ddd;">${a.name}</td><td style="padding:8px; border:1px solid #ddd;">${a.category.toUpperCase()}</td><td style="padding:8px; border:1px solid #ddd; text-align:right;">${formatCurrency(getAccountBalance(a.id))}</td></tr>`;
+
+    });
+
+    
+
+    html += `</table>
+
+        <h2 style="border-bottom:2px solid #38a169; padding-bottom:5px;">3. PARTIES LEDGER</h2>
+
+        <table style="width:100%; margin:10px 0 20px 0; border-collapse:collapse;">
+
+            <tr style="background:#f0f0f0;"><th style="padding:8px; border:1px solid #ddd; text-align:left;">Party Name</th><th style="padding:8px; border:1px solid #ddd; text-align:left;">Type</th><th style="padding:8px; border:1px solid #ddd; text-align:right;">Balance</th><th style="padding:8px; border:1px solid #ddd; text-align:center;">Status</th></tr>
+
+    `;
+
+    
+
+    state.parties.forEach(p => {
+
+        let bal = getPartyBalance(p.id);
+
+        html += `<tr><td style="padding:8px; border:1px solid #ddd;">${p.name}</td><td style="padding:8px; border:1px solid #ddd;">${p.type.toUpperCase()}</td><td style="padding:8px; border:1px solid #ddd; text-align:right;">${formatCurrency(Math.abs(bal))}</td><td style="padding:8px; border:1px solid #ddd; text-align:center;">${bal >= 0 ? 'DR' : 'CR'}</td></tr>`;
+
+    });
+
+    
+
+    html += `</table>
+
+        <h2 style="border-bottom:2px solid #e53e3e; padding-bottom:5px;">4. DONATION FUNDS</h2>
+
+        <table style="width:100%; margin:10px 0 20px 0; border-collapse:collapse;">
+
+            <tr style="background:#f0f0f0;"><th style="padding:8px; border:1px solid #ddd; text-align:left;">Fund Name</th><th style="padding:8px; border:1px solid #ddd; text-align:right;">Available Balance</th></tr>
+
+    `;
+
+    
+
+    state.donations.forEach(d => {
+
+        html += `<tr><td style="padding:8px; border:1px solid #ddd;">${d.name}</td><td style="padding:8px; border:1px solid #ddd; text-align:right;">${formatCurrency(getDonationBalance(d.id))}</td></tr>`;
+
+    });
+
+    
+
+    html += `</table>
+
+        <h2 style="border-bottom:2px solid #2d3748; padding-bottom:5px;">5. ALL TRANSACTIONS</h2>
+
+        <table style="width:100%; margin:10px 0; border-collapse:collapse; font-size:11px;">
+
+            <tr style="background:#f0f0f0;"><th style="padding:6px; border:1px solid #ddd;">Date</th><th style="padding:6px; border:1px solid #ddd;">Description</th><th style="padding:6px; border:1px solid #ddd;">Type</th><th style="padding:6px; border:1px solid #ddd; text-align:right;">Amount</th></tr>
+
+    `;
+
+    
+
+    state.transactions.forEach(t => {
+
+        html += `<tr><td style="padding:6px; border:1px solid #ddd;">${t.date}</td><td style="padding:6px; border:1px solid #ddd;">${t.description}</td><td style="padding:6px; border:1px solid #ddd;">${t.type.toUpperCase()}</td><td style="padding:6px; border:1px solid #ddd; text-align:right;">${formatCurrency(t.amount)}</td></tr>`;
+
+    });
+
+    
+
+    html += `</table>
+
+        <p style="text-align:center; margin-top:30px; font-size:10px; color:#666;">--- End of Report | KNS PRO v2.5 ---</p>
+
+    `;
+
+    
+
+    reportDiv.innerHTML = html;
+
+    document.body.appendChild(reportDiv);
+
+    
+
+    // PDF generate cheyyu
+
+    html2pdf().from(reportDiv).set({
+
+        margin: 10,
+
         filename: `KNS_PRO_Full_Report_${date.replace(/\//g,'-')}.pdf`,
 
         html2canvas: { scale: 2 },
@@ -1128,7 +1276,6 @@ function printFullSystemReport() {
     });
 
 }
-
         function triggerBackup() { let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); let a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", `kns_pro_backup.json`); a.click(); a.remove(); }
         function triggerRestore() { let input = document.createElement('input'); input.type = 'file'; input.accept = '.json'; input.onchange = e => { let file = e.target.files[0]; let reader = new FileReader(); reader.readAsText(file,'UTF-8'); reader.onload = r => { try { let c = JSON.parse(r.target.result); if(c.accounts) { state = c; saveDataToStorage(); alert("RESTORED!"); } } catch (err) { alert("ERROR!"); } } }; input.click(); }
         function resetSystemData() { if(confirm("CRITICAL: DATA RESET NOW?")) { localStorage.removeItem('kns_pro_data'); location.reload(); } }
