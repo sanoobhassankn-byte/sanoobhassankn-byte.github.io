@@ -797,11 +797,6 @@
             reportDiv.style.background = '#fff';
             reportDiv.style.color = '#000';
             
-            // Fixed: Hide the rendering div so it doesn't flash on screen bottom
-            reportDiv.style.position = 'absolute';
-            reportDiv.style.left = '-9999px';
-            reportDiv.style.top = '0';
-            
             let totalBal = getTotalSystemBalance();
             let bankTotal = getCategoryTotalBalance('bank');
             let cashTotal = getCategoryTotalBalance('cash');
