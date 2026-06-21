@@ -31,9 +31,9 @@
             --success-color: #38a169;
             --danger-color: #e53e3e;
             --border-color: #e2e8f0;
-            --shadow: 0 2px 8px rgba(0,0,0,0.06);
-            --shadow-hover: 0 4px 12px rgba(0,0,0,0.1);
-            --radius: 12px;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --shadow-hover: 0 8px 25px rgba(0,0,0,0.1);
+            --radius: 16px; /* Smoother corners */
             --summary-bg: #edf2f7;
             --input-bg: #ffffff;
             --hover-bg: #f7fafc;
@@ -44,13 +44,8 @@
         [data-app-theme="purple"] { --primary-color: #6b46c1; --bg-color: #f7f5fa; --summary-bg: #ede7f6; --border-color: #e9e2f3; }
         [data-app-theme="cyber"] { --primary-color: #ff007f; --bg-color: #f9f9fb; --summary-bg: #ffe6f2; --border-color: #ffd0e6; }
 
-        /* --- DARK MODE INTENSITY ENGINE --- */
-        [data-theme="dark"][data-dark-intensity="dim"] {
-            --bg-color: #1a202c; --surface-color: #2d3748; --text-color: #f7fafc; --text-muted: #a0aec0;
-            --border-color: #4a5568; --summary-bg: #1a202c; --input-bg: #1a202c; --hover-bg: #4a5568;
-            --shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        [data-theme="dark"][data-dark-intensity="oled"] {
+        /* --- DARK MODE OLED --- */
+        [data-theme="dark"] {
             --bg-color: #000000; --surface-color: #101010; --text-color: #ffffff; --text-muted: #8a8a8a;
             --border-color: #222222; --summary-bg: #1a1a1a; --input-bg: #000000; --hover-bg: #222222;
             --shadow: 0 0 0 transparent;
@@ -65,9 +60,9 @@
         [data-theme="dark"] .card[style*="linear-gradient"] { background: linear-gradient(135deg, var(--primary-color), var(--surface-color)) !important; color: white !important; }
         [data-theme="dark"] #quick-theme-indicator { color: #ffffff !important; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: calc(85px + env(safe-area-inset-bottom)); scroll-behavior: smooth; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: calc(85px + env(safe-area-inset-bottom)); scroll-behavior: smooth; transition: background-color 0.3s ease, color 0.3s ease; }
 
         .container { max-width: 500px; margin: 0 auto; padding: 15px; }
         h1, h2, h3, h4 { font-weight: 600; margin-bottom: 8px; color: var(--text-color); }
@@ -85,62 +80,69 @@
         .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
         .summary-card { background: var(--summary-bg); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; border: 1px solid var(--border-color); color: var(--text-color); transition: all 0.3s ease; }
 
-        .small-icon { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; background: rgba(49, 130, 206, 0.15); color: var(--primary-color); }
+        .small-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; background: rgba(49, 130, 206, 0.15); color: var(--primary-color); }
         .icon-success { background: rgba(56, 161, 105, 0.15); color: var(--success-color); }
         .icon-danger { background: rgba(229, 62, 62, 0.15); color: var(--danger-color); }
 
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 0.88rem; color: var(--text-color); }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; color: var(--text-color); transition: all 0.2s ease; }
         .list-item:last-child { border-bottom: none; }
-        .list-item:hover { background: var(--hover-bg); padding-left: 4px; border-radius: 6px; }
-        .list-item-sub { font-size: 0.75rem; color: var(--text-muted); }
+        .list-item:hover { background: var(--hover-bg); padding-left: 6px; border-radius: 8px; }
+        .list-item-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
 
-        .btn-action { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; padding: 6px; border-radius: 6px; }
+        .btn-action { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; padding: 8px; border-radius: 8px; transition: all 0.2s ease; }
         .btn-action:hover { color: var(--primary-color); background: var(--hover-bg); }
-        .btn-danger-hover:hover { color: var(--danger-color); }
+        .btn-action:active { transform: scale(0.9); }
+        .btn-danger-hover:hover { color: var(--danger-color); background: rgba(229, 62, 62, 0.1); }
         
         .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 500; }
-        .form-control { width: 100%; padding: 10px; font-size: 0.88rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color); outline: none; text-transform: uppercase; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+        .form-control { width: 100%; padding: 12px; font-size: 0.85rem; border-radius: 10px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color); outline: none; text-transform: uppercase; transition: all 0.2s ease; }
         .form-control[type="date"] { text-transform: none; }
-        .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1); }
+        .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15); }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; background: var(--surface-color); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 10px 0; padding-bottom: calc(10px + env(safe-area-inset-bottom)); box-shadow: 0 -4px 15px rgba(0,0,0,0.08); z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); text-decoration: none; font-size: 0.72rem; cursor: pointer; width: 20%; padding: 4px; border-radius: 8px; }
-        .nav-item i { font-size: 1.2rem; margin-bottom: 3px; }
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; background: var(--surface-color); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 12px 0; padding-bottom: calc(12px + env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,0.06); z-index: 100; border-radius: 20px 20px 0 0; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); text-decoration: none; font-size: 0.7rem; cursor: pointer; width: 22%; padding: 6px; border-radius: 12px; transition: all 0.2s ease; font-weight: 500; }
+        .nav-item i { font-size: 1.1rem; margin-bottom: 4px; transition: transform 0.2s ease; }
         .nav-item.active { color: var(--primary-color); background: var(--hover-bg); }
+        .nav-item.active i { transform: translateY(-2px); }
 
-        .app-screen { display: none; animation: fadeInUp 0.4s ease; }
+        .app-screen { display: none; animation: fadeIn 0.3s ease; }
         .app-screen.active { display: block; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 200; padding: 15px; backdrop-filter: blur(4px); }
-        .modal-overlay.active { display: flex; }
-        .modal-content { background: var(--surface-color); padding: 18px; border-radius: var(--radius); width: 100%; max-width: 360px; box-shadow: 0 8px 30px rgba(0,0,0,0.4); color: var(--text-color); max-height: 90vh; overflow-y: auto; }
+        /* Premium Modal Look */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); z-index: 200; padding: 15px; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--surface-color); padding: 20px; border-radius: 20px; width: 100%; max-width: 360px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); color: var(--text-color); max-height: 90vh; overflow-y: auto; transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
 
         .top-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .btn-back { background: none; border: none; color: var(--text-color); font-size: 1.1rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+        .btn-back { background: none; border: none; color: var(--text-color); font-size: 1.1rem; cursor: pointer; padding: 6px 10px; border-radius: 8px; transition: background 0.2s; }
         .btn-back:hover { background: var(--hover-bg); }
 
-        .calc-btn { padding: 8px 12px; background: var(--border-color); border: none; border-radius: 6px; font-size: 0.85rem; cursor: pointer; color: var(--text-color); font-weight: 500; }
-        .calc-btn:hover { background: var(--hover-bg); transform: scale(1.05); }
+        .calc-btn { padding: 10px 14px; background: var(--border-color); border: none; border-radius: 10px; font-size: 0.85rem; cursor: pointer; color: var(--text-color); font-weight: 600; transition: all 0.2s ease; }
+        .calc-btn:hover { background: var(--hover-bg); filter: brightness(0.95); }
+        .calc-btn:active { transform: scale(0.95); }
 
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { display: none; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); transition: 0.3s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         input:checked + .slider { background-color: var(--primary-color); }
         input:checked + .slider:before { transform: translateX(20px); }
-        span, p, div { color: var(--text-color); }
         
         .search-box { position: relative; margin-bottom: 15px; }
-        .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-        .search-box input { padding-left: 35px; text-transform: none; }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; }
+        .search-box input { padding-left: 38px; text-transform: none; border-radius: 12px; }
+
+        /* Icon styling for settings to make them smaller */
+        .settings-icon { font-size: 0.85rem; width: 22px; text-align: center; }
     </style>
 </head>
 <body>
-    <div id="inline-calc-box" style="display: none; margin-top: 8px; padding: 8px; background: var(--summary-bg); border-radius: 6px;">
-        <input type="text" class="form-control" id="calc-screen" readonly style="margin-bottom: 5px; text-align: right; text-transform: none;">
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+    <div id="inline-calc-box" style="display: none; margin-top: 8px; padding: 12px; background: var(--summary-bg); border-radius: 12px; box-shadow: var(--shadow);">
+        <input type="text" class="form-control" id="calc-screen" readonly style="margin-bottom: 8px; text-align: right; text-transform: none; font-size: 1rem; font-weight: bold;">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
             <button type="button" class="calc-btn" onclick="pressCalc('7')">7</button><button type="button" class="calc-btn" onclick="pressCalc('8')">8</button><button type="button" class="calc-btn" onclick="pressCalc('9')">9</button><button type="button" class="calc-btn" onclick="pressCalc('/')">/</button>
             <button type="button" class="calc-btn" onclick="pressCalc('4')">4</button><button type="button" class="calc-btn" onclick="pressCalc('5')">5</button><button type="button" class="calc-btn" onclick="pressCalc('6')">6</button><button type="button" class="calc-btn" onclick="pressCalc('*')">*</button>
             <button type="button" class="calc-btn" onclick="pressCalc('1')">1</button><button type="button" class="calc-btn" onclick="pressCalc('2')">2</button><button type="button" class="calc-btn" onclick="pressCalc('3')">3</button><button type="button" class="calc-btn" onclick="pressCalc('-')">-</button>
@@ -151,35 +153,35 @@
 
     <div class="container" id="app-container">
         <div id="screen-dashboard" class="app-screen active">
-            <div class="flex-between" style="margin-bottom: 15px;">
-                <h1 style="font-size: 1.3rem; color: var(--primary-color);">K N S PRO&trade;</h1>
-                <div id="quick-theme-indicator" style="font-size: 2rem;">💼</div>
+            <div class="flex-between" style="margin-bottom: 12px;">
+                <h1 style="font-size: 1.1rem; color: var(--primary-color);">K N S PRO&trade;</h1>
+                <div id="quick-theme-indicator" style="font-size: 1.5rem;">💼</div>
             </div>
 
-            <div class="card" style="background: linear-gradient(135deg, var(--primary-color), #4299e1); color: white; border: none;">
-                <p style="font-size: 0.75rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Total Balance</p>
-                <h2 id="dash-total-balance" style="font-size: 1.8rem; margin: 4px 0 0 0; color: white;">Rs. 0.00</h2>
+            <div class="card" style="background: linear-gradient(135deg, var(--primary-color), #4299e1); color: white; border: none; padding: 12px 15px;">
+                <p style="font-size: 0.7rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Total Balance</p>
+                <h2 id="dash-total-balance" style="font-size: 1.4rem; margin: 2px 0 0 0; color: white;">Rs. 0.00</h2>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
-                <div class="card flex-gap" style="margin-bottom: 0; padding: 10px;">
-                    <div class="small-icon"><i class="fa-solid fa-university"></i></div>
+                <div class="card flex-gap" style="margin-bottom: 0; padding: 8px 10px;">
+                    <div class="small-icon" style="width:28px; height:28px; font-size:0.75rem;"><i class="fa-solid fa-university"></i></div>
                     <div>
-                        <p style="font-size: 0.72rem; color: var(--text-muted);">Bank Balance</p>
-                        <span id="dash-bank-balance" class="bold" style="font-size: 0.95rem;">Rs. 0.00</span>
+                        <p style="font-size: 0.65rem; color: var(--text-muted);">Bank Balance</p>
+                        <span id="dash-bank-balance" class="bold" style="font-size: 0.85rem;">Rs. 0.00</span>
                     </div>
                 </div>
-                <div class="card flex-gap" style="margin-bottom: 0; padding: 10px;">
-                    <div class="small-icon icon-success"><i class="fa-solid fa-money-bill-wave"></i></div>
+                <div class="card flex-gap" style="margin-bottom: 0; padding: 8px 10px;">
+                    <div class="small-icon icon-success" style="width:28px; height:28px; font-size:0.75rem;"><i class="fa-solid fa-money-bill-wave"></i></div>
                     <div>
-                        <p style="font-size: 0.72rem; color: var(--text-muted);">Cash Balance</p>
-                        <span id="dash-cash-balance" class="bold" style="font-size: 0.95rem;">Rs. 0.00</span>
+                        <p style="font-size: 0.65rem; color: var(--text-muted);">Cash Balance</p>
+                        <span id="dash-cash-balance" class="bold" style="font-size: 0.85rem;">Rs. 0.00</span>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <h3 style="font-size: 0.85rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 6px; margin-bottom: 6px;">
+                <h3 style="font-size: 0.8rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 6px; margin-bottom: 6px;">
                     <i class="fa-solid fa-list-ul" style="margin-right: 5px;"></i> Account Balances
                 </h3>
                 <div id="dash-accounts-list"></div>
@@ -188,13 +190,13 @@
 
         <div id="screen-daily" class="app-screen">
             <div class="flex-between" style="margin-bottom: 15px;">
-                <h2>Daily Transactions</h2>
+                <h2>Daily Entries</h2>
                 <div class="flex-gap">
-                    <button class="btn-action" id="btn-open-entry" style="color: var(--success-color); font-size: 1rem;">
-                        <i class="fa-solid fa-circle-plus"></i> <span style="font-size: 0.8rem; font-weight:600;">Entry</span>
+                    <button class="btn-action" id="btn-open-entry" style="color: var(--success-color); font-size: 1rem; background: var(--hover-bg);">
+                        <i class="fa-solid fa-circle-plus"></i> <span style="font-size: 0.75rem; font-weight:700;">IN / OUT</span>
                     </button>
-                    <button class="btn-action" id="btn-open-transfer" style="color: var(--primary-color); font-size: 1rem;">
-                        <i class="fa-solid fa-right-left"></i> <span style="font-size: 0.8rem; font-weight:600;">Transfer</span>
+                    <button class="btn-action" id="btn-open-transfer" style="color: var(--primary-color); font-size: 1rem; background: var(--hover-bg);">
+                        <i class="fa-solid fa-right-left"></i> <span style="font-size: 0.75rem; font-weight:700;">TRANSFER</span>
                     </button>
                 </div>
             </div>
@@ -204,23 +206,23 @@
                 <input type="text" id="search-tx" class="form-control" placeholder="Search entries..." onkeyup="renderAll()">
             </div>
 
-            <div class="card"><div id="daily-transactions-list"></div></div>
+            <div class="card" style="padding: 5px 15px;"><div id="daily-transactions-list"></div></div>
         </div>
 
         <div id="screen-accounts" class="app-screen">
             <h2 style="margin-bottom: 15px;">Accounts & Ledgers</h2>
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px;">
-                <div class="card flex-gap" onclick="openSubScreen('bank-cash')" style="flex-direction: column; text-align: center; cursor: pointer; padding: 12px 5px;">
-                    <div class="small-icon" style="margin: 0 auto 5px auto;"><i class="fa-solid fa-building-columns"></i></div>
-                    <span style="font-size: 0.78rem; font-weight: 500;">Bank & Cash</span>
+                <div class="card flex-gap" onclick="openSubScreen('bank-cash')" style="flex-direction: column; text-align: center; cursor: pointer; padding: 15px 5px;">
+                    <div class="small-icon" style="margin: 0 auto 5px auto; width:38px; height:38px; font-size:1rem;"><i class="fa-solid fa-building-columns"></i></div>
+                    <span style="font-size: 0.75rem; font-weight: 600;">Bank & Cash</span>
                 </div>
-                <div class="card flex-gap" onclick="openSubScreen('parties')" style="flex-direction: column; text-align: center; cursor: pointer; padding: 12px 5px;">
-                    <div class="small-icon icon-success" style="margin: 0 auto 5px auto;"><i class="fa-solid fa-users"></i></div>
-                    <span style="font-size: 0.78rem; font-weight: 500;">Parties</span>
+                <div class="card flex-gap" onclick="openSubScreen('parties')" style="flex-direction: column; text-align: center; cursor: pointer; padding: 15px 5px;">
+                    <div class="small-icon icon-success" style="margin: 0 auto 5px auto; width:38px; height:38px; font-size:1rem;"><i class="fa-solid fa-users"></i></div>
+                    <span style="font-size: 0.75rem; font-weight: 600;">Parties</span>
                 </div>
-                <div class="card flex-gap" onclick="openSubScreen('donations')" style="flex-direction: column; text-align: center; cursor: pointer; padding: 12px 5px;">
-                    <div class="small-icon icon-danger" style="margin: 0 auto 5px auto;"><i class="fa-solid fa-hand-holding-heart"></i></div>
-                    <span style="font-size: 0.78rem; font-weight: 500;">Donations</span>
+                <div class="card flex-gap" onclick="openSubScreen('donations')" style="flex-direction: column; text-align: center; cursor: pointer; padding: 15px 5px;">
+                    <div class="small-icon icon-danger" style="margin: 0 auto 5px auto; width:38px; height:38px; font-size:1rem;"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <span style="font-size: 0.75rem; font-weight: 600;">Donations</span>
                 </div>
             </div>
         </div>
@@ -228,25 +230,25 @@
         <div id="sub-screen-bank-cash" class="app-screen">
             <div class="top-bar">
                 <button class="btn-back" onclick="closeSubScreen()"><i class="fa-solid fa-arrow-left"></i></button>
-                <h2>Bank & Cash Accounts</h2>
+                <h2>Bank & Cash</h2>
             </div>
             <div class="summary-card">
                 <div class="flex-between" style="margin-bottom: 8px;">
-                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Total Bank & Cash</span>
+                    <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Total Funds</span>
                     <i class="fa-solid fa-wallet" style="color: var(--primary-color);"></i>
                 </div>
-                <h3 id="bank-cash-total-balance" style="font-size: 1.5rem; margin: 0;">Rs. 0.00</h3>
+                <h3 id="bank-cash-total-balance" style="font-size: 1.4rem; margin: 0;">Rs. 0.00</h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-color);">
-                    <div><p style="font-size: 0.7rem; color: var(--text-muted);">Bank Total</p><span id="bank-cash-bank-total" class="bold" style="font-size: 0.9rem;">Rs. 0.00</span></div>
-                    <div><p style="font-size: 0.7rem; color: var(--text-muted);">Cash Total</p><span id="bank-cash-cash-total" class="bold" style="font-size: 0.9rem;">Rs. 0.00</span></div>
+                    <div><p style="font-size: 0.65rem; color: var(--text-muted);">Bank Total</p><span id="bank-cash-bank-total" class="bold" style="font-size: 0.85rem;">Rs. 0.00</span></div>
+                    <div><p style="font-size: 0.65rem; color: var(--text-muted);">Cash Total</p><span id="bank-cash-cash-total" class="bold" style="font-size: 0.85rem;">Rs. 0.00</span></div>
                 </div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
-                <div class="card flex-gap" onclick="openAccountCategoryScreen('bank')" style="cursor: pointer; padding: 10px;">
-                    <div class="small-icon"><i class="fa-solid fa-university"></i></div><span style="font-size: 0.82rem; font-weight: 500;">Bank Accounts</span>
+                <div class="card flex-gap" onclick="openAccountCategoryScreen('bank')" style="cursor: pointer; padding: 12px;">
+                    <div class="small-icon"><i class="fa-solid fa-university"></i></div><span style="font-size: 0.8rem; font-weight: 600;">Bank Accs</span>
                 </div>
-                <div class="card flex-gap" onclick="openAccountCategoryScreen('cash')" style="cursor: pointer; padding: 10px;">
-                    <div class="small-icon icon-success"><i class="fa-solid fa-wallet"></i></div><span style="font-size: 0.82rem; font-weight: 500;">Hand Cash</span>
+                <div class="card flex-gap" onclick="openAccountCategoryScreen('cash')" style="cursor: pointer; padding: 12px;">
+                    <div class="small-icon icon-success"><i class="fa-solid fa-wallet"></i></div><span style="font-size: 0.8rem; font-weight: 600;">Hand Cash</span>
                 </div>
             </div>
         </div>
@@ -254,33 +256,33 @@
         <div id="sub-screen-account-category-list" class="app-screen">
             <div class="top-bar">
                 <button class="btn-back" onclick="openSubScreen('bank-cash')"><i class="fa-solid fa-arrow-left"></i></button>
-                <h2 id="category-list-title">Accounts List</h2>
-                <button class="btn-action" onclick="openAddAccountModal()" style="margin-left: auto; color: var(--primary-color);"><i class="fa-solid fa-plus-circle"></i> Add New</button>
+                <h2 id="category-list-title">Accounts</h2>
+                <button class="btn-action" onclick="openAddAccountModal()" style="margin-left: auto; color: var(--primary-color); font-weight: 600;"><i class="fa-solid fa-plus-circle"></i> Add</button>
             </div>
-            <div class="summary-card">
-                <div class="flex-between"><span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;" id="category-summary-label">Category Total</span><i class="fa-solid fa-chart-line" style="color: var(--primary-color);"></i></div>
-                <h3 id="category-total-balance" style="font-size: 1.3rem; margin: 4px 0 0 0;">Rs. 0.00</h3>
+            <div class="summary-card" style="padding: 10px 14px;">
+                <div class="flex-between"><span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;" id="category-summary-label">Category Total</span><i class="fa-solid fa-chart-line" style="color: var(--primary-color);"></i></div>
+                <h3 id="category-total-balance" style="font-size: 1.2rem; margin: 4px 0 0 0;">Rs. 0.00</h3>
             </div>
-            <div class="card"><div id="category-accounts-render-list"></div></div>
+            <div class="card" style="padding: 5px 15px;"><div id="category-accounts-render-list"></div></div>
         </div>
 
         <div id="sub-screen-single-account" class="app-screen">
             <div class="top-bar">
                 <button class="btn-back" onclick="goBackToCategoryList()"><i class="fa-solid fa-arrow-left"></i></button>
-                <h2 id="single-account-title">Account Details</h2>
+                <h2 id="single-account-title" style="font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Details</h2>
                 <div style="margin-left: auto;" class="flex-gap">
                     <button class="btn-action" onclick="editCurrentAccount()" style="color: var(--primary-color);"><i class="fa-solid fa-pen"></i></button>
                     <button class="btn-action btn-danger-hover" onclick="deleteCurrentAccount()" style="color: var(--text-muted);"><i class="fa-solid fa-trash"></i></button>
                     <button class="btn-action" onclick="printCurrentAccountReport()"><i class="fa-solid fa-print"></i></button>
                 </div>
             </div>
-            <div class="card" style="background: var(--summary-bg); border-left: 4px solid var(--primary-color);">
-                <p style="font-size: 0.75rem; color: var(--text-muted);">Current Balance</p>
-                <h3 id="single-account-balance" style="font-size: 1.4rem;">Rs. 0.00</h3>
-                <p id="single-account-desc" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;"></p>
+            <div class="card" style="background: var(--summary-bg); border-left: 4px solid var(--primary-color); border-radius: 12px;">
+                <p style="font-size: 0.7rem; color: var(--text-muted);">Current Balance</p>
+                <h3 id="single-account-balance" style="font-size: 1.3rem;">Rs. 0.00</h3>
+                <p id="single-account-desc" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;"></p>
             </div>
-            <div class="card">
-                <h4 style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px;">Transactions History</h4>
+            <div class="card" style="padding: 10px 15px;">
+                <h4 style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 5px;">Transactions History</h4>
                 <div id="single-account-transactions-list"></div>
             </div>
         </div>
@@ -289,23 +291,23 @@
             <div class="top-bar">
                 <button class="btn-back" onclick="closeSubScreen()"><i class="fa-solid fa-arrow-left"></i></button>
                 <h2>Parties Ledgers</h2>
-                <button class="btn-action" onclick="openAddPartyModal()" style="margin-left: auto; color: var(--success-color);"><i class="fa-solid fa-plus-circle"></i> Add Party</button>
+                <button class="btn-action" onclick="openAddPartyModal()" style="margin-left: auto; color: var(--success-color); font-weight: 600;"><i class="fa-solid fa-plus-circle"></i> Add</button>
             </div>
             <div class="summary-card">
-                <div class="flex-between" style="margin-bottom: 8px;"><span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Net Parties Balance</span><i class="fa-solid fa-users" style="color: var(--success-color);"></i></div>
-                <h3 id="parties-total-balance" style="font-size: 1.5rem; margin: 0;">Rs. 0.00</h3>
+                <div class="flex-between" style="margin-bottom: 8px;"><span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Net Parties Balance</span><i class="fa-solid fa-users" style="color: var(--success-color);"></i></div>
+                <h3 id="parties-total-balance" style="font-size: 1.4rem; margin: 0;">Rs. 0.00</h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-color);">
-                    <div><p style="font-size: 0.7rem; color: var(--text-muted);">Collectable (DR)</p><span id="parties-dr-total" class="bold text-success" style="font-size: 0.9rem;">Rs. 0.00</span></div>
-                    <div><p style="font-size: 0.7rem; color: var(--text-muted);">Payable (CR)</p><span id="parties-cr-total" class="bold text-danger" style="font-size: 0.9rem;">Rs. 0.00</span></div>
+                    <div><p style="font-size: 0.65rem; color: var(--text-muted);">Collectable (DR)</p><span id="parties-dr-total" class="bold text-success" style="font-size: 0.85rem;">Rs. 0.00</span></div>
+                    <div><p style="font-size: 0.65rem; color: var(--text-muted);">Payable (CR)</p><span id="parties-cr-total" class="bold text-danger" style="font-size: 0.85rem;">Rs. 0.00</span></div>
                 </div>
             </div>
-            <div class="card"><div id="parties-render-list"></div></div>
+            <div class="card" style="padding: 5px 15px;"><div id="parties-render-list"></div></div>
         </div>
         
         <div id="sub-screen-single-party" class="app-screen">
             <div class="top-bar">
                 <button class="btn-back" onclick="openSubScreen('parties')"><i class="fa-solid fa-arrow-left"></i></button>
-                <h2 id="single-party-title">Party Details</h2>
+                <h2 id="single-party-title" style="font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px;">Details</h2>
                 <div style="margin-left: auto;" class="flex-gap">
                     <button class="btn-action" onclick="editCurrentParty()" style="color: var(--primary-color);"><i class="fa-solid fa-pen"></i></button>
                     <button class="btn-action btn-danger-hover" onclick="deleteCurrentParty()" style="color: var(--text-muted);"><i class="fa-solid fa-trash"></i></button>
@@ -313,13 +315,13 @@
                     <button class="btn-action" onclick="printCurrentPartyReport()"><i class="fa-solid fa-print"></i></button>
                 </div>
             </div>
-            <div class="card" id="party-balance-box" style="background: var(--summary-bg); border-left: 4px solid var(--success-color);">
-                <p style="font-size: 0.75rem; color: var(--text-muted);">Net Balance</p>
-                <h3 id="single-party-balance" style="font-size: 1.4rem;">Rs. 0.00</h3>
-                <p id="single-party-desc" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;"></p>
+            <div class="card" id="party-balance-box" style="background: var(--summary-bg); border-left: 4px solid var(--success-color); border-radius: 12px;">
+                <p style="font-size: 0.7rem; color: var(--text-muted);">Net Balance</p>
+                <h3 id="single-party-balance" style="font-size: 1.3rem;">Rs. 0.00</h3>
+                <p id="single-party-desc" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;"></p>
             </div>
-            <div class="card">
-                <h4 style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px;">Party Transactions</h4>
+            <div class="card" style="padding: 10px 15px;">
+                <h4 style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 5px;">Party Transactions</h4>
                 <div id="single-party-transactions-list"></div>
             </div>
         </div>
@@ -328,32 +330,32 @@
             <div class="top-bar">
                 <button class="btn-back" onclick="closeSubScreen()"><i class="fa-solid fa-arrow-left"></i></button>
                 <h2>Donations & Funds</h2>
-                <button class="btn-action" onclick="openAddDonationModal()" style="margin-left: auto; color: var(--danger-color);"><i class="fa-solid fa-plus-circle"></i> Add Fund</button>
+                <button class="btn-action" onclick="openAddDonationModal()" style="margin-left: auto; color: var(--danger-color); font-weight: 600;"><i class="fa-solid fa-plus-circle"></i> Add</button>
             </div>
             <div class="summary-card">
-                <div class="flex-between"><span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Total Donation Funds</span><i class="fa-solid fa-hand-holding-heart" style="color: var(--danger-color);"></i></div>
-                <h3 id="donations-total-balance" style="font-size: 1.5rem; margin: 4px 0 0 0;">Rs. 0.00</h3>
+                <div class="flex-between"><span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Total Donation Funds</span><i class="fa-solid fa-hand-holding-heart" style="color: var(--danger-color);"></i></div>
+                <h3 id="donations-total-balance" style="font-size: 1.3rem; margin: 4px 0 0 0;">Rs. 0.00</h3>
             </div>
-            <div class="card"><div id="donations-render-list"></div></div>
+            <div class="card" style="padding: 5px 15px;"><div id="donations-render-list"></div></div>
         </div>
 
         <div id="sub-screen-single-donation" class="app-screen">
             <div class="top-bar">
                 <button class="btn-back" onclick="openSubScreen('donations')"><i class="fa-solid fa-arrow-left"></i></button>
-                <h2 id="single-donation-title">Donation Fund</h2>
+                <h2 id="single-donation-title" style="font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Fund</h2>
                 <div style="margin-left: auto;" class="flex-gap">
                     <button class="btn-action" onclick="editCurrentDonation()" style="color: var(--primary-color);"><i class="fa-solid fa-pen"></i></button>
                     <button class="btn-action btn-danger-hover" onclick="deleteCurrentDonation()" style="color: var(--text-muted);"><i class="fa-solid fa-trash"></i></button>
                     <button class="btn-action" onclick="printCurrentDonationReport()"><i class="fa-solid fa-print"></i></button>
                 </div>
             </div>
-            <div class="card" style="background: var(--summary-bg); border-left: 4px solid var(--danger-color);">
-                <p style="font-size: 0.75rem; color: var(--text-muted);">Available Fund Balance</p>
-                <h3 id="single-donation-balance" style="font-size: 1.4rem;">Rs. 0.00</h3>
-                <p id="single-donation-desc" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;"></p>
+            <div class="card" style="background: var(--summary-bg); border-left: 4px solid var(--danger-color); border-radius: 12px;">
+                <p style="font-size: 0.7rem; color: var(--text-muted);">Available Fund Balance</p>
+                <h3 id="single-donation-balance" style="font-size: 1.3rem;">Rs. 0.00</h3>
+                <p id="single-donation-desc" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;"></p>
             </div>
-            <div class="card">
-                <h4 style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px;">Fund History</h4>
+            <div class="card" style="padding: 10px 15px;">
+                <h4 style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 5px;">Fund History</h4>
                 <div id="single-donation-transactions-list"></div>
             </div>
         </div>
@@ -362,48 +364,37 @@
             <h2 style="margin-bottom: 15px;">System Settings</h2>
             
             <div class="card">
-                <h3 style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">Data Management</h3>
-                <div class="list-item" onclick="exportToCSV()" style="cursor: pointer;">
-                    <span class="flex-gap"><i class="fa-solid fa-file-csv" style="color: #2ea043;"></i> <span>Export to CSV (Excel)</span></span>
-                    <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:var(--text-muted);"></i>
-                </div>
+                <h3 style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Data Management</h3>
                 <div class="list-item" onclick="triggerBackup()" style="cursor: pointer;">
-                    <span class="flex-gap"><i class="fa-solid fa-cloud-arrow-down"></i> <span>Export Backup (JSON)</span></span>
+                    <span class="flex-gap"><i class="fa-solid fa-cloud-arrow-down settings-icon" style="color: var(--primary-color);"></i> <span>Export Backup (JSON)</span></span>
                     <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:var(--text-muted);"></i>
                 </div>
                 <div class="list-item" onclick="triggerRestore()" style="cursor: pointer;">
-                    <span class="flex-gap"><i class="fa-solid fa-cloud-arrow-up"></i> <span>Import Backup</span></span>
+                    <span class="flex-gap"><i class="fa-solid fa-cloud-arrow-up settings-icon" style="color: var(--text-muted);"></i> <span>Import Backup</span></span>
                     <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:var(--text-muted);"></i>
                 </div>
                 <div class="list-item" onclick="printFullSystemReport()" style="cursor: pointer;">
-                    <span class="flex-gap"><i class="fa-solid fa-file-pdf"></i> <span>Print Full Report</span></span>
+                    <span class="flex-gap"><i class="fa-solid fa-file-pdf settings-icon" style="color: #e53e3e;"></i> <span>Print Full Report</span></span>
                     <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:var(--text-muted);"></i>
                 </div>
-                <div class="list-item" onclick="resetSystemData()" style="cursor: pointer;">
-                    <span class="flex-gap" style="color: var(--danger-color);"><i class="fa-solid fa-triangle-exclamation"></i> <span>Reset All Data</span></span>
+                <div class="list-item" onclick="resetSystemData()" style="cursor: pointer; border-bottom: none;">
+                    <span class="flex-gap" style="color: var(--danger-color);"><i class="fa-solid fa-triangle-exclamation settings-icon"></i> <span>Reset All Data</span></span>
                     <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:var(--text-muted);"></i>
                 </div>
             </div>
 
             <div class="card">
-                <h3 style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">Appearance</h3>
+                <h3 style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Appearance</h3>
                 <div class="list-item">
-                    <span class="flex-gap"><i class="fa-solid fa-moon"></i> <span>Dark Mode</span></span>
+                    <span class="flex-gap"><i class="fa-solid fa-moon settings-icon"></i> <span>Dark Mode</span></span>
                     <label class="switch">
                         <input type="checkbox" id="dark-mode-toggle">
                         <span class="slider"></span>
                     </label>
                 </div>
-                <div class="list-item" id="dark-intensity-row" style="display: none; padding-left: 10px; border-bottom: 1px dashed var(--border-color);">
-                    <span class="flex-gap"><i class="fa-solid fa-circle-half-stroke"></i> <span style="font-size:0.8rem;">Dark Intensity</span></span>
-                    <select id="dark-intensity-select" class="form-control" style="width: auto; padding: 4px 8px; font-size: 0.8rem; height: auto; text-transform: none;">
-                        <option value="dim">Dim Dark</option>
-                        <option value="oled">OLED Pitch Black</option>
-                    </select>
-                </div>
-                <div class="list-item" onclick="changeAppThemeStyle()" style="cursor: pointer;">
-                    <span class="flex-gap"><i class="fa-solid fa-palette"></i> <span>Change Theme</span></span>
-                    <span id="current-theme-label" class="bold" style="font-size: 0.8rem; text-transform: uppercase; color: var(--primary-color);">Blue Slate</span>
+                <div class="list-item" onclick="changeAppThemeStyle()" style="cursor: pointer; border-bottom: none;">
+                    <span class="flex-gap"><i class="fa-solid fa-palette settings-icon"></i> <span>Change Theme</span></span>
+                    <span id="current-theme-label" class="bold" style="font-size: 0.75rem; text-transform: uppercase; color: var(--primary-color);">Blue Slate</span>
                 </div>
             </div>
         </div>
@@ -418,76 +409,76 @@
 
     <div id="modal-account" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="account-modal-title">Add Account</h3>
+            <h3 id="account-modal-title" style="margin-bottom: 15px;">Add Account</h3>
             <form id="form-account">
                 <input type="hidden" id="account-id"><input type="hidden" id="account-category-hidden">
                 <div class="form-group"><label>Account Name</label><input type="text" class="form-control" id="account-name" required></div>
                 <div class="form-group" id="account-opening-balance-group"><label>Opening Balance</label><input type="number" step="0.01" class="form-control" id="account-opening-balance" value="0"></div>
                 <div class="form-group"><label>Description / Notes</label><textarea class="form-control" id="account-desc" rows="2"></textarea></div>
-                <div class="flex-gap" style="margin-top: 15px;"><button type="button" class="calc-btn" onclick="closeActiveModal('modal-account')" style="flex: 1; background: var(--border-color);">Cancel</button><button type="submit" class="calc-btn" style="flex: 1; background: var(--primary-color); color: white;">Save</button></div>
+                <div class="flex-gap" style="margin-top: 20px;"><button type="button" class="calc-btn" onclick="closeActiveModal('modal-account')" style="flex: 1; background: var(--border-color);">Cancel</button><button type="submit" class="calc-btn" style="flex: 1; background: var(--primary-color); color: white;">Save</button></div>
             </form>
         </div>
     </div>
 
     <div id="modal-party" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="party-modal-title">Add Party</h3>
+            <h3 id="party-modal-title" style="margin-bottom: 15px;">Add Party</h3>
             <form id="form-party">
                 <input type="hidden" id="party-id">
                 <div class="form-group"><label>Party Name</label><input type="text" class="form-control" id="party-name" required></div>
                 <div class="form-group"><label>Party Type</label><select class="form-control" id="party-type"><option value="customer">Customer</option><option value="supplier">Supplier</option><option value="employee">Employee</option><option value="other">Other</option></select></div>
                 <div class="form-group" id="party-opening-balance-group"><label>Opening Balance</label><input type="number" step="0.01" class="form-control" id="party-opening-balance" value="0"></div>
-                <div class="form-group" id="party-balance-type-group"><label>Balance Type</label><select class="form-control" id="party-balance-type"><option value="dr">Receivable / Kittan Ullathu</option><option value="cr">Payable / Kodukkan Ullathu</option></select></div>
+                <div class="form-group" id="party-balance-type-group"><label>Balance Type</label><select class="form-control" id="party-balance-type"><option value="dr">Receivable (Kittan)</option><option value="cr">Payable (Kodukkan)</option></select></div>
                 <div class="form-group"><label>Description / Notes</label><textarea class="form-control" id="party-desc" rows="2"></textarea></div>
-                <div class="flex-gap" style="margin-top: 15px;"><button type="button" class="calc-btn" onclick="closeActiveModal('modal-party')" style="flex: 1; background: var(--border-color);">Cancel</button><button type="submit" class="calc-btn" style="flex: 1; background: var(--success-color); color: white;">Save</button></div>
+                <div class="flex-gap" style="margin-top: 20px;"><button type="button" class="calc-btn" onclick="closeActiveModal('modal-party')" style="flex: 1; background: var(--border-color);">Cancel</button><button type="submit" class="calc-btn" style="flex: 1; background: var(--success-color); color: white;">Save</button></div>
             </form>
         </div>
     </div>
 
     <div id="modal-donation" class="modal-overlay">
         <div class="modal-content">
-            <div class="flex-between" style="margin-bottom: 12px;"><h3 id="donation-modal-title">ADD DONATION FUND</h3><button type="button" class="btn-action" onclick="closeActiveModal('modal-donation')" style="font-size: 1.2rem;"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="flex-between" style="margin-bottom: 15px;"><h3 id="donation-modal-title">ADD FUND</h3><button type="button" class="btn-action" onclick="closeActiveModal('modal-donation')" style="font-size: 1.2rem; padding: 4px;"><i class="fa-solid fa-xmark"></i></button></div>
             <form id="form-donation">
                 <input type="hidden" id="donation-id">
-                <div class="form-group"><label>Donation / Fund Name</label><input type="text" class="form-control" id="donation-name" required></div>
+                <div class="form-group"><label>Fund Name</label><input type="text" class="form-control" id="donation-name" required></div>
                 
                 <div class="form-group" id="donation-percentage-group">
-                    <label>Link Total Balance (Percentage Source)</label>
-                    <div class="flex-gap"><input type="number" step="0.01" class="form-control" id="donation-percentage" placeholder="%" style="flex: 0.3;"><span style="font-size: 0.8rem; color: var(--text-muted);">% of Total Balance</span><button type="button" class="calc-btn" id="btn-calc-donation">Calc</button></div>
+                    <label>Link Total Balance (%)</label>
+                    <div class="flex-gap"><input type="number" step="0.01" class="form-control" id="donation-percentage" placeholder="%" style="flex: 0.4;"><span style="font-size: 0.75rem; color: var(--text-muted);">% of Total</span><button type="button" class="calc-btn" id="btn-calc-donation" style="padding: 10px;">Calc</button></div>
                 </div>
-                <div class="form-group" id="donation-amount-group"><label>Fund Allocation Amount (Rs.)</label><input type="number" step="0.01" class="form-control" id="donation-amount" value="0.00"></div>
-                <div class="form-group" id="donation-link-account-group"><label>Deduct From (Link Bank/Cash Account)</label><select class="form-control" id="donation-link-account"></select></div>
+                <div class="form-group" id="donation-amount-group"><label>Fund Allocation Amount</label><input type="number" step="0.01" class="form-control" id="donation-amount" value="0.00"></div>
+                <div class="form-group" id="donation-link-account-group"><label>Deduct From</label><select class="form-control" id="donation-link-account"></select></div>
                 
                 <div class="form-group"><label>Description</label><input type="text" class="form-control" id="donation-desc"></div>
-                <button type="submit" class="calc-btn" style="width: 100%; background: var(--danger-color); color: white; padding: 12px; font-weight: 600; margin-top: 10px;">SAVE FUND</button>
+                <button type="submit" class="calc-btn" style="width: 100%; background: var(--danger-color); color: white; padding: 12px; font-weight: 600; margin-top: 15px; border-radius: 12px;">SAVE FUND</button>
             </form>
         </div>
     </div>
 
     <div id="modal-entry" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="entry-modal-title">Add Entry</h3>
+            <h3 id="entry-modal-title" style="margin-bottom: 15px;">Add Entry</h3>
             <form id="form-entry">
                 <input type="hidden" id="entry-id">
                 <div class="form-group"><label>Date</label><input type="date" class="form-control" id="entry-date" required></div>
-                <div class="form-group"><label>Entry Type</label><select class="form-control" id="entry-type"><option value="income">Income / Cash Received</option><option value="expense">Expense / Cash Paid</option></select></div>
+                <div class="form-group"><label>Entry Type</label><select class="form-control" id="entry-type"><option value="income">Income / Cash IN</option><option value="expense">Expense / Cash OUT</option></select></div>
                 <div class="form-group"><label>Account (Bank/Cash/Fund)</label><select class="form-control" id="entry-account"></select></div>
                 <div class="form-group">
                     <label>Amount</label>
                     <div class="flex-gap">
                         <input type="number" step="0.01" class="form-control" id="entry-amount" required style="flex: 1;">
-                        <button type="button" class="calc-btn" onclick="openInlineCalc('entry-amount')"><i class="fa-solid fa-calculator"></i></button>
+                        <button type="button" class="calc-btn" onclick="openInlineCalc('entry-amount')" style="padding: 10px 14px;"><i class="fa-solid fa-calculator"></i></button>
                     </div>
                 </div>
                 <div class="form-group"><label>Description</label><textarea class="form-control" id="entry-desc" rows="2"></textarea></div>
-                <div class="flex-gap" style="margin-top: 15px;"><button type="button" class="calc-btn" onclick="closeActiveModal('modal-entry')" style="flex: 1; background: var(--border-color);">Cancel</button><button type="submit" class="calc-btn" style="flex: 1; background: var(--primary-color); color: white;">Save Entry</button></div>
+                <div class="flex-gap" style="margin-top: 20px;"><button type="button" class="calc-btn" onclick="closeActiveModal('modal-entry')" style="flex: 1; background: var(--border-color);">Cancel</button><button type="submit" class="calc-btn" style="flex: 1; background: var(--primary-color); color: white;">Save Entry</button></div>
             </form>
         </div>
     </div>
 
     <div id="modal-transfer" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="transfer-modal-title">Transfer Funds</h3>
+            <h3 id="transfer-modal-title" style="margin-bottom: 15px;">Transfer Funds</h3>
             <form id="form-transfer">
                 <input type="hidden" id="transfer-id">
                 <div class="form-group"><label>Date</label><input type="date" class="form-control" id="transfer-date" required></div>
@@ -504,7 +495,7 @@
                     <select class="form-control" id="transfer-from"></select>
                 </div>
                 
-                <div style="text-align: center; color: var(--primary-color); margin: 5px 0;"><i class="fa-solid fa-arrow-down"></i></div>
+                <div style="text-align: center; color: var(--primary-color); margin: -5px 0 5px 0;"><i class="fa-solid fa-arrow-down"></i></div>
 
                 <div class="form-group">
                     <label>To Destination Type</label>
@@ -523,11 +514,11 @@
                     <label>Amount</label>
                     <div class="flex-gap">
                         <input type="number" step="0.01" class="form-control" id="transfer-amount" required style="flex: 1;">
-                        <button type="button" class="calc-btn" onclick="openInlineCalc('transfer-amount')"><i class="fa-solid fa-calculator"></i></button>
+                        <button type="button" class="calc-btn" onclick="openInlineCalc('transfer-amount')" style="padding: 10px 14px;"><i class="fa-solid fa-calculator"></i></button>
                     </div>
                 </div>
                 <div class="form-group"><label>Description</label><textarea class="form-control" id="transfer-desc" rows="2"></textarea></div>
-                <div class="flex-gap" style="margin-top: 15px;">
+                <div class="flex-gap" style="margin-top: 20px;">
                     <button type="button" class="calc-btn" onclick="closeActiveModal('modal-transfer')" style="flex: 1; background: var(--border-color);">Cancel</button>
                     <button type="submit" class="calc-btn" style="flex: 1; background: var(--primary-color); color: white;">Transfer</button>
                 </div>
@@ -579,19 +570,16 @@
             
             document.getElementById('btn-calc-donation').addEventListener('click', calculateDonationAmount);
             
+            // Fix modal closing on background click
             document.querySelectorAll('.modal-overlay').forEach(modal => {
-                modal.addEventListener('click', function(e) { if(e.target === this) closeActiveModal(this.id); });
+                modal.addEventListener('click', function(e) { 
+                    if(e.target === this) closeActiveModal(this.id); 
+                });
             });
             
             let currentMode = localStorage.getItem('kns_pro_theme') || 'light';
             document.getElementById('dark-mode-toggle').checked = (currentMode === 'dark');
             document.getElementById('dark-mode-toggle').addEventListener('change', toggleDarkModeSystem);
-            
-            document.getElementById('dark-intensity-select').addEventListener('change', function() {
-                let intensity = this.value;
-                document.documentElement.setAttribute('data-dark-intensity', intensity);
-                localStorage.setItem('kns_pro_dark_intensity', intensity);
-            });
         }
 
         // --- THEME ---
@@ -600,17 +588,6 @@
             let targetTheme = isDark ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', targetTheme);
             localStorage.setItem('kns_pro_theme', targetTheme);
-            
-            let intensityRow = document.getElementById('dark-intensity-row');
-            if(isDark) {
-                intensityRow.style.display = 'flex';
-                let savedIntensity = localStorage.getItem('kns_pro_dark_intensity') || 'dim';
-                document.documentElement.setAttribute('data-dark-intensity', savedIntensity);
-                document.getElementById('dark-intensity-select').value = savedIntensity;
-            } else {
-                intensityRow.style.display = 'none';
-                document.documentElement.removeAttribute('data-dark-intensity');
-            }
         }
 
         function changeAppThemeStyle() {
@@ -629,14 +606,6 @@
             let savedTheme = localStorage.getItem('kns_pro_theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
             
-            let intensityRow = document.getElementById('dark-intensity-row');
-            if(savedTheme === 'dark') {
-                if(intensityRow) intensityRow.style.display = 'flex';
-                let savedIntensity = localStorage.getItem('kns_pro_dark_intensity') || 'dim';
-                document.documentElement.setAttribute('data-dark-intensity', savedIntensity);
-                if(document.getElementById('dark-intensity-select')) document.getElementById('dark-intensity-select').value = savedIntensity;
-            }
-            
             let savedProfile = localStorage.getItem('kns_pro_app_theme') || 'blue';
             const themeNames = { blue: 'Blue Slate', emerald: 'Forest Emerald', purple: 'Royal Purple', cyber: 'Cyber Neon' };
             document.documentElement.setAttribute('data-app-theme', savedProfile);
@@ -644,9 +613,7 @@
         }
 
         // --- DATE UTILITIES ---
-        function getTodayForInput() {
-            return new Date().toISOString().split('T')[0];
-        }
+        function getTodayForInput() { return new Date().toISOString().split('T')[0]; }
         function formatDateForDisplay(dateStr) {
             if(!dateStr) return '';
             if(dateStr.includes('/')) return dateStr;
@@ -685,7 +652,7 @@
         }
         function openSubScreen(screenName) { document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active')); document.getElementById('sub-screen-' + screenName).classList.add('active'); activeSubScreen = screenName; renderAll(); }
         function closeSubScreen() { switchScreen('accounts', document.querySelector('.nav-item:nth-child(3)')); }
-        function openAccountCategoryScreen(category) { currentSelectedCategory = category; document.getElementById('category-list-title').innerText = category === 'bank' ? 'Bank Accounts' : 'Hand Cash Accounts'; document.getElementById('category-summary-label').innerText = category === 'bank' ? 'Bank Total' : 'Cash Total'; openSubScreen('account-category-list'); }
+        function openAccountCategoryScreen(category) { currentSelectedCategory = category; document.getElementById('category-list-title').innerText = category === 'bank' ? 'Bank Accounts' : 'Hand Cash'; document.getElementById('category-summary-label').innerText = category === 'bank' ? 'Bank Total' : 'Cash Total'; openSubScreen('account-category-list'); }
         function goBackToCategoryList() { openAccountCategoryScreen(currentSelectedCategory); }
         function viewSingleAccount(accId) { currentSelectedId = accId; openSubScreen('single-account'); }
         function viewSingleParty(partyId) { currentSelectedId = partyId; openSubScreen('single-party'); }
@@ -706,14 +673,14 @@
         
         function openAddPartyModal() { document.getElementById('party-modal-title').innerText = 'Add Party'; document.getElementById('party-id').value = ''; document.getElementById('party-name').value = ''; document.getElementById('party-type').value = 'customer'; document.getElementById('party-opening-balance').value = '0'; document.getElementById('party-balance-type').value = 'dr'; document.getElementById('party-desc').value = ''; document.getElementById('party-opening-balance-group').style.display = 'block'; document.getElementById('party-balance-type-group').style.display = 'block'; openActiveModal('modal-party'); }
         
-        function openAddDonationModal() { document.getElementById('donation-modal-title').innerText = 'ADD DONATION FUND'; document.getElementById('donation-id').value = ''; document.getElementById('donation-name').value = ''; document.getElementById('donation-amount').value = '0.00'; document.getElementById('donation-percentage').value = ''; document.getElementById('donation-desc').value = ''; document.getElementById('donation-amount-group').style.display = 'block'; document.getElementById('donation-percentage-group').style.display = 'block'; document.getElementById('donation-link-account-group').style.display = 'block'; populateDonationLinkDropdown(); openActiveModal('modal-donation'); }
+        function openAddDonationModal() { document.getElementById('donation-modal-title').innerText = 'ADD FUND'; document.getElementById('donation-id').value = ''; document.getElementById('donation-name').value = ''; document.getElementById('donation-amount').value = '0.00'; document.getElementById('donation-percentage').value = ''; document.getElementById('donation-desc').value = ''; document.getElementById('donation-amount-group').style.display = 'block'; document.getElementById('donation-percentage-group').style.display = 'block'; document.getElementById('donation-link-account-group').style.display = 'block'; populateDonationLinkDropdown(); openActiveModal('modal-donation'); }
         function calculateDonationAmount() { let pct = parseFloat(document.getElementById('donation-percentage').value) || 0; if(pct <= 0) { alert('ENTER VALID PERCENTAGE'); return; } let calcAmount = (getTotalSystemBalance() * pct) / 100; document.getElementById('donation-amount').value = calcAmount.toFixed(2); }
         
         function populateDonationLinkDropdown() { let accOptions = state.accounts.map(a => `<option value="${a.id}">${a.name}</option>`).join(''); document.getElementById('donation-link-account').innerHTML = '<option value="">-- SELECT ACCOUNT --</option>' + accOptions; }
         function populateEntryDropdowns() {
             let accOptions = state.accounts.map(a => `<option value="${a.id}">${a.name} (${a.category.toUpperCase()})</option>`).join('');
-            let donOptions = state.donations.map(d => `<option value="${d.id}">${d.name} (DONATION FUND)</option>`).join('');
-            document.getElementById('entry-account').innerHTML = `<optgroup label="Bank / Cash Accounts">${accOptions}</optgroup><optgroup label="Donation Funds">${donOptions}</optgroup>`;
+            let donOptions = state.donations.map(d => `<option value="${d.id}">${d.name} (FUND)</option>`).join('');
+            document.getElementById('entry-account').innerHTML = `<optgroup label="Bank/Cash Accounts">${accOptions}</optgroup><optgroup label="Donation Funds">${donOptions}</optgroup>`;
         }
         
         function openEntryModal() { document.getElementById('entry-modal-title').innerText = 'Add Entry'; document.getElementById('entry-id').value = ''; document.getElementById('entry-date').value = getTodayForInput(); document.getElementById('entry-type').value = 'income'; document.getElementById('entry-amount').value = ''; document.getElementById('entry-desc').value = ''; populateEntryDropdowns(); openActiveModal('modal-entry'); }
@@ -742,9 +709,9 @@
         
         function handlePartySubmit(e) { e.preventDefault(); let id = document.getElementById('party-id').value; let name = sanitizeInput(document.getElementById('party-name').value).toUpperCase(); let type = document.getElementById('party-type').value; let opBal = parseFloat(document.getElementById('party-opening-balance').value) || 0; let balType = document.getElementById('party-balance-type').value; let desc = sanitizeInput(document.getElementById('party-desc').value).toUpperCase(); if(!id && balType === 'cr') opBal = -Math.abs(opBal); if(id) { let party = state.parties.find(p => p.id === id); if(party) { party.name = name; party.description = desc; } } else { state.parties.push({ id: 'party_' + Date.now(), name, type, openingBalance: opBal, description: desc }); } saveDataToStorage(); closeActiveModal('modal-party'); openSubScreen('parties'); }
         
-        function handleDonationSubmit(e) { e.preventDefault(); let id = document.getElementById('donation-id').value; let name = sanitizeInput(document.getElementById('donation-name').value).toUpperCase(); let amount = parseFloat(document.getElementById('donation-amount').value) || 0; let linkedAccId = document.getElementById('donation-link-account').value; let desc = sanitizeInput(document.getElementById('donation-desc').value).toUpperCase(); let pct = document.getElementById('donation-percentage').value; if(!id && !linkedAccId) { alert('SELECT DEDUCT FROM ACCOUNT'); return; } if(id) { let don = state.donations.find(d => d.id === id); if(don) { don.name = name; don.description = desc; } } else { let donId = 'don_' + Date.now(); state.donations.push({ id: donId, name, amount: 0, linkedAccountId: linkedAccId, description: desc, percentage: pct }); if(amount > 0) { state.transactions.unshift({ id: 'trans_' + Date.now(), type: 'donation', fromId: linkedAccId, toId: donId, amount: amount, description: `FUND ALLOCATION: ${name}`, date: formatDateForDisplay(getTodayForInput()) }); } } saveDataToStorage(); closeActiveModal('modal-donation'); openSubScreen('donations'); }
+        function handleDonationSubmit(e) { e.preventDefault(); let id = document.getElementById('donation-id').value; let name = sanitizeInput(document.getElementById('donation-name').value).toUpperCase(); let amount = parseFloat(document.getElementById('donation-amount').value) || 0; let linkedAccId = document.getElementById('donation-link-account').value; let desc = sanitizeInput(document.getElementById('donation-desc').value).toUpperCase(); let pct = document.getElementById('donation-percentage').value; if(!id && !linkedAccId) { alert('SELECT DEDUCT FROM ACCOUNT'); return; } if(id) { let don = state.donations.find(d => d.id === id); if(don) { don.name = name; don.description = desc; } } else { let donId = 'don_' + Date.now(); state.donations.push({ id: donId, name, amount: 0, linkedAccountId: linkedAccId, description: desc, percentage: pct }); if(amount > 0) { state.transactions.unshift({ id: 'trans_' + Date.now(), type: 'donation', fromId: linkedAccId, toId: donId, amount: amount, description: `FUND ALLOC: ${name}`, date: formatDateForDisplay(getTodayForInput()) }); } } saveDataToStorage(); closeActiveModal('modal-donation'); openSubScreen('donations'); }
         
-        function handleEntrySubmit(e) { e.preventDefault(); let id = document.getElementById('entry-id').value; let entryDate = document.getElementById('entry-date').value; let type = document.getElementById('entry-type').value; let accId = document.getElementById('entry-account').value; let amount = parseFloat(document.getElementById('entry-amount').value) || 0; let desc = sanitizeInput(document.getElementById('entry-desc').value).toUpperCase(); if(!accId) { alert('SELECT ACCOUNT'); return; } if(id) { let t = state.transactions.find(x => x.id === id); if(t) { t.type = type; t.date = formatDateForDisplay(entryDate); t.fromId = type === 'expense'? accId : null; t.toId = type === 'income'? accId : null; t.amount = amount; t.description = desc; } } else { state.transactions.unshift({ id: 'trans_' + Date.now(), type: type, fromId: type === 'expense'? accId : null, toId: type === 'income'? accId : null, amount: amount, description: desc || (type === 'income'? 'CASH RECEIVED' : 'EXPENSE PAID'), date: formatDateForDisplay(entryDate) }); } saveDataToStorage(); closeActiveModal('modal-entry'); switchScreen('daily', null); }
+        function handleEntrySubmit(e) { e.preventDefault(); let id = document.getElementById('entry-id').value; let entryDate = document.getElementById('entry-date').value; let type = document.getElementById('entry-type').value; let accId = document.getElementById('entry-account').value; let amount = parseFloat(document.getElementById('entry-amount').value) || 0; let desc = sanitizeInput(document.getElementById('entry-desc').value).toUpperCase(); if(!accId) { alert('SELECT ACCOUNT'); return; } if(id) { let t = state.transactions.find(x => x.id === id); if(t) { t.type = type; t.date = formatDateForDisplay(entryDate); t.fromId = type === 'expense'? accId : null; t.toId = type === 'income'? accId : null; t.amount = amount; t.description = desc; } } else { state.transactions.unshift({ id: 'trans_' + Date.now(), type: type, fromId: type === 'expense'? accId : null, toId: type === 'income'? accId : null, amount: amount, description: desc || (type === 'income'? 'CASH IN' : 'CASH OUT'), date: formatDateForDisplay(entryDate) }); } saveDataToStorage(); closeActiveModal('modal-entry'); switchScreen('daily', null); }
         
         function handleTransferSubmit(e) { 
             e.preventDefault(); 
@@ -766,29 +733,23 @@
             
             if(id) { 
                 let t = state.transactions.find(x => x.id === id); 
-                if(t) { t.fromId = fromId; t.toId = toId; t.date = formatDateForDisplay(transferDate); t.amount = amount; t.description = desc || `TRANSFERRED FUNDS`; t.type = tType; } 
+                if(t) { t.fromId = fromId; t.toId = toId; t.date = formatDateForDisplay(transferDate); t.amount = amount; t.description = desc || `TRANSFER`; t.type = tType; } 
             } else { 
-                state.transactions.unshift({ id: 'trans_' + Date.now(), type: tType, fromId: fromId, toId: toId, amount: amount, description: desc || `TRANSFERRED FUNDS`, date: formatDateForDisplay(transferDate) }); 
+                state.transactions.unshift({ id: 'trans_' + Date.now(), type: tType, fromId: fromId, toId: toId, amount: amount, description: desc || `TRANSFER`, date: formatDateForDisplay(transferDate) }); 
             } 
             saveDataToStorage(); closeActiveModal('modal-transfer'); switchScreen('daily', null); 
         }
 
-        // --- LEDGER CORRECTION ENGINE & FIX FOR DELETE BUG ---
+        // --- LEDGER CORRECTION ENGINE ---
         function safeDeleteEntityTransactions(entityId) {
             state.transactions.forEach(t => {
-                if (t.fromId === entityId) {
-                    t.fromId = null;
-                    if (t.type !== 'expense' && t.type !== 'income') t.type = 'income'; 
-                }
-                if (t.toId === entityId) {
-                    t.toId = null;
-                    if (t.type !== 'expense' && t.type !== 'income') t.type = 'expense';
-                }
+                if (t.fromId === entityId) { t.fromId = null; if (t.type !== 'expense' && t.type !== 'income') t.type = 'income'; }
+                if (t.toId === entityId) { t.toId = null; if (t.type !== 'expense' && t.type !== 'income') t.type = 'expense'; }
             });
             state.transactions = state.transactions.filter(t => t.fromId !== null || t.toId !== null);
         }
 
-        function deleteTransaction(id) { if(confirm("ARE YOU SURE YOU WANT TO DELETE THIS TRANSACTION?")) { state.transactions = state.transactions.filter(t => t.id !== id); saveDataToStorage(); } }
+        function deleteTransaction(id) { if(confirm("DELETE THIS TRANSACTION?")) { state.transactions = state.transactions.filter(t => t.id !== id); saveDataToStorage(); } }
         function editTransaction(id) {
             let t = state.transactions.find(x => x.id === id); if(!t) return;
             if(t.type === 'income' || t.type === 'expense') { 
@@ -823,31 +784,28 @@
         function editCurrentAccount() { let acc = state.accounts.find(a => a.id === currentSelectedId); if(!acc) return; document.getElementById('account-id').value = acc.id; document.getElementById('account-name').value = acc.name; document.getElementById('account-desc').value = acc.description; document.getElementById('account-opening-balance-group').style.display = 'none'; document.getElementById('account-modal-title').innerText = 'EDIT ACCOUNT'; openActiveModal('modal-account'); }
         
         function deleteCurrentAccount() { 
-            if(confirm("DELETE ACCOUNT PERMANENTLY? Note: Shared transfers will be kept safe for other connected accounts.")) { 
+            if(confirm("DELETE ACCOUNT? Note: Shared transfers will be kept safe.")) { 
                 state.accounts = state.accounts.filter(a => a.id !== currentSelectedId); 
                 safeDeleteEntityTransactions(currentSelectedId); 
-                saveDataToStorage(); 
-                goBackToCategoryList(); 
+                saveDataToStorage(); goBackToCategoryList(); 
             } 
         }
         function editCurrentParty() { let party = state.parties.find(p => p.id === currentSelectedId); if(!party) return; document.getElementById('party-id').value = party.id; document.getElementById('party-name').value = party.name; document.getElementById('party-desc').value = party.description; document.getElementById('party-opening-balance-group').style.display = 'none'; document.getElementById('party-balance-type-group').style.display = 'none'; document.getElementById('party-modal-title').innerText = 'EDIT PARTY'; openActiveModal('modal-party'); }
         
         function deleteCurrentParty() { 
-            if(confirm("DELETE THIS PARTY LEDGER? Note: Shared transfers will be kept safe for other connected accounts.")) { 
+            if(confirm("DELETE PARTY LEDGER? Note: Shared transfers will be kept safe.")) { 
                 state.parties = state.parties.filter(p => p.id !== currentSelectedId); 
                 safeDeleteEntityTransactions(currentSelectedId);
-                saveDataToStorage(); 
-                openSubScreen('parties'); 
+                saveDataToStorage(); openSubScreen('parties'); 
             } 
         }
-        function editCurrentDonation() { let don = state.donations.find(d => d.id === currentSelectedId); if(!don) return; document.getElementById('donation-id').value = don.id; document.getElementById('donation-name').value = don.name; document.getElementById('donation-desc').value = don.description; document.getElementById('donation-amount-group').style.display = 'none'; document.getElementById('donation-percentage-group').style.display = 'none'; document.getElementById('donation-link-account-group').style.display = 'none'; document.getElementById('donation-modal-title').innerText = 'EDIT DONATION INFO'; openActiveModal('modal-donation'); }
+        function editCurrentDonation() { let don = state.donations.find(d => d.id === currentSelectedId); if(!don) return; document.getElementById('donation-id').value = don.id; document.getElementById('donation-name').value = don.name; document.getElementById('donation-desc').value = don.description; document.getElementById('donation-amount-group').style.display = 'none'; document.getElementById('donation-percentage-group').style.display = 'none'; document.getElementById('donation-link-account-group').style.display = 'none'; document.getElementById('donation-modal-title').innerText = 'EDIT FUND'; openActiveModal('modal-donation'); }
         
         function deleteCurrentDonation() { 
-            if(confirm("REMOVE THIS DONATION LEDGER? Note: Shared transfers will be kept safe for other connected accounts.")) { 
+            if(confirm("REMOVE FUND LEDGER? Note: Shared transfers will be kept safe.")) { 
                 state.donations = state.donations.filter(d => d.id !== currentSelectedId); 
                 safeDeleteEntityTransactions(currentSelectedId);
-                saveDataToStorage(); 
-                openSubScreen('donations'); 
+                saveDataToStorage(); openSubScreen('donations'); 
             } 
         }
 
@@ -864,20 +822,7 @@
         function printCurrentPartyReport() { window.print(); }
         function printCurrentDonationReport() { window.print(); }
 
-        // EXPORT & REPORT GENERATOR
-        function exportToCSV() {
-            let csvContent = "Date,Type,Description,Amount\n";
-            state.transactions.forEach(t => {
-                let desc = t.description ? t.description.replace(/,/g, ' ') : '';
-                csvContent += `${t.date},${t.type.toUpperCase()},${desc},${t.amount}\n`;
-            });
-            let hiddenElement = document.createElement('a');
-            hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvContent);
-            hiddenElement.target = '_blank';
-            hiddenElement.download = `KNS_PRO_Transactions_${new Date().toISOString().slice(0,10)}.csv`;
-            hiddenElement.click();
-        }
-
+        // --- REPORT GENERATOR ---
         function printFullSystemReport() {
             let reportDiv = document.createElement('div');
             reportDiv.id = 'pdf-full-report';
@@ -949,10 +894,9 @@
             reportDiv.innerHTML = html;
             document.body.appendChild(reportDiv);
 
-            // Print PDF using html2pdf
             html2pdf().from(reportDiv).set({
                 margin: 10,
-                filename: `KNS_PRO_Full_Report_${date.replace(/\//g,'-')}.pdf`,
+                filename: `KNS_PRO_Report_${date.replace(/\//g,'-')}.pdf`,
                 html2canvas: { scale: 2 },
                 jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
             }).save().then(() => {
@@ -1011,7 +955,7 @@
                 dashAccDiv.innerHTML = '';
                 state.accounts.forEach(a => {
                     let bal = getAccountBalance(a.id);
-                    dashAccDiv.innerHTML += `<div class="list-item" onclick="switchScreen('accounts', null); openAccountCategoryScreen('${a.category}'); viewSingleAccount('${a.id}')" style="cursor:pointer;"><span class="flex-gap"><div class="small-icon ${a.category==='cash'?'icon-success':''}"><i class="fa-solid ${a.category==='cash'?'fa-wallet':'fa-university'}"></i></div><span>${a.name}</span></span><span class="bold ${bal >=0? 'text-success':'text-danger'}">${formatCurrency(bal)}</span></div>`;
+                    dashAccDiv.innerHTML += `<div class="list-item" onclick="switchScreen('accounts', null); openAccountCategoryScreen('${a.category}'); viewSingleAccount('${a.id}')" style="cursor:pointer; padding: 12px 6px;"><span class="flex-gap"><div class="small-icon ${a.category==='cash'?'icon-success':''}"><i class="fa-solid ${a.category==='cash'?'fa-wallet':'fa-university'}"></i></div><span style="font-weight: 500;">${a.name}</span></span><span class="bold ${bal >=0? 'text-success':'text-danger'}">${formatCurrency(bal)}</span></div>`;
                 });
             }
 
@@ -1028,7 +972,7 @@
                 });
 
                 if(filteredTransactions.length === 0) {
-                    dailyDiv.innerHTML = '<p style="text-align:center; font-size:0.8rem; color:var(--text-muted); padding:10px;">NO TRANSACTION ITEMS.</p>';
+                    dailyDiv.innerHTML = '<p style="text-align:center; font-size:0.8rem; color:var(--text-muted); padding:15px;">NO TRANSACTIONS.</p>';
                 }
 
                 filteredTransactions.forEach(t => {
@@ -1036,7 +980,7 @@
                     if(t.type === 'income') css = 'text-success';
                     else if(t.type === 'expense') css = 'text-danger';
                     
-                    dailyDiv.innerHTML += `<div class="list-item"><div><span class="bold" style="font-size:0.85rem;">${t.description}</span><div class="list-item-sub">${t.date} | ${t.type.toUpperCase()}</div></div><div class="flex-gap"><span class="${css} bold">${formatCurrency(t.amount)}</span><button class="btn-action" onclick="editTransaction('${t.id}')"><i class="fa-solid fa-pen" style="font-size:0.75rem;"></i></button><button class="btn-action btn-danger-hover" onclick="deleteTransaction('${t.id}')"><i class="fa-solid fa-trash" style="font-size:0.75rem;"></i></button></div></div>`;
+                    dailyDiv.innerHTML += `<div class="list-item"><div><span class="bold" style="font-size:0.8rem;">${t.description}</span><div class="list-item-sub">${t.date} | ${t.type.toUpperCase()}</div></div><div class="flex-gap"><span class="${css} bold" style="font-size:0.85rem;">${formatCurrency(t.amount)}</span><button class="btn-action" onclick="editTransaction('${t.id}')"><i class="fa-solid fa-pen" style="font-size:0.75rem;"></i></button><button class="btn-action btn-danger-hover" onclick="deleteTransaction('${t.id}')"><i class="fa-solid fa-trash" style="font-size:0.75rem;"></i></button></div></div>`;
                 });
             }
 
@@ -1045,7 +989,7 @@
             if(catDiv && activeSubScreen === 'account-category-list') {
                 catDiv.innerHTML = '';
                 state.accounts.filter(a => a.category === currentSelectedCategory).forEach(a => {
-                    catDiv.innerHTML += `<div class="list-item" onclick="viewSingleAccount('${a.id}')" style="cursor:pointer;"><div><span class="bold">${a.name}</span><div class="list-item-sub">${a.description || 'NO NOTES'}</div></div><span class="bold">${formatCurrency(getAccountBalance(a.id))} <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:var(--text-muted);"></i></span></div>`;
+                    catDiv.innerHTML += `<div class="list-item" onclick="viewSingleAccount('${a.id}')" style="cursor:pointer; padding: 12px 6px;"><div><span class="bold">${a.name}</span><div class="list-item-sub">${a.description || 'NO NOTES'}</div></div><span class="bold">${formatCurrency(getAccountBalance(a.id))} <i class="fa-solid fa-chevron-right" style="font-size:0.65rem; color:var(--text-muted); margin-left: 5px;"></i></span></div>`;
                 });
             }
 
@@ -1059,7 +1003,7 @@
                     let transDiv = document.getElementById('single-account-transactions-list'); transDiv.innerHTML = '';
                     state.transactions.filter(t => t.fromId === acc.id || t.toId === acc.id).forEach(t => {
                         let amtCss = (t.toId === acc.id)? 'text-success' : 'text-danger';
-                        transDiv.innerHTML += `<div class="list-item"><div><span>${t.description}</span><div class="list-item-sub">${t.date}</div></div><div class="flex-gap"><span class="${amtCss} bold">${formatCurrency(t.amount)}</span><button class="btn-action" onclick="editTransaction('${t.id}')"><i class="fa-solid fa-pen" style="font-size:0.75rem;"></i></button><button class="btn-action btn-danger-hover" onclick="deleteTransaction('${t.id}')"><i class="fa-solid fa-trash" style="font-size:0.75rem;"></i></button></div></div>`;
+                        transDiv.innerHTML += `<div class="list-item"><div><span style="font-size:0.8rem; font-weight:500;">${t.description}</span><div class="list-item-sub">${t.date}</div></div><div class="flex-gap"><span class="${amtCss} bold" style="font-size:0.85rem;">${formatCurrency(t.amount)}</span><button class="btn-action" onclick="editTransaction('${t.id}')"><i class="fa-solid fa-pen" style="font-size:0.75rem;"></i></button><button class="btn-action btn-danger-hover" onclick="deleteTransaction('${t.id}')"><i class="fa-solid fa-trash" style="font-size:0.75rem;"></i></button></div></div>`;
                     });
                 }
             }
@@ -1070,7 +1014,7 @@
                 partDiv.innerHTML = '';
                 state.parties.forEach(p => {
                     let bal = getPartyBalance(p.id);
-                    partDiv.innerHTML += `<div class="list-item" onclick="viewSingleParty('${p.id}')" style="cursor:pointer;"><div><span class="bold">${p.name}</span><div class="list-item-sub">${p.description}</div></div><span class="${bal >= 0? 'text-success':'text-danger'} bold">${formatCurrency(Math.abs(bal))} ${bal >=0?'(DR)':'(CR)'}</span></div>`;
+                    partDiv.innerHTML += `<div class="list-item" onclick="viewSingleParty('${p.id}')" style="cursor:pointer; padding: 12px 6px;"><div><span class="bold">${p.name}</span><div class="list-item-sub">${p.description}</div></div><span class="${bal >= 0? 'text-success':'text-danger'} bold" style="font-size:0.85rem;">${formatCurrency(Math.abs(bal))} ${bal >=0?'(DR)':'(CR)'}</span></div>`;
                 });
             }
 
@@ -1086,7 +1030,7 @@
                     let pTransDiv = document.getElementById('single-party-transactions-list'); pTransDiv.innerHTML = '';
                     state.transactions.filter(t => t.fromId === party.id || t.toId === party.id).forEach(t => {
                         let css = (t.toId === party.id)? 'text-success' : 'text-danger';
-                        pTransDiv.innerHTML += `<div class="list-item"><div><span>${t.description}</span><div class="list-item-sub">${t.date}</div></div><div class="flex-gap"><span class="${css} bold">${formatCurrency(t.amount)}</span><button class="btn-action" onclick="editTransaction('${t.id}')"><i class="fa-solid fa-pen" style="font-size:0.75rem;"></i></button><button class="btn-action btn-danger-hover" onclick="deleteTransaction('${t.id}')"><i class="fa-solid fa-trash" style="font-size:0.75rem;"></i></button></div></div>`;
+                        pTransDiv.innerHTML += `<div class="list-item"><div><span style="font-size:0.8rem; font-weight:500;">${t.description}</span><div class="list-item-sub">${t.date}</div></div><div class="flex-gap"><span class="${css} bold" style="font-size:0.85rem;">${formatCurrency(t.amount)}</span><button class="btn-action" onclick="editTransaction('${t.id}')"><i class="fa-solid fa-pen" style="font-size:0.75rem;"></i></button><button class="btn-action btn-danger-hover" onclick="deleteTransaction('${t.id}')"><i class="fa-solid fa-trash" style="font-size:0.75rem;"></i></button></div></div>`;
                     });
                 }
             }
@@ -1096,7 +1040,7 @@
             if(donDiv && activeSubScreen === 'donations') {
                 donDiv.innerHTML = '';
                 state.donations.forEach(d => {
-                    donDiv.innerHTML += `<div class="list-item" onclick="viewSingleDonation('${d.id}')" style="cursor:pointer;"><div><span class="bold">${d.name}</span><div class="list-item-sub">FUND SOURCE SETUP</div></div><span class="bold text-danger">${formatCurrency(getDonationBalance(d.id))}</span></div>`;
+                    donDiv.innerHTML += `<div class="list-item" onclick="viewSingleDonation('${d.id}')" style="cursor:pointer; padding: 12px 6px;"><div><span class="bold">${d.name}</span><div class="list-item-sub">FUND SETUP</div></div><span class="bold text-danger" style="font-size:0.85rem;">${formatCurrency(getDonationBalance(d.id))}</span></div>`;
                 });
             }
 
@@ -1109,7 +1053,7 @@
                     let dTransDiv = document.getElementById('single-donation-transactions-list'); dTransDiv.innerHTML = '';
                     state.transactions.filter(t => t.fromId === don.id || t.toId === don.id).forEach(t => {
                         let css = (t.fromId === don.id)? 'text-danger' : 'text-success';
-                        dTransDiv.innerHTML += `<div class="list-item"><div><span>${t.description}</span><div class="list-item-sub">${t.date}</div></div><div class="flex-gap"><span class="${css} bold">${formatCurrency(t.amount)}</span><button class="btn-action" onclick="editTransaction('${t.id}')"><i class="fa-solid fa-pen" style="font-size:0.75rem;"></i></button><button class="btn-action btn-danger-hover" onclick="deleteTransaction('${t.id}')"><i class="fa-solid fa-trash" style="font-size:0.75rem;"></i></button></div></div>`;
+                        dTransDiv.innerHTML += `<div class="list-item"><div><span style="font-size:0.8rem; font-weight:500;">${t.description}</span><div class="list-item-sub">${t.date}</div></div><div class="flex-gap"><span class="${css} bold" style="font-size:0.85rem;">${formatCurrency(t.amount)}</span><button class="btn-action" onclick="editTransaction('${t.id}')"><i class="fa-solid fa-pen" style="font-size:0.75rem;"></i></button><button class="btn-action btn-danger-hover" onclick="deleteTransaction('${t.id}')"><i class="fa-solid fa-trash" style="font-size:0.75rem;"></i></button></div></div>`;
                     });
                 }
             }
