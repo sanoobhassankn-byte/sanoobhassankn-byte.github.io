@@ -483,7 +483,9 @@
                 <h3 style="font-size: 0.75rem; color: var(--primary-color); margin-bottom: 6px;">User Profiles</h3>
                 <div class="form-group" style="display: flex; gap: 6px; margin-bottom: 0;">
                     <select id="settings-profile-select" class="form-control" onchange="switchUserProfile(this.value)" style="flex: 1;"></select>
-                    <button class="calc-btn" onclick="openActiveModal('modal-user')" style="padding: 0 12px;"><i class="fa-solid fa-user-plus"></i></button>
+                    <button class="calc-btn" onclick="editUserProfile()" style="padding: 0 10px; color: var(--primary-color);" title="Edit Profile"><i class="fa-solid fa-pen"></i></button>
+                    <button class="calc-btn btn-danger-hover" onclick="deleteUserProfile()" style="padding: 0 10px; color: var(--text-muted);" title="Delete Profile"><i class="fa-solid fa-trash"></i></button>
+                    <button class="calc-btn" onclick="openActiveModal('modal-user')" style="padding: 0 10px;" title="Add Profile"><i class="fa-solid fa-user-plus"></i></button>
                 </div>
             </div>
 
@@ -491,7 +493,9 @@
                 <h3 style="font-size: 0.75rem; color: var(--primary-color); margin-bottom: 6px;">Financial Years</h3>
                 <div class="form-group" style="display: flex; gap: 6px; margin-bottom: 0;">
                     <select id="settings-fy-select" class="form-control" onchange="switchFinancialYear(this.value)" style="flex: 1;"></select>
-                    <button class="calc-btn" onclick="openAddFYModal()" style="padding: 0 12px;"><i class="fa-solid fa-calendar-plus"></i></button>
+                    <button class="calc-btn" onclick="editFinancialYear()" style="padding: 0 10px; color: var(--primary-color);" title="Edit Financial Year"><i class="fa-solid fa-pen"></i></button>
+                    <button class="calc-btn btn-danger-hover" onclick="deleteFinancialYear()" style="padding: 0 10px; color: var(--text-muted);" title="Delete Financial Year"><i class="fa-solid fa-trash"></i></button>
+                    <button class="calc-btn" onclick="openAddFYModal()" style="padding: 0 12px;" title="Add Financial Year"><i class="fa-solid fa-calendar-plus"></i></button>
                 </div>
             </div>
             
@@ -541,18 +545,20 @@
 
     <div id="modal-user" class="modal-overlay">
         <div class="modal-content">
-            <h3>Add New Profile</h3>
+            <h3 id="user-modal-title">Add / Edit Profile</h3>
             <form id="form-user" onsubmit="handleAddUserSubmit(event)">
+                <input type="hidden" id="edit-profile-id">
                 <div class="form-group" style="margin-top:10px;"><label>Profile Name / Business Name</label><input type="text" class="form-control" id="new-profile-name" required></div>
-                <div class="flex-gap" style="margin-top: 15px;"><button type="button" class="calc-btn" onclick="closeActiveModal('modal-user')" style="flex: 1;">Cancel</button><button type="submit" class="calc-btn" style="flex: 1; background: var(--primary-color); color: white;">Create</button></div>
+                <div class="flex-gap" style="margin-top: 15px;"><button type="button" class="calc-btn" onclick="closeActiveModal('modal-user')" style="flex: 1;">Cancel</button><button type="submit" class="calc-btn" style="flex: 1; background: var(--primary-color); color: white;">Save</button></div>
             </form>
         </div>
     </div>
 
     <div id="modal-fy" class="modal-overlay">
         <div class="modal-content">
-            <h3>Add Financial Year</h3>
+            <h3 id="fy-modal-title">Add / Edit Financial Year</h3>
             <form id="form-fy" onsubmit="handleAddFYSubmit(event)">
+                <input type="hidden" id="edit-fy-id">
                 <div class="form-group" style="margin-top:10px;"><label>Year Label (e.g., 2026-27)</label><input type="text" class="form-control" id="new-fy-name" required></div>
                 <div class="form-group"><label>Starting Date</label><input type="date" class="form-control" id="new-fy-start" required></div>
                 <div class="form-group"><label>Ending Date</label><input type="date" class="form-control" id="new-fy-end" required></div>
@@ -679,8 +685,8 @@
             </form>
         </div>
     </div>
-    
-    <script>
+
+<script>
         // --- STATE & STORAGE CONFIG ---
         let globalConfig = { activeProfile: 'Default User', profiles: ['Default User'] };
         let state = { accounts: [], parties: [], donations: [], transactions: [], financialYears: [], activeYearId: null };
@@ -975,6 +981,76 @@
             closeActiveModal('modal-user');
         }
 
+        // ---- NEW: EDIT AND DELETE USER PROFILE FEATURES ----
+        function editUserProfile() {
+            let pSelect = document.getElementById('settings-profile-select');
+            if(!pSelect) { alert("Profile selection dropdown not found."); return; }
+            let oldName = pSelect.value;
+            if(!oldName) return;
+
+            let newName = prompt(`Enter new name for profile '${oldName}':`, oldName);
+            if(!newName || newName.trim() === '' || newName === oldName) return;
+            newName = sanitizeInput(newName);
+
+            if(globalConfig.profiles.includes(newName)) {
+                alert("Profile name already exists!");
+                return;
+            }
+
+            // Update in the profiles array
+            let index = globalConfig.profiles.indexOf(oldName);
+            if(index !== -1) globalConfig.profiles[index] = newName;
+
+            // Update active profile if needed
+            if(globalConfig.activeProfile === oldName) {
+                globalConfig.activeProfile = newName;
+            }
+
+            // Migrate data in LocalStorage safely
+            let oldData = localStorage.getItem('kns_pro_data_' + oldName);
+            if(oldData) {
+                localStorage.setItem('kns_pro_data_' + newName, oldData);
+                localStorage.removeItem('kns_pro_data_' + oldName);
+            }
+
+            // Save global configuration and re-render
+            localStorage.setItem('kns_pro_global', JSON.stringify(globalConfig));
+            loadDataFromStorage();
+            renderAll();
+        }
+
+        function deleteUserProfile() {
+            let pSelect = document.getElementById('settings-profile-select');
+            if(!pSelect) { alert("Profile selection dropdown not found."); return; }
+            let profileToDelete = pSelect.value;
+            if(!profileToDelete) return;
+
+            if(globalConfig.profiles.length <= 1) {
+                alert("Cannot delete the only remaining profile!");
+                return;
+            }
+
+            if(confirm(`Are you sure you want to delete the profile '${profileToDelete}'? All associated data will be permanently lost!`)) {
+                // Remove from the array
+                globalConfig.profiles = globalConfig.profiles.filter(p => p !== profileToDelete);
+                
+                // Clear from storage
+                localStorage.removeItem('kns_pro_data_' + profileToDelete);
+
+                // If active profile is deleted, switch back to the first available profile
+                if(globalConfig.activeProfile === profileToDelete) {
+                    globalConfig.activeProfile = globalConfig.profiles[0];
+                    localStorage.setItem('kns_pro_global', JSON.stringify(globalConfig));
+                    loadDataFromStorage(); // Switch states immediately
+                } else {
+                    localStorage.setItem('kns_pro_global', JSON.stringify(globalConfig));
+                }
+                
+                renderAll();
+            }
+        }
+        // ----------------------------------------------------
+
         function switchFinancialYear(yearId) {
             state.activeYearId = yearId;
             saveDataToStorage();
@@ -1000,6 +1076,60 @@
             saveDataToStorage();
             closeActiveModal('modal-fy');
         }
+
+        // ---- NEW: EDIT AND DELETE FINANCIAL YEAR FEATURES ----
+        function editFinancialYear() {
+            let fSelect = document.getElementById('settings-fy-select');
+            if(!fSelect) { alert("Financial Year selection dropdown not found."); return; }
+            let fyId = fSelect.value;
+            if(!fyId) return;
+
+            let fy = state.financialYears.find(y => y.id === fyId);
+            if(!fy) return;
+
+            let newName = prompt(`Enter new name for Financial Year '${fy.name}':`, fy.name);
+            if(!newName || newName.trim() === '') return;
+            newName = sanitizeInput(newName);
+
+            let newStart = prompt(`Enter start date (YYYY-MM-DD) for '${newName}':`, fy.startDate);
+            if(!newStart || newStart.trim() === '') return;
+
+            let newEnd = prompt(`Enter end date (YYYY-MM-DD) for '${newName}':`, fy.endDate);
+            if(!newEnd || newEnd.trim() === '') return;
+
+            fy.name = newName;
+            fy.startDate = newStart;
+            fy.endDate = newEnd;
+
+            saveDataToStorage();
+        }
+
+        function deleteFinancialYear() {
+            let fSelect = document.getElementById('settings-fy-select');
+            if(!fSelect) { alert("Financial Year selection dropdown not found."); return; }
+            let fyId = fSelect.value;
+            if(!fyId) return;
+
+            if(state.financialYears.length <= 1) {
+                alert("Cannot delete the only remaining Financial Year!");
+                return;
+            }
+
+            let fyToDelete = state.financialYears.find(y => y.id === fyId);
+            if(!fyToDelete) return;
+
+            if(confirm(`Are you sure you want to delete the Financial Year '${fyToDelete.name}'? Transactions will not be deleted, but filtering for this year will be unavailable.`)) {
+                state.financialYears = state.financialYears.filter(y => y.id !== fyId);
+                
+                // Active year ആണ് ഡിലീറ്റ് ചെയ്തതെങ്കിൽ ലിസ്റ്റിലെ ആദ്യത്തെ വർഷത്തിലേക്ക് മാറും
+                if(state.activeYearId === fyId) {
+                    state.activeYearId = state.financialYears[0].id;
+                }
+                
+                saveDataToStorage();
+            }
+        }
+        // ----------------------------------------------------
 
         // --- SUBMIT OPERATIONS ---
         function sanitizeInput(str) { return (str || '').replace(/['"<>]/g, '').trim(); }
@@ -1452,3 +1582,4 @@
     </script>
 </body>
 </html>
+
