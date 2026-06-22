@@ -39,7 +39,7 @@
             --hover-bg: #f7fafc;
         }
 
-        /* --- 40 THEMES - LIGHT MODE --- */
+        /* --- 30 THEMES - LIGHT MODE --- */
         [data-app-theme="blue"] { --primary-color: #3182ce; --bg-color: #f4f6f9; --summary-bg: #edf2f7; }
         [data-app-theme="emerald"] { --primary-color: #2f855a; --bg-color: #f0f7f4; --summary-bg: #e6f4ea; }
         [data-app-theme="purple"] { --primary-color: #6b46c1; --bg-color: #f7f5fa; --summary-bg: #ede7f6; }
@@ -70,18 +70,6 @@
         [data-app-theme="plum"] { --primary-color: #701a75; --bg-color: #fdf4ff; --summary-bg: #fae8ff; }
         [data-app-theme="bronze"] { --primary-color: #a36a00; --bg-color: #fffdf9; --summary-bg: #fef3c7; }
         [data-app-theme="ruby"] { --primary-color: #be123c; --bg-color: #fff1f2; --summary-bg: #ffe4e6; }
-        
-        /* 10 Brand New Premium Themes Light Mode */
-        [data-app-theme="copper"] { --primary-color: #b87333; --bg-color: #faf6f0; --summary-bg: #f3e8dc; }
-        [data-app-theme="navy"] { --primary-color: #1e3a8a; --bg-color: #f1f5f9; --summary-bg: #e2e8f0; }
-        [data-app-theme="jade"] { --primary-color: #00a86b; --bg-color: #f4faf7; --summary-bg: #e1f4ec; }
-        [data-app-theme="orchid"] { --primary-color: #da70d6; --bg-color: #fdf8fd; --summary-bg: #f9ebf9; }
-        [data-app-theme="sand"] { --primary-color: #c2b280; --bg-color: #faf9f5; --summary-bg: #f1ebd9; }
-        [data-app-theme="platinum"] { --primary-color: #708090; --bg-color: #f8f9fa; --summary-bg: #e9ecef; }
-        [data-app-theme="bordeaux"] { --primary-color: #7b1113; --bg-color: #fdf5f5; --summary-bg: #f9e6e6; }
-        [data-app-theme="ochre"] { --primary-color: #cc7722; --bg-color: #fdf9f2; --summary-bg: #f9eed7; }
-        [data-app-theme="marine"] { --primary-color: #008080; --bg-color: #f0fafa; --summary-bg: #d8f3f3; }
-        [data-app-theme="aubergine"] { --primary-color: #4a154b; --bg-color: #fdfafc; --summary-bg: #f5ebf2; }
 
         /* --- DARK MODE OLED --- */
         [data-theme="dark"] {
@@ -90,7 +78,7 @@
             --shadow: none;
         }
 
-        /* --- 40 THEMES - DARK MODE VARIATIONS --- */
+        /* --- 30 THEMES - DARK MODE VARIATIONS --- */
         [data-theme="dark"][data-app-theme="blue"] { --primary-color: #4299e1; }
         [data-theme="dark"][data-app-theme="emerald"] { --primary-color: #48bb78; }
         [data-theme="dark"][data-app-theme="purple"] { --primary-color: #9f7aea; }
@@ -121,18 +109,6 @@
         [data-theme="dark"][data-app-theme="plum"] { --primary-color: #f472b6; }
         [data-theme="dark"][data-app-theme="bronze"] { --primary-color: #fbbf24; }
         [data-theme="dark"][data-app-theme="ruby"] { --primary-color: #f43f5e; }
-        
-        /* 10 New Themes Dark Variations */
-        [data-theme="dark"][data-app-theme="copper"] { --primary-color: #e59866; }
-        [data-theme="dark"][data-app-theme="navy"] { --primary-color: #60a5fa; }
-        [data-theme="dark"][data-app-theme="jade"] { --primary-color: #34d399; }
-        [data-theme="dark"][data-app-theme="orchid"] { --primary-color: #f472b6; }
-        [data-theme="dark"][data-app-theme="sand"] { --primary-color: #fbbf24; }
-        [data-theme="dark"][data-app-theme="platinum"] { --primary-color: #cbd5e1; }
-        [data-theme="dark"][data-app-theme="bordeaux"] { --primary-color: #f87171; }
-        [data-theme="dark"][data-app-theme="ochre"] { --primary-color: #fb923c; }
-        [data-theme="dark"][data-app-theme="marine"] { --primary-color: #2dd4bf; }
-        [data-theme="dark"][data-app-theme="aubergine"] { --primary-color: #e879f9; }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         
@@ -213,19 +189,19 @@
 
         .settings-icon { font-size: 0.65rem; width: 14px; text-align: center; }
 
-        /* --- GLOBAL TOP BAR WITH PREMIUM SWISS ANALOG CLOCK --- */
-        .global-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 4px; margin-bottom: 12px; border-bottom: none; }
+        /* --- GLOBAL TOP BAR WITH MODERN PREMIUM VALIPPAMMULLA ANALOG CLOCK --- */
+        .global-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 4px; margin-bottom: 12px; border-bottom: none; }
         
-        /* Premium Look Swiss Style Analog Clock */
+        /* Premium Larger Model Analog Clock Styling */
         .analog-clock { 
             position: relative; 
-            width: 52px; 
-            height: 52px; 
-            border: 2px solid var(--primary-color); 
+            width: 70px; 
+            height: 70px; 
+            border: 3px solid var(--primary-color); 
             border-radius: 50%; 
-            background: var(--surface-color); 
+            background: linear-gradient(135deg, var(--surface-color), var(--bg-color)); 
             flex-shrink: 0; 
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.08);
             display: inline-block;
         }
         .analog-clock .hand { 
@@ -237,39 +213,35 @@
             border-radius: 4px; 
             transform: translateX(-50%) rotate(0deg); 
             transition: transform 0.1s cubic-bezier(0.4, 2.08, 0.55, 1);
-            z-index: 5;
         }
-        .analog-clock .hour-hand { width: 3.5px; height: 14px; background: var(--text-color); }
-        .analog-clock .minute-hand { width: 2px; height: 20px; background: var(--text-muted); }
-        .analog-clock .second-hand { width: 1px; height: 22px; background: var(--danger-color); transition: none; z-index: 6; }
+        .analog-clock .hour-hand { width: 3.5px; height: 18px; }
+        .analog-clock .minute-hand { width: 2.5px; height: 27px; }
+        .analog-clock .second-hand { width: 1.5px; height: 30px; background: var(--danger-color); transition: none; }
         .analog-clock .center-dot { 
             position: absolute; 
             top: 50%; 
             left: 50%; 
-            width: 6px; 
-            height: 6px; 
+            width: 8px; 
+            height: 8px; 
             background: var(--primary-color); 
             border-radius: 50%; 
             transform: translate(-50%, -50%); 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
             z-index: 10;
         }
-        /* Clock Premium Inner Calendar Window Display */
-        .clock-date-display {
+        .analog-clock .clock-date-badge {
             position: absolute;
-            bottom: 8px;
+            bottom: 14%;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.52rem;
+            font-size: 0.55rem;
             font-weight: 700;
-            color: var(--text-color);
-            background: var(--summary-bg);
+            background: var(--primary-color);
+            color: #ffffff;
             padding: 1px 4px;
-            border-radius: 3px;
-            letter-spacing: 0.2px;
+            border-radius: 4px;
             line-height: 1;
-            border: 0.5px solid rgba(0,0,0,0.05);
-            z-index: 2;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
         }
     </style>
 </head>
@@ -294,10 +266,10 @@
                     <div class="hand minute-hand" id="clock-minute"></div>
                     <div class="hand second-hand" id="clock-second"></div>
                     <div class="center-dot"></div>
-                    <div class="clock-date-display" id="clock-date-val">--</div>
+                    <div class="clock-date-badge" id="clock-date">--</div>
                 </div>
-                <div>
-                    <h1 style="font-size: 1.05rem; color: var(--primary-color); margin-bottom: 0; letter-spacing: 0.5px;">K N S Pro&trade;</h1>
+                <div style="margin-left: 4px;">
+                    <h1 style="font-size: 1.15rem; color: var(--primary-color); margin-bottom: 0; letter-spacing: 0.5px;">K N S Pro&trade;</h1>
                     <p id="header-user-fy" style="font-size: 0.65rem; color: var(--text-muted); margin-top: 1px;">Loading...</p>
                 </div>
             </div>
@@ -719,23 +691,9 @@
         let currentSelectedId = null;
         let activeCalcTarget = null; 
 
-        // --- THEME DATA (Expanded to 40 Distinct Aesthetic Profiles) ---
-        const themeProfiles = [
-            'blue', 'emerald', 'purple', 'cyber', 'crimson', 'sunset', 'teal', 'indigo', 'pink', 'amber', 
-            'slate', 'coral', 'mint', 'ocean', 'lavender', 'rose', 'mustard', 'lime', 'cyan', 'cherry', 
-            'gold', 'coffee', 'olive', 'apricot', 'sky', 'forest', 'charcoal', 'plum', 'bronze', 'ruby',
-            'copper', 'navy', 'jade', 'orchid', 'sand', 'platinum', 'bordeaux', 'ochre', 'marine', 'aubergine'
-        ];
-        const themeNames = { 
-            blue: 'Blue Slate', emerald: 'Forest Emerald', purple: 'Royal Purple', cyber: 'Cyber Neon', crimson: 'Crimson Red', 
-            sunset: 'Sunset Orange', teal: 'Teal Blue', indigo: 'Deep Indigo', pink: 'Hot Pink', amber: 'Amber Yellow', 
-            slate: 'Cool Slate', coral: 'Soft Coral', mint: 'Fresh Mint', ocean: 'Ocean Wave', lavender: 'Soft Lavender', 
-            rose: 'Rose Gold', mustard: 'Mustard Yellow', lime: 'Lime Green', cyan: 'Bright Cyan', cherry: 'Cherry Red', 
-            gold: 'Luxury Gold', coffee: 'Warm Espresso', olive: 'Vintage Olive', apricot: 'Soft Apricot', sky: 'Clear Sky', 
-            forest: 'Deep Forest', charcoal: 'Dark Charcoal', plum: 'Deep Plum', bronze: 'Antique Bronze', ruby: 'Vibrant Ruby',
-            copper: 'Metallic Copper', navy: 'Midnight Navy', jade: 'Imperial Jade', orchid: 'Wild Orchid', sand: 'Desert Sand',
-            platinum: 'Platinum Silver', bordeaux: 'Bordeaux Wine', ochre: 'Golden Ochre', marine: 'Marine Aqua', aubergine: 'Deep Aubergine'
-        };
+        // --- THEME DATA (30 Themes) ---
+        const themeProfiles = ['blue', 'emerald', 'purple', 'cyber', 'crimson', 'sunset', 'teal', 'indigo', 'pink', 'amber', 'slate', 'coral', 'mint', 'ocean', 'lavender', 'rose', 'mustard', 'lime', 'cyan', 'cherry', 'gold', 'coffee', 'olive', 'apricot', 'sky', 'forest', 'charcoal', 'plum', 'bronze', 'ruby'];
+        const themeNames = { blue: 'Blue Slate', emerald: 'Forest Emerald', purple: 'Royal Purple', cyber: 'Cyber Neon', crimson: 'Crimson Red', sunset: 'Sunset Orange', teal: 'Teal Blue', indigo: 'Deep Indigo', pink: 'Hot Pink', amber: 'Amber Yellow', slate: 'Cool Slate', coral: 'Soft Coral', mint: 'Fresh Mint', ocean: 'Ocean Wave', lavender: 'Soft Lavender', rose: 'Rose Gold', mustard: 'Mustard Yellow', lime: 'Lime Green', cyan: 'Bright Cyan', cherry: 'Cherry Red', gold: 'Luxury Gold', coffee: 'Warm Espresso', olive: 'Vintage Olive', apricot: 'Soft Apricot', sky: 'Clear Sky', forest: 'Deep Forest', charcoal: 'Dark Charcoal', plum: 'Deep Plum', bronze: 'Antique Bronze', ruby: 'Vibrant Ruby' };
 
         // --- APP INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -803,7 +761,7 @@
             document.getElementById('dark-mode-toggle').addEventListener('change', toggleDarkModeSystem);
         }
 
-        // --- MODERN SWISS PREMIUM ANALOG CLOCK WITH DYNAMIC DATE WINDOW ---
+        // --- MODERN PREMIUM VALIPPAMMULLA ANALOG CLOCK ENGINE WITH DATE ---
         function initLiveAnalogClock() {
             function updateClockHands() {
                 const now = new Date();
@@ -818,16 +776,12 @@
                 const hrElement = document.getElementById('clock-hour');
                 const minElement = document.getElementById('clock-minute');
                 const secElement = document.getElementById('clock-second');
-                const dateElement = document.getElementById('clock-date-val');
+                const dateElement = document.getElementById('clock-date');
 
                 if (hrElement) hrElement.style.transform = `translateX(-50%) rotate(${hrDegrees}deg)`;
                 if (minElement) minElement.style.transform = `translateX(-50%) rotate(${minDegrees}deg)`;
                 if (secElement) secElement.style.transform = `translateX(-50%) rotate(${secDegrees}deg)`;
-                
-                if (dateElement) {
-                    const opts = { day: 'numeric', month: 'short' };
-                    dateElement.innerText = now.toLocaleDateString('en-GB', opts);
-                }
+                if (dateElement) dateElement.innerText = now.getDate();
             }
             setInterval(updateClockHands, 1000);
             updateClockHands();
@@ -1102,39 +1056,28 @@
         function editCurrentDonation() { let don = state.donations.find(d => d.id === currentSelectedId); if(!don) return; document.getElementById('donation-id').value = don.id; document.getElementById('donation-name').value = don.name; document.getElementById('donation-desc').value = don.description; document.getElementById('donation-amount-group').style.display = 'none'; document.getElementById('donation-percentage-group').style.display = 'none'; document.getElementById('donation-link-account-group').style.display = 'none'; document.getElementById('donation-modal-title').innerText = 'Edit Fund'; openActiveModal('modal-donation'); }
         function deleteCurrentDonation() { if(confirm("Remove fund ledger? Note: Shared transfers will be kept safe.")) { state.donations = state.donations.filter(d => d.id !== currentSelectedId); safeDeleteEntityTransactions(currentSelectedId); saveDataToStorage(); openSubScreen('donations'); } }
 
-        // --- PREMIUM STRUCTURED WHATSAPP STATEMENT SUMMARY REPORT ---
+        // --- PREMIUM WHATSAPP DIGITAL RECEIPT/STATEMENT LAYOUT ---
         function sharePartyWhatsApp() {
             let party = state.parties.find(p => p.id === currentSelectedId); if(!party) return;
             let bal = getPartyBalance(party.id);
             let activeFy = state.financialYears.find(y => y.id === state.activeYearId);
-            let fyName = activeFy ? activeFy.name : 'All Years';
+            let fyName = activeFy ? activeFy.name : 'All';
+            let today = new Date().toLocaleDateString('en-GB');
             
-            let txList = state.transactions.filter(t => isTransactionInActiveYear(t.date) && (t.fromId === party.id || t.toId === party.id));
-            let statusBadge = bal >= 0 ? '🟢 Kittan (Collectable)' : '🔴 Kodukkan (Payable)';
-            
-            let text = `*━━━━━━━━━━━━━━━━━━━━━*\n`;
-            text += `     *KNS PRO - FINANCIAL STATEMENT* \n`;
-            text += `*━━━━━━━━━━━━━━━━━━━━━*\n\n`;
-            text += `👤 *Party Name:* ${party.name}\n`;
-            text += `💼 *Profile Name:* ${globalConfig.activeProfile}\n`;
+            let text = `┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n`;
+            text += `   *KNS PRO FINANCIAL STATEMENT* \n`;
+            text += `┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n`;
+            text += `📅 *Date:* ${today}\n`;
             text += `📅 *Financial Year:* ${fyName}\n`;
-            text += `📊 *Ledger Status:* ${statusBadge}\n`;
-            text += `💰 *Net Balance:* *${formatCurrency(Math.abs(bal))}*\n\n`;
+            text += `👤 *Party Name:* ${party.name}\n`;
+            text += `ℹ️ *Description:* ${party.description || 'N/A'}\n`;
+            text += `─────────────────────────────\n`;
+            text += `📊 *ACCOUNT OVERVIEW*\n`;
+            text += `💰 *Net Balance:* ${formatCurrency(Math.abs(bal))}\n`;
+            text += `📌 *Status:* ${bal >= 0 ? '🟢 COLLECTABLE (Receivable)' : '🔴 PAYABLE (Give)'}\n`;
+            text += `─────────────────────────────\n`;
+            text += `✨ _Generated via KNS Pro Manager_`;
             
-            if(txList.length > 0) {
-                text += `📜 *RECENT ENTRIES SUMMARY:* \n`;
-                text += `─────────────────────\n`;
-                // Slice top 10 for absolute mobile text scannability
-                txList.slice(0, 10).forEach(t => {
-                    let typeSign = (t.toId === party.id) ? `📈 [IN]` : `📉 [OUT]`;
-                    text += `▫️ *${t.date}* - ${typeSign}\n    *${formatCurrency(t.amount)}* (${t.description})\n\n`;
-                });
-                if(txList.length > 10) {
-                    text += ` _...and ${txList.length - 10} more remaining entries._\n`;
-                }
-                text += `─────────────────────\n`;
-            }
-            text += `✨ _Generated beautifully via KNS Pro Financial Manager_`;
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
         }
 
@@ -1142,136 +1085,180 @@
         function printCurrentPartyReport() { window.print(); }
         function printCurrentDonationReport() { window.print(); }
 
-        // --- ULTRA-PREMIUM REPORT GENERATOR (PDF & PRINT MODELLING Engine) ---
+        // --- HIGH-END EXECUTIVE PDF REPORT GENERATOR ---
         function printFullSystemReport() {
             let reportDiv = document.createElement('div');
             reportDiv.id = 'pdf-full-report';
             reportDiv.style.padding = '35px'; 
             reportDiv.style.background = '#ffffff'; 
-            reportDiv.style.color = '#1a202c'; 
-            reportDiv.style.fontFamily = "'Inter', sans-serif";
+            reportDiv.style.color = '#1e293b'; 
+            reportDiv.style.fontFamily = "'Inter', Arial, sans-serif";
 
             let totalBal = getTotalSystemBalance();
             let bankTotal = getCategoryTotalBalance('bank');
             let cashTotal = getCategoryTotalBalance('cash');
             let date = new Date().toLocaleDateString('en-GB');
             let activeFy = state.financialYears.find(y => y.id === state.activeYearId);
-            let fyName = activeFy ? activeFy.name : 'All Available Years';
+            let fyName = activeFy ? activeFy.name : 'All';
 
             let html = `
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #3182ce; padding-bottom:20px; margin-bottom:30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #3182ce; padding-bottom: 20px; margin-bottom: 30px;">
                     <div>
-                        <h1 style="font-size:26px; color:#3182ce; margin:0; font-weight:700; letter-spacing:1px;">KNS PRO&trade;</h1>
-                        <p style="font-size:12px; color:#4a5568; margin:4px 0 0 0; font-weight:500; text-transform:uppercase;">Complete Financial Management System</p>
+                        <h1 style="font-size: 28px; color: #3182ce; font-weight: 700; margin: 0; letter-spacing: 1px;">KNS PRO</h1>
+                        <p style="font-size: 13px; color: #64748b; margin: 4px 0 0 0; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Complete Financial Management System</p>
                     </div>
-                    <div style="text-align:right;">
-                        <span style="background:#edf2f7; padding:6px 12px; border-radius:30px; font-size:12px; font-weight:700; color:#2b6cb0;">FY: ${fyName}</span>
-                        <p style="font-size:11px; color:#718096; margin:8px 0 0 0;">Report Date: <b>${date}</b></p>
+                    <div style="text-align: right;">
+                        <p style="font-size: 13px; margin: 0; color: #334155;"><b>Date:</b> ${date}</p>
+                        <p style="font-size: 13px; margin: 4px 0 0 0; color: #334155;"><b>Profile:</b> ${globalConfig.activeProfile}</p>
+                        <p style="font-size: 13px; margin: 4px 0 0 0; color: #334155;"><b>FY:</b> ${fyName}</p>
                     </div>
                 </div>
                 
-                <p style="font-size:14px; margin-bottom:25px; color:#4a5568;">Statement generated for account profile: <b style="color:#1a202c;">${globalConfig.activeProfile}</b></p>
-                
-                <h2 style="font-size:15px; color:#2d3748; border-left:4px solid #3182ce; padding-left:10px; margin-bottom:15px; text-transform:uppercase; letter-spacing:0.5px;">1. Financial Standing Summary</h2>
-                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; margin-bottom:35px;">
-                    <div style="background:#f0f4f8; border:1px solid #c5d6e6; border-radius:8px; padding:15px; text-align:center;">
-                        <p style="margin:0; font-size:11px; color:#4a5568; font-weight:600; text-transform:uppercase;">Net System Balance</p>
-                        <h3 style="margin:5px 0 0 0; font-size:18px; color:#2b6cb0; font-weight:700;">${formatCurrency(totalBal)}</h3>
+                <h2 style="font-size: 15px; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; font-weight: 700;">Executive Balance Summary</h2>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 35px;">
+                    <div style="background: #eff6ff; border-left: 4px solid #3182ce; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                        <p style="font-size: 11px; text-transform: uppercase; color: #64748b; margin: 0; font-weight: 600;">Total System Balance</p>
+                        <h3 style="font-size: 18px; color: #1e3a8a; margin: 6px 0 0 0; font-weight: 700;">${formatCurrency(totalBal)}</h3>
                     </div>
-                    <div style="background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px; padding:15px; text-align:center;">
-                        <p style="margin:0; font-size:11px; color:#22543d; font-weight:600; text-transform:uppercase;">Bank Treasury Total</p>
-                        <h3 style="margin:5px 0 0 0; font-size:18px; color:#22543d; font-weight:700;">${formatCurrency(bankTotal)}</h3>
+                    <div style="background: #f0fdf4; border-left: 4px solid #38a169; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                        <p style="font-size: 11px; text-transform: uppercase; color: #64748b; margin: 0; font-weight: 600;">Bank Accounts Balance</p>
+                        <h3 style="font-size: 18px; color: #14532d; margin: 6px 0 0 0; font-weight: 700;">${formatCurrency(bankTotal)}</h3>
                     </div>
-                    <div style="background:#fffaf0; border:1px solid #feebc8; border-radius:8px; padding:15px; text-align:center;">
-                        <p style="margin:0; font-size:11px; color:#744210; font-weight:600; text-transform:uppercase;">Hand Cash Flow</p>
-                        <h3 style="margin:5px 0 0 0; font-size:18px; color:#744210; font-weight:700;">${formatCurrency(cashTotal)}</h3>
+                    <div style="background: #fdf2f8; border-left: 4px solid #d53f8c; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                        <p style="font-size: 11px; text-transform: uppercase; color: #64748b; margin: 0; font-weight: 600;">Hand Cash Balance</p>
+                        <h3 style="font-size: 18px; color: #701a75; margin: 6px 0 0 0; font-weight: 700;">${formatCurrency(cashTotal)}</h3>
                     </div>
                 </div>
 
-                <h2 style="font-size:15px; color:#2d3748; border-left:4px solid #3182ce; padding-left:10px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">2. Bank & Cash Accounts Breakdown</h2>
-                <table style="width:100%; margin-bottom:35px; border-collapse:collapse; box-shadow:0 1px 3px rgba(0,0,0,0.02);">
-                    <thead>
-                        <tr style="background:#2b6cb0; color:#ffffff;"><th style="padding:10px 12px; border:1px solid #cbd5e0; text-align:left; font-size:12px; font-weight:600;">Account Name</th><th style="padding:10px 12px; border:1px solid #cbd5e0; text-align:left; font-size:12px; font-weight:600;">Asset Category</th><th style="padding:10px 12px; border:1px solid #cbd5e0; text-align:right; font-size:12px; font-weight:600;">Current Balance</th></tr>
-                    </thead>
-                    <tbody>
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-size: 13px; color: #3182ce; text-transform: uppercase; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px; font-weight: 700;">1. Liquid Cash & Bank Ledger</h2>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 10px; text-align: left; font-size: 12px; color: #475569; font-weight: 600;">Account Name</th>
+                                <th style="padding: 10px; text-align: left; font-size: 12px; color: #475569; font-weight: 600;">Asset Category</th>
+                                <th style="padding: 10px; text-align: right; font-size: 12px; color: #475569; font-weight: 600;">Available Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
             `;
 
             state.accounts.forEach(a => { 
-                html += `<tr style="background:#ffffff;"><td style="padding:10px 12px; border:1px solid #e2e8f0; font-size:12px; font-weight:500;">${a.name}</td><td style="padding:10px 12px; border:1px solid #e2e8f0; font-size:12px; color:#4a5568; text-transform:capitalize;">${a.category} Account</td><td style="padding:10px 12px; border:1px solid #e2e8f0; text-align:right; font-size:12px; font-weight:700; color:#2d3748;">${formatCurrency(getAccountBalance(a.id))}</td></tr>`; 
+                html += `<tr style="border-bottom: 1px solid #f1f5f9;">
+                    <td style="padding: 10px; font-size: 12px; color: #334155; font-weight: 500;">${a.name}</td>
+                    <td style="padding: 10px; font-size: 11px; color: #64748b; text-transform: uppercase;">${a.category}</td>
+                    <td style="padding: 10px; font-size: 12px; text-align: right; color: #1e293b; font-weight: 600;">${formatCurrency(getAccountBalance(a.id))}</td>
+                </tr>`; 
             });
 
             html += `
-                    </tbody>
-                </table>
-                
-                <h2 style="font-size:15px; color:#2d3748; border-left:4px solid #38a169; padding-left:10px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">3. Parties Outstanding Balances</h2>
-                <table style="width:100%; margin-bottom:35px; border-collapse:collapse;">
-                    <thead>
-                        <tr style="background:#2f855a; color:#ffffff;"><th style="padding:10px 12px; border:1px solid #cbd5e0; text-align:left; font-size:12px; font-weight:600;">Party Name</th><th style="padding:10px 12px; border:1px solid #cbd5e0; text-align:left; font-size:12px; font-weight:600;">Relationship Type</th><th style="padding:10px 12px; border:1px solid #cbd5e0; text-align:right; font-size:12px; font-weight:600;">Statement Balance</th><th style="padding:10px 12px; border:1px solid #cbd5e0; text-align:center; font-size:12px; font-weight:600;">Accounting Status</th></tr>
-                    </thead>
-                    <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-size: 13px; color: #38a169; text-transform: uppercase; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px; font-weight: 700;">2. Parties Statement</h2>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 10px; text-align: left; font-size: 12px; color: #475569; font-weight: 600;">Party Entity</th>
+                                <th style="padding: 10px; text-align: left; font-size: 12px; color: #475569; font-weight: 600;">Type</th>
+                                <th style="padding: 10px; text-align: center; font-size: 12px; color: #475569; font-weight: 600;">Type Indicator</th>
+                                <th style="padding: 10px; text-align: right; font-size: 12px; color: #475569; font-weight: 600;">Net Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
             `;
 
             state.parties.forEach(p => {
                 let bal = getPartyBalance(p.id);
-                let statusLabel = bal >= 0 ? '<span style="color:#2f855a; font-weight:700; font-size:11px; text-transform:uppercase;">Kittan (dr)</span>' : '<span style="color:#e53e3e; font-weight:700; font-size:11px; text-transform:uppercase;">Kodukkan (cr)</span>';
-                html += `<tr style="background:#ffffff;"><td style="padding:10px 12px; border:1px solid #e2e8f0; font-size:12px; font-weight:500;">${p.name}</td><td style="padding:10px 12px; border:1px solid #e2e8f0; font-size:12px; color:#4a5568; text-transform:capitalize;">${p.type}</td><td style="padding:10px 12px; border:1px solid #e2e8f0; text-align:right; font-size:12px; font-weight:700;">${formatCurrency(Math.abs(bal))}</td><td style="padding:10px 12px; border:1px solid #e2e8f0; text-align:center;">${statusLabel}</td></tr>`;
+                let indicator = bal >= 0 ? '<span style="color:#16a34a; font-weight:bold; background:#f0fdf4; padding:2px 6px; border-radius:4px; font-size:10px;">RECEIVABLE (dr)</span>' : '<span style="color:#dc2626; font-weight:bold; background:#fef2f2; padding:2px 6px; border-radius:4px; font-size:10px;">PAYABLE (cr)</span>';
+                html += `<tr style="border-bottom: 1px solid #f1f5f9;">
+                    <td style="padding: 10px; font-size: 12px; color: #334155; font-weight: 500;">${p.name}</td>
+                    <td style="padding: 10px; font-size: 12px; color: #64748b; text-transform: capitalize;">${p.type}</td>
+                    <td style="padding: 10px; font-size: 12px; text-align: center;">${indicator}</td>
+                    <td style="padding: 10px; font-size: 12px; text-align: right; color: #1e293b; font-weight: 600;">${formatCurrency(Math.abs(bal))}</td>
+                </tr>`;
             });
 
             html += `
-                    </tbody>
-                </table>
-                
-                <h2 style="font-size:15px; color:#2d3748; border-left:4px solid #e53e3e; padding-left:10px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">4. Donation & Charity Reserves</h2>
-                <table style="width:100%; margin-bottom:35px; border-collapse:collapse;">
-                    <thead>
-                        <tr style="background:#c53030; color:#ffffff;"><th style="padding:10px 12px; border:1px solid #cbd5e0; text-align:left; font-size:12px; font-weight:600;">Fund Nomenclature</th><th style="padding:10px 12px; border:1px solid #cbd5e0; text-align:right; font-size:12px; font-weight:600;">Available Net Allocations</th></tr>
-                    </thead>
-                    <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-size: 13px; color: #e53e3e; text-transform: uppercase; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px; font-weight: 700;">3. Allocated Funds & Endowments</h2>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 10px; text-align: left; font-size: 12px; color: #475569; font-weight: 600;">Fund Nomenclature</th>
+                                <th style="padding: 10px; text-align: right; font-size: 12px; color: #475569; font-weight: 600;">Available Net Fund</th>
+                            </tr>
+                        </thead>
+                        <tbody>
             `;
 
             state.donations.forEach(d => { 
-                html += `<tr style="background:#ffffff;"><td style="padding:10px 12px; border:1px solid #e2e8f0; font-size:12px; font-weight:500;">${d.name}</td><td style="padding:10px 12px; border:1px solid #e2e8f0; text-align:right; font-size:12px; font-weight:700; color:#c53030;">${formatCurrency(getDonationBalance(d.id))}</td></tr>`; 
+                html += `<tr style="border-bottom: 1px solid #f1f5f9;">
+                    <td style="padding: 10px; font-size: 12px; color: #334155; font-weight: 500;">${d.name}</td>
+                    <td style="padding: 10px; font-size: 12px; text-align: right; color: #dc2626; font-weight: 600;">${formatCurrency(getDonationBalance(d.id))}</td>
+                </tr>`; 
             });
 
             html += `
-                    </tbody>
-                </table>
-                
-                <h2 style="font-size:15px; color:#2d3748; border-left:4px solid #4a5568; padding-left:10px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">5. Full Accounting Ledger Book Transactions History</h2>
-                <table style="width:100%; border-collapse:collapse; font-size:11px;">
-                    <thead>
-                        <tr style="background:#4a5568; color:#ffffff;"><th style="padding:8px 10px; border:1px solid #cbd5e0; text-align:left; font-weight:600;">Value Date</th><th style="padding:8px 10px; border:1px solid #cbd5e0; text-align:left; font-weight:600;">Transaction Narration</th><th style="padding:8px 10px; border:1px solid #cbd5e0; text-align:center; font-weight:600;">Type</th><th style="padding:8px 10px; border:1px solid #cbd5e0; text-align:right; font-weight:600;">Amount Summary</th></tr>
-                    </thead>
-                    <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <h2 style="font-size: 13px; color: #1e293b; text-transform: uppercase; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px; font-weight: 700;">4. Chronological Transaction History Log</h2>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 8px; text-align: left; color: #475569; font-weight: 600;">Execution Date</th>
+                                <th style="padding: 8px; text-align: left; color: #475569; font-weight: 600;">Transaction Mapping</th>
+                                <th style="padding: 8px; text-align: center; color: #475569; font-weight: 600;">Action Type</th>
+                                <th style="padding: 8px; text-align: right; color: #475569; font-weight: 600;">Book Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
             `;
 
             state.transactions.forEach(t => {
                 if(isTransactionInActiveYear(t.date)) {
-                    let badgeColor = "#4a5568";
-                    if(t.type === 'income') badgeColor = "#2f855a";
-                    else if(t.type === 'expense') badgeColor = "#c53030";
-                    
-                    html += `<tr style="background:#ffffff;"><td style="padding:8px 10px; border:1px solid #e2e8f0; color:#4a5568; white-space:nowrap;">${t.date}</td><td style="padding:8px 10px; border:1px solid #e2e8f0; font-weight:500;">${t.description}</td><td style="padding:8px 10px; border:1px solid #e2e8f0; text-align:center; font-weight:700; text-transform:uppercase; color:${badgeColor};">${t.type}</td><td style="padding:8px 10px; border:1px solid #e2e8f0; text-align:right; font-weight:700; font-size:12px;">${formatCurrency(t.amount)}</td></tr>`;
+                    let typeBadge = '';
+                    if(t.type === 'income') typeBadge = '<span style="color:#16a34a; font-weight:500; background:#f0fdf4; padding:1px 5px; border-radius:3px;">CASH IN</span>';
+                    else if(t.type === 'expense') typeBadge = '<span style="color:#dc2626; font-weight:500; background:#fef2f2; padding:1px 5px; border-radius:3px;">CASH OUT</span>';
+                    else typeBadge = '<span style="color:#2563eb; font-weight:500; background:#eff6ff; padding:1px 5px; border-radius:3px;">TRANSFER</span>';
+
+                    html += `<tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 8px; color: #475569; white-space: nowrap;">${t.date}</td>
+                        <td style="padding: 8px; color: #334155; font-weight: 500;">${t.description}</td>
+                        <td style="padding: 8px; text-align: center;">${typeBadge}</td>
+                        <td style="padding: 8px; text-align: right; color: #1e293b; font-weight: 600;">${formatCurrency(t.amount)}</td>
+                    </tr>`;
                 }
             });
 
             html += `
-                    </tbody>
-                </table>
-                <div style="text-align:center; margin-top:40px; font-size:11px; color:#a0aec0; border-top:1px solid #e2e8f0; padding-top:15px; font-weight:500;">
-                    Report meticulously verified and securely generated digitally by KNS Pro system. All rights reserved &copy; 2026.
+                        </tbody>
+                    </table>
                 </div>
+                
+                <p style="text-align: center; margin-top: 40px; font-size: 11px; color: #94a3b8; border-top: 1px dashed #e2e8f0; padding-top: 15px;">This is a digitally compiled balance ledger generated automatically via KNS Pro Financial Manager System.</p>
             `;
             
-            reportDiv.innerHTML = html; document.body.appendChild(reportDiv);
+            reportDiv.innerHTML = html; 
+            document.body.appendChild(reportDiv);
 
             html2pdf().from(reportDiv).set({
                 margin: 12, 
-                filename: `KNS_Pro_Premium_Statement_${date.replace(/\//g,'-')}.pdf`, 
+                filename: `KNS_Pro_Executive_Report_${date.replace(/\//g,'-')}.pdf`, 
                 html2canvas: { scale: 2.5, useCORS: true }, 
-                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4', compressPDF: true }
-            }).save().then(() => { document.body.removeChild(reportDiv); });
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+            }).save().then(() => { 
+                document.body.removeChild(reportDiv); 
+            });
         }
 
         function triggerBackup() { let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); let a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", `kns_pro_backup.json`); a.click(); a.remove(); }
