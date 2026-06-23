@@ -920,7 +920,6 @@
 
         // --- DATE UTILITIES ---
         function getTodayForInput() { 
-            // Fixed timezone issue: generate local date correctly
             let d = new Date();
             let month = '' + (d.getMonth() + 1);
             let day = '' + d.getDate();
@@ -954,10 +953,9 @@
             if (!fy) return true;
             
             let txDate = txDateStr;
-            // Fixed robustness bug to support both date formats cleanly
             if (txDateStr.includes('/')) {
                 let parts = txDateStr.split('/');
-                if (parts.length === 3) txDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // YYYY-MM-DD
+                if (parts.length === 3) txDate = `${parts[2]}-${parts[1]}-${parts[0]}`; 
             }
             
             return txDate >= fy.startDate && txDate <= fy.endDate;
@@ -1087,7 +1085,6 @@
             let name = sanitizeInput(document.getElementById('new-profile-name').value);
             if(!name) return;
             
-            // Critical Bug Fix: Checking existing profile to prevent data wipe
             if(globalConfig.profiles.includes(name)) {
                 alert("Profile name already exists! Switching to existing profile.");
                 switchUserProfile(name);
@@ -1107,7 +1104,6 @@
             closeActiveModal('modal-user');
         }
 
-        // ---- EDIT AND DELETE USER PROFILE FEATURES ----
         function editUserProfile() {
             let pSelect = document.getElementById('settings-profile-select');
             if(!pSelect) { alert("Profile selection dropdown not found."); return; }
@@ -1193,7 +1189,6 @@
             closeActiveModal('modal-fy');
         }
 
-        // ---- EDIT AND DELETE FINANCIAL YEAR FEATURES ----
         function editFinancialYear() {
             let fSelect = document.getElementById('settings-fy-select');
             if(!fSelect) { alert("Financial Year selection dropdown not found."); return; }
@@ -1325,8 +1320,6 @@
         }
 
         // --- HIGH-END EXECUTIVE PDF REPORT GENERATOR ENGINE ---
-        
-        // Reusable Helper for HTML to PDF with Professional Styling
         function generatePremiumPDF(reportHtml, filename) {
             let reportDiv = document.createElement('div');
             reportDiv.style.padding = '35px'; 
@@ -1334,7 +1327,6 @@
             reportDiv.style.color = '#1e293b'; 
             reportDiv.style.fontFamily = "'Inter', 'Helvetica Neue', Arial, sans-serif";
             
-            // Injecting specific print/page-break CSS styling to prevent multi-page content cutting
             let customPrintStyles = `
                 <style>
                     tr { page-break-inside: avoid !important; break-inside: avoid !important; }
@@ -1350,9 +1342,8 @@
             reportDiv.innerHTML = customPrintStyles + reportHtml;
             document.body.appendChild(reportDiv);
 
-            // Using proper configuration margin setup and pagebreak modes
             html2pdf().from(reportDiv).set({
-                margin: [12, 10, 15, 10], // top, left, bottom, right
+                margin: [12, 10, 15, 10], 
                 filename: filename, 
                 html2canvas: { scale: 2.5, useCORS: true, letterRendering: true, logging: false }, 
                 jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4', putOnlyUsedFonts: true },
@@ -1362,7 +1353,6 @@
             });
         }
 
-        // Shared Standard Header for all Premium Reports
         function getPremiumReportHeader(title, subtitle) {
             let date = new Date().toLocaleDateString('en-GB');
             let activeFy = state.financialYears.find(y => y.id === state.activeYearId);
@@ -1384,7 +1374,6 @@
             `;
         }
 
-        // Shared Standard Footer
         function getPremiumReportFooter() {
             return `
                 <div style="text-align: center; margin-top: 50px; font-size: 12px; color: #64748b; border-top: 1px solid #cbd5e1; padding-top: 20px;">
@@ -1394,7 +1383,6 @@
             `;
         }
 
-        // 1. INDIVIDUAL ACCOUNT REPORT
         function printCurrentAccountReport() { 
             let acc = state.accounts.find(a => a.id === currentSelectedId); if(!acc) return;
             let date = new Date().toLocaleDateString('en-GB');
@@ -1442,7 +1430,6 @@
             generatePremiumPDF(html, `Account_Statement_${acc.name}_${date.replace(/\//g,'-')}.pdf`);
         }
 
-        // 2. INDIVIDUAL PARTY REPORT
         function printCurrentPartyReport() { 
             let party = state.parties.find(p => p.id === currentSelectedId); if(!party) return;
             let date = new Date().toLocaleDateString('en-GB');
@@ -1495,7 +1482,6 @@
             generatePremiumPDF(html, `Party_Statement_${party.name}_${date.replace(/\//g,'-')}.pdf`);
         }
 
-        // 3. INDIVIDUAL DONATION/FUND REPORT
         function printCurrentDonationReport() { 
             let don = state.donations.find(d => d.id === currentSelectedId); if(!don) return;
             let date = new Date().toLocaleDateString('en-GB');
@@ -1543,7 +1529,6 @@
             generatePremiumPDF(html, `Fund_Report_${don.name}_${date.replace(/\//g,'-')}.pdf`);
         }
 
-        // 4. FULL SYSTEM REPORT (PREMIUM UPGRADE)
         function printFullSystemReport() {
             let totalBal = getTotalSystemBalance();
             let bankTotal = getCategoryTotalBalance('bank');
@@ -1690,8 +1675,70 @@
             generatePremiumPDF(html, `KNS_Pro_Executive_Report_${date.replace(/\//g,'-')}.pdf`);
         }
 
-        function triggerBackup() { let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state)); let a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", `kns_pro_backup.json`); a.click(); a.remove(); }
-        function triggerRestore() { let input = document.createElement('input'); input.type = 'file'; input.accept = '.json'; input.onchange = e => { let file = e.target.files[0]; let reader = new FileReader(); reader.readAsText(file,'UTF-8'); reader.onload = r => { try { let c = JSON.parse(r.target.result); if(c.accounts) { state = c; saveDataToStorage(); alert("Restored successfully!"); } } catch (err) { alert("Error restoring file!"); } } }; input.click(); }
+        // ---- REWRITTEN BACKUP & RESTORE ENGINE ----
+        function triggerBackup() { 
+            let backupData = {
+                globalConfig: globalConfig,
+                profilesData: {}
+            };
+            
+            // Collect all data from every user profile in localStorage
+            globalConfig.profiles.forEach(pName => {
+                let pData = localStorage.getItem('kns_pro_data_' + pName);
+                if (pData) {
+                    backupData.profilesData[pName] = JSON.parse(pData);
+                } else if (pName === globalConfig.activeProfile) {
+                    backupData.profilesData[pName] = state; // Fallback to current memory if unsaved
+                }
+            });
+
+            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData)); 
+            let a = document.createElement('a'); 
+            a.setAttribute("href", dataStr); 
+            a.setAttribute("download", `kns_pro_full_system_backup.json`); 
+            a.click(); 
+            a.remove(); 
+        }
+
+        function triggerRestore() { 
+            let input = document.createElement('input'); 
+            input.type = 'file'; 
+            input.accept = '.json'; 
+            input.onchange = e => { 
+                let file = e.target.files[0]; 
+                let reader = new FileReader(); 
+                reader.readAsText(file,'UTF-8'); 
+                reader.onload = r => { 
+                    try { 
+                        let c = JSON.parse(r.target.result); 
+                        
+                        if (c.globalConfig && c.profilesData) {
+                            // NEW FORMAT RESTORE: System wide restore including all profiles
+                            globalConfig = c.globalConfig;
+                            localStorage.setItem('kns_pro_global', JSON.stringify(globalConfig));
+                            
+                            Object.keys(c.profilesData).forEach(pName => {
+                                localStorage.setItem('kns_pro_data_' + pName, JSON.stringify(c.profilesData[pName]));
+                            });
+                            
+                            loadDataFromStorage();
+                            renderAll();
+                            alert("Full system backup restored successfully! All user profiles loaded.");
+                        } else if(c.accounts) { 
+                            // OLD FORMAT RESTORE: Single active profile fallback
+                            state = c; 
+                            saveDataToStorage(); 
+                            renderAll();
+                            alert("Restored successfully to the current active profile!"); 
+                        } else {
+                            alert("Invalid backup file structure!");
+                        }
+                    } catch (err) { alert("Error restoring file!"); } 
+                } 
+            }; 
+            input.click(); 
+        }
+        
         function resetSystemData() { if(confirm("Critical: Data reset now?")) { localStorage.removeItem('kns_pro_data_' + globalConfig.activeProfile); location.reload(); } }
 
         // --- INTERNAL INLINE CALCULATOR ---
@@ -1705,7 +1752,6 @@
         function clearCalc() { document.getElementById('calc-screen').value = ''; }
         function solveCalc() { 
             try { 
-                // Security Fix: Basic Sanitization added before executing calculation
                 let expression = document.getElementById('calc-screen').value.replace(/[^0-9+\-*/.%()]/g, '');
                 let res = new Function('return ' + expression)(); 
                 if (res === undefined || isNaN(res)) res = 0;
@@ -1716,14 +1762,12 @@
 
         // --- RENDER ENGINE ---
         function renderAll() {
-            // Update Top Bar Metadata
             let activeFy = state.financialYears.find(y => y.id === state.activeYearId);
             let fyName = activeFy ? activeFy.name : 'All';
             if(document.getElementById('header-user-fy')) {
                 document.getElementById('header-user-fy').innerText = `${globalConfig.activeProfile} | FY: ${fyName}`;
             }
 
-            // Populate Dropdowns in Settings
             let pSelect = document.getElementById('settings-profile-select');
             if(pSelect) {
                 pSelect.innerHTML = globalConfig.profiles.map(p => `<option value="${p}" ${p === globalConfig.activeProfile ? 'selected' : ''}>${p}</option>`).join('');
@@ -1733,7 +1777,6 @@
                 fSelect.innerHTML = state.financialYears.map(y => `<option value="${y.id}" ${y.id === state.activeYearId ? 'selected' : ''}>${y.name} (${formatDateForDisplay(y.startDate)} to ${formatDateForDisplay(y.endDate)})</option>`).join('');
             }
 
-            // Dashboard Balances
             if(document.getElementById('dash-total-balance')) {
                 document.getElementById('dash-total-balance').innerText = formatCurrency(getTotalSystemBalance());
                 document.getElementById('dash-bank-balance').innerText = formatCurrency(getCategoryTotalBalance('bank'));
@@ -1754,7 +1797,6 @@
             }
             if(document.getElementById('donations-total-balance')) document.getElementById('donations-total-balance').innerText = formatCurrency(getDonationsTotal());
 
-            // Render Account Lists on Dash
             let dashAccDiv = document.getElementById('dash-accounts-list');
             if(dashAccDiv) {
                 dashAccDiv.innerHTML = '';
@@ -1764,7 +1806,6 @@
                 });
             }
 
-            // Daily Entries List
             let dailyDiv = document.getElementById('daily-transactions-list');
             if(dailyDiv) {
                 dailyDiv.innerHTML = '';
@@ -1787,7 +1828,6 @@
                 });
             }
 
-            // Category Account List
             let catDiv = document.getElementById('category-accounts-render-list');
             if(catDiv && activeSubScreen === 'account-category-list') {
                 catDiv.innerHTML = '';
@@ -1796,7 +1836,6 @@
                 });
             }
 
-            // Single Account Transactions
             if(activeSubScreen === 'single-account' && currentSelectedId) {
                 let acc = state.accounts.find(a => a.id === currentSelectedId);
                 if(acc) {
@@ -1811,7 +1850,6 @@
                 }
             }
 
-            // Parties List
             let partDiv = document.getElementById('parties-render-list');
             if(partDiv && activeSubScreen === 'parties') {
                 partDiv.innerHTML = '';
@@ -1821,7 +1859,6 @@
                 });
             }
 
-            // Single Party Profile
             if(activeSubScreen === 'single-party' && currentSelectedId) {
                 let party = state.parties.find(p => p.id === currentSelectedId);
                 if(party) {
@@ -1838,7 +1875,6 @@
                 }
             }
 
-            // Donations List
             let donDiv = document.getElementById('donations-render-list');
             if(donDiv && activeSubScreen === 'donations') {
                 donDiv.innerHTML = '';
@@ -1847,7 +1883,6 @@
                 });
             }
 
-            // Single Donation history
             if(activeSubScreen === 'single-donation' && currentSelectedId) {
                 let don = state.donations.find(d => d.id === currentSelectedId);
                 if(don) {
