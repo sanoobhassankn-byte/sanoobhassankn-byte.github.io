@@ -773,8 +773,7 @@
             </form>
         </div>
     </div>
-</body>
-</html>
+
 <script>
         // --- STATE & STORAGE CONFIG ---
         let globalConfig = { activeProfile: 'Default User', profiles: ['Default User'] };
@@ -785,6 +784,9 @@
         let currentSelectedCategory = null;
         let currentSelectedId = null;
         let activeCalcTarget = null; 
+        
+        // Anti-Double Entry Lock
+        let isSubmitting = false;
 
         // --- THEME DATA (30 Themes) ---
         const themeProfiles = ['blue', 'emerald', 'purple', 'cyber', 'crimson', 'sunset', 'teal', 'indigo', 'pink', 'amber', 'slate', 'coral', 'mint', 'ocean', 'lavender', 'rose', 'mustard', 'lime', 'cyan', 'cherry', 'gold', 'coffee', 'olive', 'apricot', 'sky', 'forest', 'charcoal', 'plum', 'bronze', 'ruby'];
@@ -798,6 +800,11 @@
             setupEventListeners();
             initLiveAnalogClock();
         });
+
+        // Unique ID Generator to prevent duplicate collision
+        function generateId(prefix) {
+            return prefix + '_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+        }
 
         function loadDataFromStorage() {
             let globalSaved = localStorage.getItem('kns_pro_global');
@@ -833,10 +840,15 @@
             renderAll(); 
         }
 
-        // Safe listener addition to prevent crash if DOM element is missing
+        // Safe listener addition to prevent event duplication (fixes double firing)
         function safeAddListener(id, event, handler) {
             let el = document.getElementById(id);
-            if(el) el.addEventListener(event, handler);
+            if(el) {
+                if(event === 'submit') el.onsubmit = null; 
+                if(event === 'click') el.onclick = null;
+                el.removeEventListener(event, handler);
+                el.addEventListener(event, handler);
+            }
         }
 
         function setupEventListeners() {
@@ -852,17 +864,21 @@
             safeAddListener('btn-calc-donation', 'click', calculateDonationAmount);
             
             document.querySelectorAll('.modal-overlay').forEach(modal => {
-                modal.addEventListener('click', function(e) { 
-                    if(e.target === this) closeActiveModal(this.id); 
-                });
+                modal.removeEventListener('click', modalClickHandler); // prevent duplicate attaching
+                modal.addEventListener('click', modalClickHandler);
             });
             
             let toggleMode = document.getElementById('dark-mode-toggle');
             if(toggleMode) {
                 let currentMode = localStorage.getItem('kns_pro_theme') || 'light';
                 toggleMode.checked = (currentMode === 'dark');
+                toggleMode.removeEventListener('change', toggleDarkModeSystem);
                 toggleMode.addEventListener('change', toggleDarkModeSystem);
             }
+        }
+
+        function modalClickHandler(e) {
+            if(e.target === this) closeActiveModal(this.id);
         }
 
         // --- MODERN PREMIUM VALIPPAMMULLA ANALOG CLOCK ENGINE WITH DATE ---
@@ -1032,19 +1048,27 @@
         // --- MODAL MANAGER ---
         function openActiveModal(modalId) { 
             hideInlineCalc(); 
-            if(document.getElementById(modalId)) document.getElementById(modalId).classList.add('active'); 
+            if(document.getElementById(modalId)) {
+                let forms = document.getElementById(modalId).getElementsByTagName('form');
+                for(let f of forms) f.reset(); // clear any stale data
+                document.getElementById(modalId).classList.add('active'); 
+            }
         }
         function closeActiveModal(modalId) {
-            if(document.getElementById(modalId)) document.getElementById(modalId).classList.remove('active');
+            if(document.getElementById(modalId)) {
+                document.getElementById(modalId).classList.remove('active');
+                let forms = document.getElementById(modalId).getElementsByTagName('form');
+                for(let f of forms) f.reset(); // Auto form reset prevents double entries
+            }
             ['account-id','party-id','donation-id','entry-id','transfer-id'].forEach(id => {
                 if(document.getElementById(id)) document.getElementById(id).value = '';
             });
             hideInlineCalc();
         }
         
-        function openAddAccountModal() { document.getElementById('account-modal-title').innerText = 'Add Account'; document.getElementById('account-id').value = ''; document.getElementById('account-category-hidden').value = currentSelectedCategory; document.getElementById('account-name').value = ''; document.getElementById('account-opening-balance').value = '0'; document.getElementById('account-desc').value = ''; document.getElementById('account-opening-balance-group').style.display = 'block'; openActiveModal('modal-account'); }
-        function openAddPartyModal() { document.getElementById('party-modal-title').innerText = 'Add Party'; document.getElementById('party-id').value = ''; document.getElementById('party-name').value = ''; document.getElementById('party-type').value = 'customer'; document.getElementById('party-opening-balance').value = '0'; document.getElementById('party-balance-type').value = 'dr'; document.getElementById('party-desc').value = ''; document.getElementById('party-opening-balance-group').style.display = 'block'; document.getElementById('party-balance-type-group').style.display = 'block'; openActiveModal('modal-party'); }
-        function openAddDonationModal() { document.getElementById('donation-modal-title').innerText = 'Add Fund'; document.getElementById('donation-id').value = ''; document.getElementById('donation-name').value = ''; document.getElementById('donation-amount').value = '0.00'; document.getElementById('donation-percentage').value = ''; document.getElementById('donation-desc').value = ''; document.getElementById('donation-amount-group').style.display = 'block'; document.getElementById('donation-percentage-group').style.display = 'block'; document.getElementById('donation-link-account-group').style.display = 'block'; populateDonationLinkDropdown(); openActiveModal('modal-donation'); }
+        function openAddAccountModal() { openActiveModal('modal-account'); document.getElementById('account-modal-title').innerText = 'Add Account'; document.getElementById('account-id').value = ''; document.getElementById('account-category-hidden').value = currentSelectedCategory; document.getElementById('account-name').value = ''; document.getElementById('account-opening-balance').value = '0'; document.getElementById('account-desc').value = ''; document.getElementById('account-opening-balance-group').style.display = 'block'; }
+        function openAddPartyModal() { openActiveModal('modal-party'); document.getElementById('party-modal-title').innerText = 'Add Party'; document.getElementById('party-id').value = ''; document.getElementById('party-name').value = ''; document.getElementById('party-type').value = 'customer'; document.getElementById('party-opening-balance').value = '0'; document.getElementById('party-balance-type').value = 'dr'; document.getElementById('party-desc').value = ''; document.getElementById('party-opening-balance-group').style.display = 'block'; document.getElementById('party-balance-type-group').style.display = 'block'; }
+        function openAddDonationModal() { openActiveModal('modal-donation'); document.getElementById('donation-modal-title').innerText = 'Add Fund'; document.getElementById('donation-id').value = ''; document.getElementById('donation-name').value = ''; document.getElementById('donation-amount').value = '0.00'; document.getElementById('donation-percentage').value = ''; document.getElementById('donation-desc').value = ''; document.getElementById('donation-amount-group').style.display = 'block'; document.getElementById('donation-percentage-group').style.display = 'block'; document.getElementById('donation-link-account-group').style.display = 'block'; populateDonationLinkDropdown(); }
         function calculateDonationAmount() { let pct = parseFloat(document.getElementById('donation-percentage').value) || 0; if(pct <= 0) { alert('Enter valid percentage'); return; } let calcAmount = (getTotalSystemBalance() * pct) / 100; document.getElementById('donation-amount').value = calcAmount.toFixed(2); }
         
         function populateDonationLinkDropdown() { let accOptions = state.accounts.map(a => `<option value="${a.id}">${a.name}</option>`).join(''); document.getElementById('donation-link-account').innerHTML = '<option value="">-- Select Account --</option>' + accOptions; }
@@ -1054,7 +1078,7 @@
             document.getElementById('entry-account').innerHTML = `<optgroup label="Bank/Cash Accounts">${accOptions}</optgroup><optgroup label="Donation Funds">${donOptions}</optgroup>`;
         }
         
-        function openEntryModal() { document.getElementById('entry-modal-title').innerText = 'Add Entry'; document.getElementById('entry-id').value = ''; document.getElementById('entry-date').value = getTodayForInput(); document.getElementById('entry-type').value = 'income'; document.getElementById('entry-amount').value = ''; document.getElementById('entry-desc').value = ''; populateEntryDropdowns(); openActiveModal('modal-entry'); }
+        function openEntryModal() { openActiveModal('modal-entry'); document.getElementById('entry-modal-title').innerText = 'Add Entry'; document.getElementById('entry-id').value = ''; document.getElementById('entry-date').value = getTodayForInput(); document.getElementById('entry-type').value = 'income'; document.getElementById('entry-amount').value = ''; document.getElementById('entry-desc').value = ''; populateEntryDropdowns(); }
         
         function onTransferSrcTypeChange() {
             let type = document.getElementById('transfer-src-type').value;
@@ -1070,7 +1094,7 @@
             else if(type === 'party') toSelect.innerHTML = state.parties.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
             else if(type === 'donation') toSelect.innerHTML = state.donations.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
         }
-        function openTransferModal() { document.getElementById('transfer-modal-title').innerText = 'Transfer Funds'; document.getElementById('transfer-id').value = ''; document.getElementById('transfer-date').value = getTodayForInput(); document.getElementById('transfer-amount').value = ''; document.getElementById('transfer-desc').value = ''; document.getElementById('transfer-src-type').value = 'account'; document.getElementById('transfer-dest-type').value = 'account'; onTransferSrcTypeChange(); onTransferDestTypeChange(); openActiveModal('modal-transfer'); }
+        function openTransferModal() { openActiveModal('modal-transfer'); document.getElementById('transfer-modal-title').innerText = 'Transfer Funds'; document.getElementById('transfer-id').value = ''; document.getElementById('transfer-date').value = getTodayForInput(); document.getElementById('transfer-amount').value = ''; document.getElementById('transfer-desc').value = ''; document.getElementById('transfer-src-type').value = 'account'; document.getElementById('transfer-dest-type').value = 'account'; onTransferSrcTypeChange(); onTransferDestTypeChange(); }
 
         // --- USER PROFILE & FINANCIAL YEAR OPERATIONS ---
         function switchUserProfile(profileName) {
@@ -1096,7 +1120,7 @@
             globalConfig.activeProfile = name;
             state = { 
                 accounts: [], parties: [], donations: [], transactions: [], 
-                financialYears: [{ id: 'fy_' + Date.now(), name: '2026-27', startDate: '2026-04-01', endDate: '2027-03-31' }], 
+                financialYears: [{ id: generateId('fy'), name: '2026-27', startDate: '2026-04-01', endDate: '2027-03-31' }], 
                 activeYearId: null 
             };
             state.activeYearId = state.financialYears[0].id;
@@ -1182,7 +1206,7 @@
             let end = document.getElementById('new-fy-end').value;
             if(!name || !start || !end) return;
 
-            let newFy = { id: 'fy_' + Date.now(), name, startDate: start, endDate: end };
+            let newFy = { id: generateId('fy'), name, startDate: start, endDate: end };
             state.financialYears.push(newFy);
             state.activeYearId = newFy.id;
             saveDataToStorage();
@@ -1239,14 +1263,122 @@
             }
         }
 
-        // --- SUBMIT OPERATIONS ---
+        // --- SUBMIT OPERATIONS (Protected against double entries) ---
         function sanitizeInput(str) { return (str || '').replace(/['"<>]/g, '').trim(); }
 
-        function handleAccountSubmit(e) { e.preventDefault(); let id = document.getElementById('account-id').value; let name = sanitizeInput(document.getElementById('account-name').value); let opBal = parseFloat(document.getElementById('account-opening-balance').value) || 0; let desc = sanitizeInput(document.getElementById('account-desc').value); let category = document.getElementById('account-category-hidden').value || 'bank'; if(id) { let acc = state.accounts.find(a => a.id === id); if(acc) { acc.name = name; acc.description = desc; } } else { state.accounts.push({ id: 'acc_' + Date.now(), name, category, openingBalance: opBal, description: desc }); } saveDataToStorage(); closeActiveModal('modal-account'); if(currentSelectedCategory) openAccountCategoryScreen(currentSelectedCategory); }
-        function handlePartySubmit(e) { e.preventDefault(); let id = document.getElementById('party-id').value; let name = sanitizeInput(document.getElementById('party-name').value); let type = document.getElementById('party-type').value; let opBal = parseFloat(document.getElementById('party-opening-balance').value) || 0; let balType = document.getElementById('party-balance-type').value; let desc = sanitizeInput(document.getElementById('party-desc').value); if(!id && balType === 'cr') opBal = -Math.abs(opBal); if(id) { let party = state.parties.find(p => p.id === id); if(party) { party.name = name; party.description = desc; } } else { state.parties.push({ id: 'party_' + Date.now(), name, type, openingBalance: opBal, description: desc }); } saveDataToStorage(); closeActiveModal('modal-party'); openSubScreen('parties'); }
-        function handleDonationSubmit(e) { e.preventDefault(); let id = document.getElementById('donation-id').value; let name = sanitizeInput(document.getElementById('donation-name').value); let amount = parseFloat(document.getElementById('donation-amount').value) || 0; let linkedAccId = document.getElementById('donation-link-account').value; let desc = sanitizeInput(document.getElementById('donation-desc').value); let pct = document.getElementById('donation-percentage').value; if(!id && !linkedAccId) { alert('Select deduct from account'); return; } if(id) { let don = state.donations.find(d => d.id === id); if(don) { don.name = name; don.description = desc; } } else { let donId = 'don_' + Date.now(); state.donations.push({ id: donId, name, amount: 0, linkedAccountId: linkedAccId, description: desc, percentage: pct }); if(amount > 0) { state.transactions.unshift({ id: 'trans_' + Date.now(), type: 'donation', fromId: linkedAccId, toId: donId, amount: amount, description: `Fund alloc: ${name}`, date: formatDateForDisplay(getTodayForInput()) }); } } saveDataToStorage(); closeActiveModal('modal-donation'); openSubScreen('donations'); }
-        function handleEntrySubmit(e) { e.preventDefault(); let id = document.getElementById('entry-id').value; let entryDate = document.getElementById('entry-date').value; let type = document.getElementById('entry-type').value; let accId = document.getElementById('entry-account').value; let amount = parseFloat(document.getElementById('entry-amount').value) || 0; let desc = sanitizeInput(document.getElementById('entry-desc').value); if(!accId) { alert('Select account'); return; } if(id) { let t = state.transactions.find(x => x.id === id); if(t) { t.type = type; t.date = formatDateForDisplay(entryDate); t.fromId = type === 'expense'? accId : null; t.toId = type === 'income'? accId : null; t.amount = amount; t.description = desc; } } else { state.transactions.unshift({ id: 'trans_' + Date.now(), type: type, fromId: type === 'expense'? accId : null, toId: type === 'income'? accId : null, amount: amount, description: desc || (type === 'income'? 'Cash In' : 'Cash Out'), date: formatDateForDisplay(entryDate) }); } saveDataToStorage(); closeActiveModal('modal-entry'); switchScreen('daily', null); }
-        function handleTransferSubmit(e) { e.preventDefault(); let id = document.getElementById('transfer-id').value; let transferDate = document.getElementById('transfer-date').value; let fromId = document.getElementById('transfer-from').value; let toId = document.getElementById('transfer-to').value; let srcType = document.getElementById('transfer-src-type').value; let destType = document.getElementById('transfer-dest-type').value; let amount = parseFloat(document.getElementById('transfer-amount').value) || 0; let desc = sanitizeInput(document.getElementById('transfer-desc').value); if(!fromId || !toId) { alert('Select both from and to entities'); return; } if(fromId === toId) { alert('From and to cannot be same'); return; } let tType = 'transfer'; if(srcType === 'donation' || destType === 'donation') tType = 'donation'; else if(srcType === 'party' || destType === 'party') tType = 'party'; if(id) { let t = state.transactions.find(x => x.id === id); if(t) { t.fromId = fromId; t.toId = toId; t.date = formatDateForDisplay(transferDate); t.amount = amount; t.description = desc || `Transfer`; t.type = tType; } } else { state.transactions.unshift({ id: 'trans_' + Date.now(), type: tType, fromId: fromId, toId: toId, amount: amount, description: desc || `Transfer`, date: formatDateForDisplay(transferDate) }); } saveDataToStorage(); closeActiveModal('modal-transfer'); switchScreen('daily', null); }
+        function handleAccountSubmit(e) { 
+            e.preventDefault(); 
+            if(isSubmitting) return; isSubmitting = true;
+            let id = document.getElementById('account-id').value; 
+            let name = sanitizeInput(document.getElementById('account-name').value); 
+            let opBal = parseFloat(document.getElementById('account-opening-balance').value) || 0; 
+            let desc = sanitizeInput(document.getElementById('account-desc').value); 
+            let category = document.getElementById('account-category-hidden').value || 'bank'; 
+            if(id) { 
+                let acc = state.accounts.find(a => a.id === id); 
+                if(acc) { acc.name = name; acc.description = desc; } 
+            } else { 
+                state.accounts.push({ id: generateId('acc'), name, category, openingBalance: opBal, description: desc }); 
+            } 
+            saveDataToStorage(); 
+            closeActiveModal('modal-account'); 
+            if(!id && currentSelectedCategory) openAccountCategoryScreen(currentSelectedCategory); 
+            setTimeout(() => { isSubmitting = false; }, 300);
+        }
+        
+        function handlePartySubmit(e) { 
+            e.preventDefault(); 
+            if(isSubmitting) return; isSubmitting = true;
+            let id = document.getElementById('party-id').value; 
+            let name = sanitizeInput(document.getElementById('party-name').value); 
+            let type = document.getElementById('party-type').value; 
+            let opBal = parseFloat(document.getElementById('party-opening-balance').value) || 0; 
+            let balType = document.getElementById('party-balance-type').value; 
+            let desc = sanitizeInput(document.getElementById('party-desc').value); 
+            if(!id && balType === 'cr') opBal = -Math.abs(opBal); 
+            if(id) { 
+                let party = state.parties.find(p => p.id === id); 
+                if(party) { party.name = name; party.description = desc; party.type = type; } // Added type update
+            } else { 
+                state.parties.push({ id: generateId('party'), name, type, openingBalance: opBal, description: desc }); 
+            } 
+            saveDataToStorage(); 
+            closeActiveModal('modal-party'); 
+            if(!id) openSubScreen('parties'); // Stop unwanted screen jumping on edit
+            setTimeout(() => { isSubmitting = false; }, 300);
+        }
+        
+        function handleDonationSubmit(e) { 
+            e.preventDefault(); 
+            if(isSubmitting) return; isSubmitting = true;
+            let id = document.getElementById('donation-id').value; 
+            let name = sanitizeInput(document.getElementById('donation-name').value); 
+            let amount = parseFloat(document.getElementById('donation-amount').value) || 0; 
+            let linkedAccId = document.getElementById('donation-link-account').value; 
+            let desc = sanitizeInput(document.getElementById('donation-desc').value); 
+            let pct = document.getElementById('donation-percentage').value; 
+            if(!id && !linkedAccId) { alert('Select deduct from account'); isSubmitting=false; return; } 
+            if(id) { 
+                let don = state.donations.find(d => d.id === id); 
+                if(don) { don.name = name; don.description = desc; } 
+            } else { 
+                let donId = generateId('don'); 
+                state.donations.push({ id: donId, name, amount: 0, linkedAccountId: linkedAccId, description: desc, percentage: pct }); 
+                if(amount > 0) { state.transactions.unshift({ id: generateId('trans'), type: 'donation', fromId: linkedAccId, toId: donId, amount: amount, description: `Fund alloc: ${name}`, date: formatDateForDisplay(getTodayForInput()) }); } 
+            } 
+            saveDataToStorage(); 
+            closeActiveModal('modal-donation'); 
+            if(!id) openSubScreen('donations'); 
+            setTimeout(() => { isSubmitting = false; }, 300);
+        }
+        
+        function handleEntrySubmit(e) { 
+            e.preventDefault(); 
+            if(isSubmitting) return; isSubmitting = true;
+            let id = document.getElementById('entry-id').value; 
+            let entryDate = document.getElementById('entry-date').value; 
+            let type = document.getElementById('entry-type').value; 
+            let accId = document.getElementById('entry-account').value; 
+            let amount = parseFloat(document.getElementById('entry-amount').value) || 0; 
+            let desc = sanitizeInput(document.getElementById('entry-desc').value); 
+            if(!accId) { alert('Select account'); isSubmitting=false; return; } 
+            if(id) { 
+                let t = state.transactions.find(x => x.id === id); 
+                if(t) { t.type = type; t.date = formatDateForDisplay(entryDate); t.fromId = type === 'expense'? accId : null; t.toId = type === 'income'? accId : null; t.amount = amount; t.description = desc; } 
+            } else { 
+                state.transactions.unshift({ id: generateId('trans'), type: type, fromId: type === 'expense'? accId : null, toId: type === 'income'? accId : null, amount: amount, description: desc || (type === 'income'? 'Cash In' : 'Cash Out'), date: formatDateForDisplay(entryDate) }); 
+            } 
+            saveDataToStorage(); 
+            closeActiveModal('modal-entry'); 
+            if(!id && currentScreen !== 'daily') switchScreen('daily', null); // Prevents kicking out of account screen
+            setTimeout(() => { isSubmitting = false; }, 300);
+        }
+        
+        function handleTransferSubmit(e) { 
+            e.preventDefault(); 
+            if(isSubmitting) return; isSubmitting = true;
+            let id = document.getElementById('transfer-id').value; 
+            let transferDate = document.getElementById('transfer-date').value; 
+            let fromId = document.getElementById('transfer-from').value; 
+            let toId = document.getElementById('transfer-to').value; 
+            let srcType = document.getElementById('transfer-src-type').value; 
+            let destType = document.getElementById('transfer-dest-type').value; 
+            let amount = parseFloat(document.getElementById('transfer-amount').value) || 0; 
+            let desc = sanitizeInput(document.getElementById('transfer-desc').value); 
+            if(!fromId || !toId) { alert('Select both from and to entities'); isSubmitting=false; return; } 
+            if(fromId === toId) { alert('From and to cannot be same'); isSubmitting=false; return; } 
+            let tType = 'transfer'; if(srcType === 'donation' || destType === 'donation') tType = 'donation'; else if(srcType === 'party' || destType === 'party') tType = 'party'; 
+            if(id) { 
+                let t = state.transactions.find(x => x.id === id); 
+                if(t) { t.fromId = fromId; t.toId = toId; t.date = formatDateForDisplay(transferDate); t.amount = amount; t.description = desc || `Transfer`; t.type = tType; } 
+            } else { 
+                state.transactions.unshift({ id: generateId('trans'), type: tType, fromId: fromId, toId: toId, amount: amount, description: desc || `Transfer`, date: formatDateForDisplay(transferDate) }); 
+            } 
+            saveDataToStorage(); 
+            closeActiveModal('modal-transfer'); 
+            if(!id && currentScreen !== 'daily') switchScreen('daily', null); 
+            setTimeout(() => { isSubmitting = false; }, 300);
+        }
 
         // --- CORRECTION ENGINE ---
         function safeDeleteEntityTransactions(entityId) {
@@ -1285,13 +1417,45 @@
             }
         }
 
-        function editCurrentAccount() { let acc = state.accounts.find(a => a.id === currentSelectedId); if(!acc) return; document.getElementById('account-id').value = acc.id; document.getElementById('account-name').value = acc.name; document.getElementById('account-desc').value = acc.description; document.getElementById('account-opening-balance-group').style.display = 'none'; document.getElementById('account-modal-title').innerText = 'Edit Account'; openActiveModal('modal-account'); }
+        function editCurrentAccount() { 
+            let acc = state.accounts.find(a => a.id === currentSelectedId); if(!acc) return; 
+            // Fixed Bug: Open Modal First, THEN set values. Otherwise form.reset() clears it.
+            openActiveModal('modal-account'); 
+            document.getElementById('account-id').value = acc.id; 
+            document.getElementById('account-name').value = acc.name; 
+            document.getElementById('account-desc').value = acc.description; 
+            document.getElementById('account-category-hidden').value = acc.category;
+            document.getElementById('account-opening-balance-group').style.display = 'none'; 
+            document.getElementById('account-modal-title').innerText = 'Edit Account'; 
+        }
         function deleteCurrentAccount() { if(confirm("Delete account? Note: Shared transfers will be kept safe.")) { state.accounts = state.accounts.filter(a => a.id !== currentSelectedId); safeDeleteEntityTransactions(currentSelectedId); saveDataToStorage(); goBackToCategoryList(); } }
         
-        function editCurrentParty() { let party = state.parties.find(p => p.id === currentSelectedId); if(!party) return; document.getElementById('party-id').value = party.id; document.getElementById('party-name').value = party.name; document.getElementById('party-desc').value = party.description; document.getElementById('party-opening-balance-group').style.display = 'none'; document.getElementById('party-balance-type-group').style.display = 'none'; document.getElementById('party-modal-title').innerText = 'Edit Party'; openActiveModal('modal-party'); }
+        function editCurrentParty() { 
+            let party = state.parties.find(p => p.id === currentSelectedId); if(!party) return; 
+            // Fixed Bug: Open Modal First, THEN set values.
+            openActiveModal('modal-party');
+            document.getElementById('party-id').value = party.id; 
+            document.getElementById('party-name').value = party.name; 
+            document.getElementById('party-type').value = party.type; // Fixed missing type assignment
+            document.getElementById('party-desc').value = party.description; 
+            document.getElementById('party-opening-balance-group').style.display = 'none'; 
+            document.getElementById('party-balance-type-group').style.display = 'none'; 
+            document.getElementById('party-modal-title').innerText = 'Edit Party'; 
+        }
         function deleteCurrentParty() { if(confirm("Delete party ledger? Note: Shared transfers will be kept safe.")) { state.parties = state.parties.filter(p => p.id !== currentSelectedId); safeDeleteEntityTransactions(currentSelectedId); saveDataToStorage(); openSubScreen('parties'); } }
         
-        function editCurrentDonation() { let don = state.donations.find(d => d.id === currentSelectedId); if(!don) return; document.getElementById('donation-id').value = don.id; document.getElementById('donation-name').value = don.name; document.getElementById('donation-desc').value = don.description; document.getElementById('donation-amount-group').style.display = 'none'; document.getElementById('donation-percentage-group').style.display = 'none'; document.getElementById('donation-link-account-group').style.display = 'none'; document.getElementById('donation-modal-title').innerText = 'Edit Fund'; openActiveModal('modal-donation'); }
+        function editCurrentDonation() { 
+            let don = state.donations.find(d => d.id === currentSelectedId); if(!don) return; 
+            // Fixed Bug: Open Modal First, THEN set values.
+            openActiveModal('modal-donation');
+            document.getElementById('donation-id').value = don.id; 
+            document.getElementById('donation-name').value = don.name; 
+            document.getElementById('donation-desc').value = don.description; 
+            document.getElementById('donation-amount-group').style.display = 'none'; 
+            document.getElementById('donation-percentage-group').style.display = 'none'; 
+            document.getElementById('donation-link-account-group').style.display = 'none'; 
+            document.getElementById('donation-modal-title').innerText = 'Edit Fund'; 
+        }
         function deleteCurrentDonation() { if(confirm("Remove fund ledger? Note: Shared transfers will be kept safe.")) { state.donations = state.donations.filter(d => d.id !== currentSelectedId); safeDeleteEntityTransactions(currentSelectedId); saveDataToStorage(); openSubScreen('donations'); } }
 
         // --- PREMIUM WHATSAPP DIGITAL RECEIPT/STATEMENT LAYOUT ---
