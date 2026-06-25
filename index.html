@@ -593,7 +593,7 @@
             <div class="flat-panel" style="margin-bottom: 15px;">
                 <h3 style="font-size: 0.75rem; color: var(--primary-color); border-bottom: none; padding-bottom: 4px; margin-bottom: 4px;">Data Management</h3>
                 <div class="list-item" onclick="triggerBackup()" style="cursor: pointer;">
-                    <span class="flex-gap"><i class="fa-solid fa-cloud-arrow-down settings-icon" style="color: var(--primary-color);"></i> <span>Export Backup (JSON)</span></span>
+                    <span class="flex-gap"><i class="fa-solid fa-cloud-arrow-down settings-icon" style="color: var(--primary-color);"></i> <span>Export Backup (All Users)</span></span>
                     <i class="fa-solid fa-chevron-right" style="font-size:0.65rem; color:var(--text-muted);"></i>
                 </div>
                 <div class="list-item" onclick="triggerRestore()" style="cursor: pointer;">
@@ -1845,15 +1845,33 @@
             generatePremiumPDF(html, `Consolidated_Financial_Report_${date.replace(/\//g,'-')}.pdf`);
         }
 
-        // --- BACKUP DATA ARCHIVE UTILITIES (Fixed with Blob API for safe export) ---
+        // --- BACKUP DATA ARCHIVE UTILITIES (All Users Backup Support Added) ---
         function triggerBackup() {
             try {
-                let data = JSON.stringify({ config: globalConfig, currentData: state });
-                let blob = new Blob([data], {type: 'application/json'});
+                let backupObj = {
+                    version: "kns_pro_all_users_v1",
+                    globalConfig: globalConfig,
+                    allProfilesData: {}
+                };
+                
+                // Loop through all existing profiles and pack data safely
+                globalConfig.profiles.forEach(p => {
+                    let data = localStorage.getItem('kns_pro_data_' + p);
+                    if (data) {
+                        try {
+                            backupObj.allProfilesData[p] = JSON.parse(data);
+                        } catch(e) { console.error(`Error parsing data for profile ${p}:`, e); }
+                    } else if (p === globalConfig.activeProfile) {
+                        backupObj.allProfilesData[p] = state; // Include current state if not synced to storage yet
+                    }
+                });
+                
+                let dataStr = JSON.stringify(backupObj);
+                let blob = new Blob([dataStr], {type: 'application/json'});
                 let url = URL.createObjectURL(blob);
                 let downloadAnchor = document.createElement('a');
                 downloadAnchor.href = url;
-                downloadAnchor.download = `kns_pro_backup_${globalConfig.activeProfile}_${getTodayForInput()}.json`;
+                downloadAnchor.download = `KNS_PRO_All_Users_Backup_${getTodayForInput()}.json`;
                 document.body.appendChild(downloadAnchor);
                 downloadAnchor.click();
                 document.body.removeChild(downloadAnchor);
@@ -1862,26 +1880,50 @@
                 alert("Backup creation failed. Error: " + e.message);
             }
         }
+
+        // --- RESTORE DATA UTILITIES (Supports Legacy & All Users Backup) ---
         function triggerRestore() {
-            let fileInput = document.createElement('input');
-            fileInput.type = 'file'; fileInput.accept = '.json';
-            fileInput.onchange = e => {
+            let input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = e => {
                 let file = e.target.files[0]; if(!file) return;
                 let reader = new FileReader();
                 reader.onload = readerEvent => {
                     try {
                         let parsed = JSON.parse(readerEvent.target.result);
-                        if(parsed.currentData) {
-                            state = parsed.currentData;
-                            if(parsed.config) globalConfig = parsed.config;
-                            saveDataToStorage(); alert("Backup successfully restored!"); location.reload();
-                        } else { alert("Invalid structure package format."); }
-                    } catch(err) { alert("Corrupt data input error."); }
-                };
-                reader.readAsText(file);
-            };
-            fileInput.click();
+                        if (parsed && parsed.version === "kns_pro_all_users_v1" && parsed.globalConfig && parsed.allProfilesData) {
+                            if (confirm("This will overwrite all existing profiles and data with the backup file. Proceed?")) {
+                                localStorage.setItem('kns_pro_global', JSON.stringify(parsed.globalConfig));
+                                Object.keys(parsed.allProfilesData).forEach(p => {
+                                    localStorage.setItem('kns_pro_data_' + p, JSON.stringify(parsed.allProfilesData[p]));
+                                });
+                                alert("All users profiles and system data restored successfully!");
+                                window.location.reload();
+                            }
+                        } else if(parsed.currentData) {
+                            // Legacy single profile backup support
+                            if (confirm("Legacy single-profile backup detected. Import into the CURRENT profile?")) {
+                                state = parsed.currentData;
+                                if(parsed.config && confirm("Update global config (profiles list) from this backup as well?")) {
+                                    globalConfig = parsed.config;
+                                }
+                                saveDataToStorage(); 
+                                alert("Backup successfully restored!"); 
+                                window.location.reload();
+                            }
+                        } else {
+                            alert("Invalid structure package format.");
+                        }
+                    } catch(err) {
+                        alert("Error parsing backup file: " + err.message);
+                    }
+                }
+                reader.readAsText(file, 'UTF-8');
+            }
+            input.click();
         }
+
         function resetSystemData() { if(confirm("Danger! This will factory reset ALL data in this active profile permanently. Proceed?")) { localStorage.removeItem('kns_pro_data_' + globalConfig.activeProfile); location.reload(); } }
 
         // --- INLINE COMPUTING CALCULATOR CORE ENGINE (Fixed Logic & Empty input issues) ---
