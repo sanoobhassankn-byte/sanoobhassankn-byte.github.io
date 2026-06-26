@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "io.github.sanoobhassankn_byte.twa",
-        "sha256_cert_fingerprints": ["15:EE:DF:29:AC:D0:5F:34:9C:4C:64:3E:4C:57:E8:92:40:94:B9:9D:14:B7:CA:0A:F9:B2:CB:87:DB:D5:62:39"]
+        "sha256_cert_fingerprints": ["B2:FA:E5:C8:27:DA:CE:E6:33:50:FE:24:D0:EC:2B:7F:7F:FD:9D:DB:15:65:8D:03:4E:E1:89:BF:A7:3F:18:CB"]
       }
     }]
