@@ -214,7 +214,7 @@
             transform: translateX(-50%) rotate(0deg); 
             transition: transform 0.1s cubic-bezier(0.4, 2.08, 0.55, 1);
         }
-        .analog-clock .hour-hand { width: 3.0px; height: 11px; }
+        .analog-clock .hour-hand { width: 3px; height: 11px; }
         .analog-clock .minute-hand { width: 2.5px; height: 14px; }
         .analog-clock .second-hand { width: 1.8px; height: 13px; background: var(--danger-color); transition: none; }
         .analog-clock .center-dot { 
@@ -637,7 +637,7 @@
     <div id="modal-user" class="modal-overlay">
         <div class="modal-content">
             <h3 id="user-modal-title">Add / Edit Profile</h3>
-            <form id="form-user" onsubmit="handleAddUserSubmit(event)">
+            <form id="form-user" onsubmit="event.preventDefault(); if(typeof handleAddUserSubmit === 'function') handleAddUserSubmit(event);">
                 <input type="hidden" id="edit-profile-id">
                 <div class="form-group" style="margin-top:10px;"><label>Profile Name / Business Name</label><input type="text" class="form-control" id="new-profile-name" required></div>
                 <div class="flex-gap" style="margin-top: 15px;"><button type="button" class="calc-btn" onclick="closeActiveModal('modal-user')" style="flex: 1;">Cancel</button><button type="submit" class="calc-btn" style="flex: 1; background: var(--primary-color); color: white;">Save</button></div>
@@ -648,7 +648,7 @@
     <div id="modal-fy" class="modal-overlay">
         <div class="modal-content">
             <h3 id="fy-modal-title">Add / Edit Financial Year</h3>
-            <form id="form-fy" onsubmit="handleAddFYSubmit(event)">
+            <form id="form-fy" onsubmit="event.preventDefault(); if(typeof handleAddFYSubmit === 'function') handleAddFYSubmit(event);">
                 <input type="hidden" id="edit-fy-id">
                 <div class="form-group" style="margin-top:10px;"><label>Year Label (e.g., 2026-27)</label><input type="text" class="form-control" id="new-fy-name" required></div>
                 <div class="form-group"><label>Starting Date</label><input type="date" class="form-control" id="new-fy-start" required></div>
@@ -661,7 +661,7 @@
     <div id="modal-account" class="modal-overlay">
         <div class="modal-content">
             <h3 id="account-modal-title" style="margin-bottom: 10px;">Add Account</h3>
-            <form id="form-account" onsubmit="if(typeof handleAccountSubmit === 'function') { handleAccountSubmit(event); } else { event.preventDefault(); }">
+            <form id="form-account" onsubmit="event.preventDefault(); if(typeof handleAccountSubmit === 'function') handleAccountSubmit(event);">
                 <input type="hidden" id="account-id"><input type="hidden" id="account-category-hidden">
                 <div class="form-group"><label>Account Name</label><input type="text" class="form-control" id="account-name" required></div>
                 <div class="form-group" id="account-opening-balance-group"><label>Opening Balance</label><input type="number" step="0.01" class="form-control" id="account-opening-balance" value="0"></div>
@@ -674,7 +674,7 @@
     <div id="modal-party" class="modal-overlay">
         <div class="modal-content">
             <h3 id="party-modal-title" style="margin-bottom: 10px;">Add Party</h3>
-            <form id="form-party" onsubmit="if(typeof handlePartySubmit === 'function') { handlePartySubmit(event); } else { event.preventDefault(); }">
+            <form id="form-party" onsubmit="event.preventDefault(); if(typeof handlePartySubmit === 'function') handlePartySubmit(event);">
                 <input type="hidden" id="party-id">
                 <div class="form-group"><label>Party Name</label><input type="text" class="form-control" id="party-name" required></div>
                 <div class="form-group"><label>Party Type</label><select class="form-control" id="party-type"><option value="customer">Customer</option><option value="supplier">Supplier</option><option value="employee">Employee</option><option value="other">Other</option></select></div>
@@ -689,7 +689,7 @@
     <div id="modal-donation" class="modal-overlay">
         <div class="modal-content">
             <div class="flex-between" style="margin-bottom: 10px;"><h3 id="donation-modal-title">Add Fund</h3><button type="button" class="btn-action" onclick="closeActiveModal('modal-donation')" style="font-size: 1rem; padding: 2px;"><i class="fa-solid fa-xmark"></i></button></div>
-            <form id="form-donation" onsubmit="if(typeof handleDonationSubmit === 'function') { handleDonationSubmit(event); } else { event.preventDefault(); }">
+            <form id="form-donation" onsubmit="event.preventDefault(); if(typeof handleDonationSubmit === 'function') handleDonationSubmit(event);">
                 <input type="hidden" id="donation-id">
                 <div class="form-group"><label>Fund Name</label><input type="text" class="form-control" id="donation-name" required></div>
                 
@@ -709,7 +709,7 @@
     <div id="modal-entry" class="modal-overlay">
         <div class="modal-content">
             <h3 id="entry-modal-title" style="margin-bottom: 10px;">Add Entry</h3>
-            <form id="form-entry" onsubmit="if(typeof handleEntrySubmit === 'function') { handleEntrySubmit(event); } else { event.preventDefault(); }">
+            <form id="form-entry" onsubmit="event.preventDefault(); if(typeof handleEntrySubmit === 'function') handleEntrySubmit(event);">
                 <input type="hidden" id="entry-id">
                 <div class="form-group"><label>Date</label><input type="date" class="form-control" id="entry-date" required></div>
                 <div class="form-group"><label>Entry Type</label><select class="form-control" id="entry-type"><option value="income">Income / Cash In</option><option value="expense">Expense / Cash Out</option></select></div>
@@ -730,7 +730,7 @@
     <div id="modal-transfer" class="modal-overlay">
         <div class="modal-content">
             <h3 id="transfer-modal-title" style="margin-bottom: 10px;">Transfer Funds</h3>
-            <form id="form-transfer" onsubmit="if(typeof handleTransferSubmit === 'function') { handleTransferSubmit(event); } else { event.preventDefault(); }">
+            <form id="form-transfer" onsubmit="event.preventDefault(); if(typeof handleTransferSubmit === 'function') handleTransferSubmit(event);">
                 <input type="hidden" id="transfer-id">
                 <div class="form-group"><label>Date</label><input type="date" class="form-control" id="transfer-date" required></div>
                 <div class="form-group">
@@ -780,7 +780,7 @@
     <div id="modal-profile-transfer" class="modal-overlay">
         <div class="modal-content">
             <h3 style="margin-bottom: 10px;">User Profile Pay Link</h3>
-            <form id="form-profile-transfer" onsubmit="handleProfileTransferSubmit(event)">
+            <form id="form-profile-transfer" onsubmit="event.preventDefault(); if(typeof handleProfileTransferSubmit === 'function') handleProfileTransferSubmit(event);">
                 <div class="form-group"><label>Date</label><input type="date" class="form-control" id="p-trans-date" required></div>
                 <div class="form-group"><label>From My Account (Source)</label><select class="form-control" id="p-trans-src-acc" required></select></div>
                 <div class="form-group"><label>To Target User Profile</label><select class="form-control" id="p-trans-dest-profile" required></select></div>
@@ -800,6 +800,8 @@
         </div>
     </div>
 
+    </body>
+</html>
 <script>
         // --- STATE & STORAGE CONFIG ---
         let globalConfig = { activeProfile: 'Default User', profiles: ['Default User'] };
@@ -835,7 +837,7 @@
         function loadDataFromStorage() {
             let globalSaved = localStorage.getItem('kns_pro_global');
             if(globalSaved) {
-                try { globalConfig = JSON.parse(globalSaved); } catch(e) { console.error(e); }
+                try { globalConfig = JSON.parse(globalSaved); } catch(e) { console.error('Error parsing global config:', e); }
             } else {
                 localStorage.setItem('kns_pro_global', JSON.stringify(globalConfig));
             }
@@ -886,6 +888,7 @@
             safeAddListener('form-donation', 'submit', handleDonationSubmit);
             safeAddListener('form-entry', 'submit', handleEntrySubmit);
             safeAddListener('form-transfer', 'submit', handleTransferSubmit);
+            safeAddListener('form-profile-transfer', 'submit', handleProfileTransferSubmit);
             
             safeAddListener('btn-calc-donation', 'click', calculateDonationAmount);
             
@@ -1122,7 +1125,7 @@
         }
         function openTransferModal() { openActiveModal('modal-transfer'); document.getElementById('transfer-modal-title').innerText = 'Transfer Funds'; document.getElementById('transfer-id').value = ''; document.getElementById('transfer-date').value = getTodayForInput(); document.getElementById('transfer-amount').value = ''; document.getElementById('transfer-desc').value = ''; document.getElementById('transfer-src-type').value = 'account'; document.getElementById('transfer-dest-type').value = 'account'; onTransferSrcTypeChange(); onTransferDestTypeChange(); }
 
-        // --- PROFILE TRANSFER COMPONENT ENGINE ---
+        // --- PROFILE TRANSFER COMPONENT ENGINE (UPDATED WITH SYNC LINKS) ---
         function openProfileTransferModal() {
             openActiveModal('modal-profile-transfer');
             document.getElementById('p-trans-date').value = getTodayForInput();
@@ -1145,80 +1148,90 @@
         function handleProfileTransferSubmit(e) {
             e.preventDefault();
             if(isSubmitting) return; 
-            
-            let srcAccId = document.getElementById('p-trans-src-acc').value;
-            let destProfileName = document.getElementById('p-trans-dest-profile').value;
-            let amount = parseFloat(document.getElementById('p-trans-amount').value) || 0;
-            let desc = sanitizeInput(document.getElementById('p-trans-desc').value);
-            let dateStr = document.getElementById('p-trans-date').value;
-
-            if(!srcAccId || !destProfileName || amount <= 0) {
-                alert('Please select valid fields and enter a positive amount.');
-                return;
-            }
-            
             isSubmitting = true;
-            let txDateFormatted = formatDateForDisplay(dateStr);
-            let senderProfileName = globalConfig.activeProfile;
-
-            // 1. DEDUCT: Apply Expense entry onto Sender Profile State
-            let srcAccObj = state.accounts.find(a => a.id === srcAccId);
-            let outTxId = generateId('trans');
-            state.transactions.unshift({
-                id: outTxId,
-                type: 'expense',
-                fromId: srcAccId,
-                toId: null,
-                amount: amount,
-                description: `Sent to Profile [${destProfileName}]: ${desc}`.trim(),
-                date: txDateFormatted
-            });
-            localStorage.setItem('kns_pro_data_' + senderProfileName, JSON.stringify(state));
-
-            // 2. RECEIVE: Pull Target Profile State from localStorage, create Account link & append Income entry
-            let targetSavedData = localStorage.getItem('kns_pro_data_' + destProfileName);
-            let targetState;
+            
             try {
-                targetState = targetSavedData ? JSON.parse(targetSavedData) : { accounts: [], parties: [], donations: [], transactions: [], financialYears: [], activeYearId: null };
-            } catch(e) {
-                targetState = { accounts: [], parties: [], donations: [], transactions: [], financialYears: [], activeYearId: null };
+                let srcAccId = document.getElementById('p-trans-src-acc').value;
+                let destProfileName = document.getElementById('p-trans-dest-profile').value;
+                let amount = parseFloat(document.getElementById('p-trans-amount').value) || 0;
+                let desc = sanitizeInput(document.getElementById('p-trans-desc').value);
+                let dateStr = document.getElementById('p-trans-date').value;
+
+                if(!srcAccId || !destProfileName || amount <= 0) {
+                    alert('Please select valid fields and enter a positive amount.');
+                    return;
+                }
+                
+                let txDateFormatted = formatDateForDisplay(dateStr);
+                let senderProfileName = globalConfig.activeProfile;
+
+                // Create shared IDs for sync
+                let outTxId = generateId('trans');
+                let inTxId = generateId('trans');
+
+                // 1. DEDUCT: Apply Expense entry onto Sender Profile State
+                let srcAccObj = state.accounts.find(a => a.id === srcAccId);
+                state.transactions.unshift({
+                    id: outTxId,
+                    type: 'expense',
+                    fromId: srcAccId,
+                    toId: null,
+                    amount: amount,
+                    description: `Sent to Profile [${destProfileName}]: ${desc}`.trim(),
+                    date: txDateFormatted,
+                    linkedProfile: destProfileName,
+                    linkedTxId: inTxId
+                });
+                localStorage.setItem('kns_pro_data_' + senderProfileName, JSON.stringify(state));
+
+                // 2. RECEIVE: Pull Target Profile State from localStorage, create Account link & append Income entry
+                let targetSavedData = localStorage.getItem('kns_pro_data_' + destProfileName);
+                let targetState;
+                try {
+                    targetState = targetSavedData ? JSON.parse(targetSavedData) : { accounts: [], parties: [], donations: [], transactions: [], financialYears: [], activeYearId: null };
+                } catch(err) {
+                    targetState = { accounts: [], parties: [], donations: [], transactions: [], financialYears: [], activeYearId: null };
+                }
+                if(!targetState.accounts) targetState.accounts = [];
+                if(!targetState.transactions) targetState.transactions = [];
+
+                // Find or create Linked Account on the Receiver Profile
+                let linkedAccName = `Link-${senderProfileName}`;
+                let targetAcc = targetState.accounts.find(a => a.name === linkedAccName && a.isLinkedProfileAccount === true);
+                if(!targetAcc) {
+                    targetAcc = {
+                        id: generateId('acc'),
+                        name: linkedAccName,
+                        category: (srcAccObj ? srcAccObj.category : 'bank'),
+                        openingBalance: 0,
+                        description: `Linked automated account from ${senderProfileName}`,
+                        isLinkedProfileAccount: true // Flag to hide from dashboard display list
+                    };
+                    targetState.accounts.push(targetAcc);
+                }
+
+                // Push income onto target ledger
+                targetState.transactions.unshift({
+                    id: inTxId,
+                    type: 'income',
+                    fromId: null,
+                    toId: targetAcc.id,
+                    amount: amount,
+                    description: `Received from Profile [${senderProfileName}]: ${desc}`.trim(),
+                    date: txDateFormatted,
+                    linkedProfile: senderProfileName,
+                    linkedTxId: outTxId
+                });
+                localStorage.setItem('kns_pro_data_' + destProfileName, JSON.stringify(targetState));
+
+                // Complete synchronization cycle
+                closeActiveModal('modal-profile-transfer');
+                loadDataFromStorage();
+                renderAll();
+                alert(`Successfully linked and transferred ${formatCurrency(amount)} to ${destProfileName}`);
+            } finally {
+                setTimeout(() => { isSubmitting = false; }, 300);
             }
-            if(!targetState.accounts) targetState.accounts = [];
-            if(!targetState.transactions) targetState.transactions = [];
-
-            // Find or create Linked Account on the Receiver Profile
-            let linkedAccName = `Link-${senderProfileName}`;
-            let targetAcc = targetState.accounts.find(a => a.name === linkedAccName && a.isLinkedProfileAccount === true);
-            if(!targetAcc) {
-                targetAcc = {
-                    id: generateId('acc'),
-                    name: linkedAccName,
-                    category: (srcAccObj ? srcAccObj.category : 'bank'),
-                    openingBalance: 0,
-                    description: `Linked automated account from ${senderProfileName}`,
-                    isLinkedProfileAccount: true // Flag to hide from dashboard display list
-                };
-                targetState.accounts.push(targetAcc);
-            }
-
-            // Push income onto target ledger
-            targetState.transactions.unshift({
-                id: generateId('trans'),
-                type: 'income',
-                fromId: null,
-                toId: targetAcc.id,
-                amount: amount,
-                description: `Received from Profile [${senderProfileName}]: ${desc}`.trim(),
-                date: txDateFormatted
-            });
-            localStorage.setItem('kns_pro_data_' + destProfileName, JSON.stringify(targetState));
-
-            // Complete synchronization cycle
-            closeActiveModal('modal-profile-transfer');
-            loadDataFromStorage();
-            renderAll();
-            alert(`Successfully linked and transferred ${formatCurrency(amount)} to ${destProfileName}`);
-            setTimeout(() => { isSubmitting = false; }, 300);
         }
 
         // --- USER PROFILE & FINANCIAL YEAR OPERATIONS ---
@@ -1382,7 +1395,7 @@
                 state.financialYears = state.financialYears.filter(y => y.id !== fyId);
                 
                 if(state.activeYearId === fyId) {
-                    state.activeYearId = state.financialYears[0].id;
+                    state.activeYearId = state.financialYears.length > 0 ? state.financialYears[0].id : null;
                 }
                 saveDataToStorage();
             }
@@ -1393,119 +1406,159 @@
 
         function handleAccountSubmit(e) { 
             e.preventDefault(); 
-            if(isSubmitting) return; isSubmitting = true;
-            let id = document.getElementById('account-id').value; 
-            let name = sanitizeInput(document.getElementById('account-name').value); 
-            let opBal = parseFloat(document.getElementById('account-opening-balance').value) || 0; 
-            let desc = sanitizeInput(document.getElementById('account-desc').value); 
-            let category = document.getElementById('account-category-hidden').value || 'bank'; 
-            if(id) { 
-                let acc = state.accounts.find(a => a.id === id); 
-                if(acc) { acc.name = name; acc.description = desc; } 
-            } else { 
-                state.accounts.push({ id: generateId('acc'), name, category, openingBalance: opBal, description: desc }); 
-            } 
-            saveDataToStorage(); 
-            closeActiveModal('modal-account'); 
-            if(!id && currentSelectedCategory) openAccountCategoryScreen(currentSelectedCategory); 
-            setTimeout(() => { isSubmitting = false; }, 300);
+            if(isSubmitting) return; 
+            isSubmitting = true;
+            try {
+                let id = document.getElementById('account-id').value; 
+                let name = sanitizeInput(document.getElementById('account-name').value); 
+                let opBal = parseFloat(document.getElementById('account-opening-balance').value) || 0; 
+                let desc = sanitizeInput(document.getElementById('account-desc').value); 
+                let category = document.getElementById('account-category-hidden').value || 'bank'; 
+                if(id) { 
+                    let acc = state.accounts.find(a => a.id === id); 
+                    if(acc) { acc.name = name; acc.description = desc; } 
+                } else { 
+                    state.accounts.push({ id: generateId('acc'), name, category, openingBalance: opBal, description: desc }); 
+                } 
+                saveDataToStorage(); 
+                closeActiveModal('modal-account'); 
+                if(!id && currentSelectedCategory) openAccountCategoryScreen(currentSelectedCategory); 
+            } finally {
+                setTimeout(() => { isSubmitting = false; }, 300);
+            }
         }
         
         function handlePartySubmit(e) { 
             e.preventDefault(); 
-            if(isSubmitting) return; isSubmitting = true;
-            let id = document.getElementById('party-id').value; 
-            let name = sanitizeInput(document.getElementById('party-name').value); 
-            let type = document.getElementById('party-type').value; 
-            let opBal = parseFloat(document.getElementById('party-opening-balance').value) || 0; 
-            let balType = document.getElementById('party-balance-type').value; 
-            let desc = sanitizeInput(document.getElementById('party-desc').value); 
-            if(!id && balType === 'cr') opBal = -Math.abs(opBal); 
-            if(id) { 
-                let party = state.parties.find(p => p.id === id); 
-                if(party) { party.name = name; party.description = desc; party.type = type; } 
-            } else { 
-                state.parties.push({ id: generateId('party'), name, type, openingBalance: opBal, description: desc }); 
-            } 
-            saveDataToStorage(); 
-            closeActiveModal('modal-party'); 
-            if(!id) openSubScreen('parties'); 
-            setTimeout(() => { isSubmitting = false; }, 300);
+            if(isSubmitting) return; 
+            isSubmitting = true;
+            try {
+                let id = document.getElementById('party-id').value; 
+                let name = sanitizeInput(document.getElementById('party-name').value); 
+                let type = document.getElementById('party-type').value; 
+                let opBal = parseFloat(document.getElementById('party-opening-balance').value) || 0; 
+                let balType = document.getElementById('party-balance-type').value; 
+                let desc = sanitizeInput(document.getElementById('party-desc').value); 
+                if(!id && balType === 'cr') opBal = -Math.abs(opBal); 
+                if(id) { 
+                    let party = state.parties.find(p => p.id === id); 
+                    if(party) { party.name = name; party.description = desc; party.type = type; } 
+                } else { 
+                    state.parties.push({ id: generateId('party'), name, type, openingBalance: opBal, description: desc }); 
+                } 
+                saveDataToStorage(); 
+                closeActiveModal('modal-party'); 
+                if(!id) openSubScreen('parties'); 
+            } finally {
+                setTimeout(() => { isSubmitting = false; }, 300);
+            }
         }
         
         function handleDonationSubmit(e) { 
             e.preventDefault(); 
-            if(isSubmitting) return; isSubmitting = true;
-            let id = document.getElementById('donation-id').value; 
-            let name = sanitizeInput(document.getElementById('donation-name').value); 
-            let amount = parseFloat(document.getElementById('donation-amount').value) || 0; 
-            let linkedAccId = document.getElementById('donation-link-account').value; 
-            let desc = sanitizeInput(document.getElementById('donation-desc').value); 
-            let pct = document.getElementById('donation-percentage').value; 
-            if(!id && !linkedAccId) { alert('Select deduct from account'); isSubmitting=false; return; } 
-            if(id) { 
-                let don = state.donations.find(d => d.id === id); 
-                if(don) { don.name = name; don.description = desc; } 
-            } else { 
-                let donId = generateId('don'); 
-                state.donations.push({ id: donId, name, amount: 0, linkedAccountId: linkedAccId, description: desc, percentage: pct }); 
-                if(amount > 0) { state.transactions.unshift({ id: generateId('trans'), type: 'donation', fromId: linkedAccId, toId: donId, amount: amount, description: `Fund alloc: ${name}`, date: formatDateForDisplay(getTodayForInput()) }); } 
-            } 
-            saveDataToStorage(); 
-            closeActiveModal('modal-donation'); 
-            if(!id) openSubScreen('donations'); 
-            setTimeout(() => { isSubmitting = false; }, 300);
+            if(isSubmitting) return; 
+            isSubmitting = true;
+            try {
+                let id = document.getElementById('donation-id').value; 
+                let name = sanitizeInput(document.getElementById('donation-name').value); 
+                let amount = parseFloat(document.getElementById('donation-amount').value) || 0; 
+                let linkedAccId = document.getElementById('donation-link-account').value; 
+                let desc = sanitizeInput(document.getElementById('donation-desc').value); 
+                let pct = document.getElementById('donation-percentage').value; 
+                if(!id && !linkedAccId) { alert('Select deduct from account'); return; } 
+                if(id) { 
+                    let don = state.donations.find(d => d.id === id); 
+                    if(don) { don.name = name; don.description = desc; } 
+                } else { 
+                    let donId = generateId('don'); 
+                    state.donations.push({ id: donId, name, amount: 0, linkedAccountId: linkedAccId, description: desc, percentage: pct }); 
+                    if(amount > 0) { state.transactions.unshift({ id: generateId('trans'), type: 'donation', fromId: linkedAccId, toId: donId, amount: amount, description: `Fund alloc: ${name}`, date: formatDateForDisplay(getTodayForInput()) }); } 
+                } 
+                saveDataToStorage(); 
+                closeActiveModal('modal-donation'); 
+                if(!id) openSubScreen('donations'); 
+            } finally {
+                setTimeout(() => { isSubmitting = false; }, 300);
+            }
         }
         
         function handleEntrySubmit(e) { 
             e.preventDefault(); 
-            if(isSubmitting) return; isSubmitting = true;
-            let id = document.getElementById('entry-id').value; 
-            let entryDate = document.getElementById('entry-date').value; 
-            let type = document.getElementById('entry-type').value; 
-            let accId = document.getElementById('entry-account').value; 
-            let amount = parseFloat(document.getElementById('entry-amount').value) || 0; 
-            let desc = sanitizeInput(document.getElementById('entry-desc').value); 
-            if(!accId) { alert('Select account'); isSubmitting=false; return; } 
-            if(id) { 
-                let t = state.transactions.find(x => x.id === id); 
-                if(t) { t.type = type; t.date = formatDateForDisplay(entryDate); t.fromId = type === 'expense'? accId : null; t.toId = type === 'income'? accId : null; t.amount = amount; t.description = desc; } 
-            } else { 
-                state.transactions.unshift({ id: generateId('trans'), type: type, fromId: type === 'expense'? accId : null, toId: type === 'income'? accId : null, amount: amount, description: desc || (type === 'income'? 'Cash In' : 'Cash Out'), date: formatDateForDisplay(entryDate) }); 
-            } 
-            saveDataToStorage(); 
-            closeActiveModal('modal-entry'); 
-            if(!id && currentScreen !== 'daily') switchScreen('daily', null); 
-            setTimeout(() => { isSubmitting = false; }, 300);
+            if(isSubmitting) return; 
+            isSubmitting = true;
+            try {
+                let id = document.getElementById('entry-id').value; 
+                let entryDate = document.getElementById('entry-date').value; 
+                let type = document.getElementById('entry-type').value; 
+                let accId = document.getElementById('entry-account').value; 
+                let amount = parseFloat(document.getElementById('entry-amount').value) || 0; 
+                let desc = sanitizeInput(document.getElementById('entry-desc').value); 
+                if(!accId) { alert('Select account'); return; } 
+                if(id) { 
+                    let t = state.transactions.find(x => x.id === id); 
+                    if(t) { 
+                        t.type = type; t.date = formatDateForDisplay(entryDate); 
+                        t.fromId = type === 'expense'? accId : null; 
+                        t.toId = type === 'income'? accId : null; 
+                        t.amount = amount; t.description = desc; 
+
+                        // SYNC ENGINE: Update linked profiles if this was a cross-profile transfer
+                        if(t.linkedProfile && t.linkedTxId) {
+                            let otherDataStr = localStorage.getItem('kns_pro_data_' + t.linkedProfile);
+                            if(otherDataStr) {
+                                let otherData = JSON.parse(otherDataStr);
+                                let linkedT = otherData.transactions.find(x => x.id === t.linkedTxId);
+                                if(linkedT) {
+                                    linkedT.amount = amount;
+                                    linkedT.date = t.date;
+                                    localStorage.setItem('kns_pro_data_' + t.linkedProfile, JSON.stringify(otherData));
+                                    alert(`Auto-Sync: Linked transaction in profile '${t.linkedProfile}' was also updated.`);
+                                }
+                            }
+                        }
+                    } 
+                } else { 
+                    state.transactions.unshift({ id: generateId('trans'), type: type, fromId: type === 'expense'? accId : null, toId: type === 'income'? accId : null, amount: amount, description: desc || (type === 'income'? 'Cash In' : 'Cash Out'), date: formatDateForDisplay(entryDate) }); 
+                } 
+                saveDataToStorage(); 
+                closeActiveModal('modal-entry'); 
+                if(!id && currentScreen !== 'daily') switchScreen('daily', null); 
+            } finally {
+                setTimeout(() => { isSubmitting = false; }, 300);
+            }
         }
         
         function handleTransferSubmit(e) { 
             e.preventDefault(); 
-            if(isSubmitting) return; isSubmitting = true;
-            let id = document.getElementById('transfer-id').value; 
-            let transferDate = document.getElementById('transfer-date').value; 
-            let fromId = document.getElementById('transfer-from').value; 
-            let toId = document.getElementById('transfer-to').value; 
-            let srcType = document.getElementById('transfer-src-type').value; 
-            let destType = document.getElementById('transfer-dest-type').value; 
-            let amount = parseFloat(document.getElementById('transfer-amount').value) || 0; 
-            let desc = sanitizeInput(document.getElementById('transfer-desc').value); 
-            if(!fromId || !toId) { alert('Select both from and to entities'); isSubmitting=false; return; } 
-            if(fromId === toId) { alert('From and to cannot be same'); isSubmitting=false; return; } 
-            let tType = 'transfer'; if(srcType === 'donation' || destType === 'donation') tType = 'donation'; else if(srcType === 'party' || destType === 'party') tType = 'party'; 
-            if(id) { 
-                let t = state.transactions.find(x => x.id === id); 
-                if(t) { t.fromId = fromId; t.toId = toId; t.date = formatDateForDisplay(transferDate); t.amount = amount; t.description = desc || `Transfer`; t.type = tType; } 
-            } else { 
-                state.transactions.unshift({ id: generateId('trans'), type: tType, fromId: fromId, toId: toId, amount: amount, description: desc || `Transfer`, date: formatDateForDisplay(transferDate) }); 
-            } 
-            saveDataToStorage(); 
-            closeActiveModal('modal-transfer'); 
-            if(!id && currentScreen !== 'daily') switchScreen('daily', null); 
-            setTimeout(() => { isSubmitting = false; }, 300);
+            if(isSubmitting) return; 
+            isSubmitting = true;
+            try {
+                let id = document.getElementById('transfer-id').value; 
+                let transferDate = document.getElementById('transfer-date').value; 
+                let fromId = document.getElementById('transfer-from').value; 
+                let toId = document.getElementById('transfer-to').value; 
+                let srcType = document.getElementById('transfer-src-type').value; 
+                let destType = document.getElementById('transfer-dest-type').value; 
+                let amount = parseFloat(document.getElementById('transfer-amount').value) || 0; 
+                let desc = sanitizeInput(document.getElementById('transfer-desc').value); 
+                if(!fromId || !toId) { alert('Select both from and to entities'); return; } 
+                if(fromId === toId) { alert('From and to cannot be same'); return; } 
+                let tType = 'transfer'; if(srcType === 'donation' || destType === 'donation') tType = 'donation'; else if(srcType === 'party' || destType === 'party') tType = 'party'; 
+                if(id) { 
+                    let t = state.transactions.find(x => x.id === id); 
+                    if(t) { t.fromId = fromId; t.toId = toId; t.date = formatDateForDisplay(transferDate); t.amount = amount; t.description = desc || `Transfer`; t.type = tType; } 
+                } else { 
+                    state.transactions.unshift({ id: generateId('trans'), type: tType, fromId: fromId, toId: toId, amount: amount, description: desc || `Transfer`, date: formatDateForDisplay(transferDate) }); 
+                } 
+                saveDataToStorage(); 
+                closeActiveModal('modal-transfer'); 
+                if(!id && currentScreen !== 'daily') switchScreen('daily', null); 
+            } finally {
+                setTimeout(() => { isSubmitting = false; }, 300);
+            }
         }
 
-        // --- CORRECTION ENGINE ---
+        // --- CORRECTION ENGINE (UPDATED WITH SYNC SUPPORT) ---
         function safeDeleteEntityTransactions(entityId) {
             state.transactions.forEach(t => {
                 if (t.fromId === entityId) { t.fromId = null; if (t.type !== 'expense' && t.type !== 'income') t.type = 'income'; }
@@ -1514,7 +1567,26 @@
             state.transactions = state.transactions.filter(t => t.fromId !== null || t.toId !== null);
         }
 
-        function deleteTransaction(id) { if(confirm("Delete this transaction?")) { state.transactions = state.transactions.filter(t => t.id !== id); saveDataToStorage(); } }
+        function deleteTransaction(id) { 
+            let t = state.transactions.find(x => x.id === id);
+            if(!t) return;
+
+            if(confirm("Delete this transaction?")) { 
+                // SYNC ENGINE: Remove linked cross-profile transactions
+                if(t.linkedProfile && t.linkedTxId) {
+                    let otherDataStr = localStorage.getItem('kns_pro_data_' + t.linkedProfile);
+                    if(otherDataStr) {
+                        let otherData = JSON.parse(otherDataStr);
+                        otherData.transactions = otherData.transactions.filter(x => x.id !== t.linkedTxId);
+                        localStorage.setItem('kns_pro_data_' + t.linkedProfile, JSON.stringify(otherData));
+                        alert(`Auto-Sync: Linked transaction in profile '${t.linkedProfile}' was also deleted to maintain balance.`);
+                    }
+                }
+                state.transactions = state.transactions.filter(x => x.id !== id); 
+                saveDataToStorage(); 
+            } 
+        }
+
         function editTransaction(id) {
             let t = state.transactions.find(x => x.id === id); if(!t) return;
             if(t.type === 'income' || t.type === 'expense') { 
@@ -1605,33 +1677,49 @@
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        // --- HIGH-END EXECUTIVE PDF REPORT GENERATOR ENGINE ---
+        // --- HIGH-END EXECUTIVE PDF REPORT GENERATOR ENGINE (PREMIUM UPDATED) ---
         function generatePremiumPDF(reportHtml, filename) {
             let reportDiv = document.createElement('div');
-            reportDiv.style.padding = '35px'; 
-            reportDiv.style.background = '#ffffff'; 
-            reportDiv.style.color = '#1e293b'; 
-            reportDiv.style.fontFamily = "'Inter', 'Helvetica Neue', Arial, sans-serif";
             
             let customPrintStyles = `
                 <style>
-                    tr { page-break-inside: avoid !important; break-inside: avoid !important; }
+                    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap');
+                    * { box-sizing: border-box; }
+                    .report-container { font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif; color: #1e293b; padding: 40px; background: #fff; position: relative; }
+                    .report-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 25px; margin-bottom: 30px; }
+                    .brand-logo { font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 800; color: #0f172a; letter-spacing: -1px; text-transform: uppercase; line-height:1; }
+                    .brand-logo span { color: #d97706; }
+                    .report-title { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #334155; margin-top: 8px; }
+                    .report-subtitle { font-size: 13px; color: #64748b; margin-top: 4px; line-height: 1.4; }
+                    .meta-box { text-align: right; background: #f8fafc; padding: 12px 18px; border-radius: 4px; border: 1px solid #e2e8f0; border-left: 4px solid #0f172a; min-width: 180px; }
+                    .meta-box p { font-size: 11px; margin: 0 0 5px 0; color: #334155; }
+                    .meta-box b { font-weight: 600; color: #0f172a; }
+                    .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 20px 25px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+                    .summary-label { font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700; letter-spacing: 0.5px; margin: 0 0 6px 0; }
+                    .summary-value { font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 800; color: #0f172a; margin: 0; }
+                    .data-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 12px; }
+                    .data-table th { background: #0f172a; color: #ffffff; padding: 12px 15px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
+                    .data-table th:last-child { text-align: right; }
+                    .data-table td { padding: 12px 15px; border-bottom: 1px solid #e2e8f0; color: #334155; }
+                    .data-table td:last-child { text-align: right; font-weight: 600; }
+                    .data-table tr:nth-child(even) { background-color: #f8fafc; }
+                    .text-success { color: #059669 !important; }
+                    .text-danger { color: #e11d48 !important; }
+                    .footer { margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 15px; display: flex; justify-content: space-between; font-size: 10px; color: #64748b; }
+                    .signature-block { display: flex; justify-content: space-between; margin-top: 60px; page-break-inside: avoid; }
+                    .signature-line { width: 160px; border-top: 1px solid #0f172a; text-align: center; padding-top: 6px; font-weight: 600; color: #0f172a; font-size: 12px; }
+                    tr, .summary-card, .signature-block { page-break-inside: avoid !important; break-inside: avoid !important; }
                     thead { display: table-header-group !important; }
-                    tbody { page-break-inside: auto !important; }
-                    h1, h2, h3, h4, h5, h6 { page-break-after: avoid !important; break-after: avoid !important; page-break-inside: avoid !important; }
-                    table { page-break-inside: auto !important; width: 100% !important; table-layout: auto !important; }
-                    .summary-card, div[style*="grid"] > div, div[style*="grid"] { page-break-inside: avoid !important; break-inside: avoid !important; }
-                    img, canvas { page-break-inside: avoid !important; }
                 </style>
             `;
             
-            reportDiv.innerHTML = customPrintStyles + reportHtml;
+            reportDiv.innerHTML = customPrintStyles + `<div class="report-container">${reportHtml}</div>`;
             document.body.appendChild(reportDiv);
 
             html2pdf().from(reportDiv).set({
-                margin: [12, 10, 15, 10], 
+                margin: [10, 10, 10, 10], 
                 filename: filename, 
-                html2canvas: { scale: 2.5, useCORS: true, letterRendering: true, logging: false }, 
+                html2canvas: { scale: 3, useCORS: true, letterRendering: true, logging: false }, 
                 jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4', putOnlyUsedFonts: true },
                 pagebreak: { mode: ['css', 'legacy'] }
             }).save().then(() => { 
@@ -1645,16 +1733,16 @@
             let fyName = activeFy ? activeFy.name : 'All';
             
             return `
-                <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #1e3a8a; padding-bottom: 20px; margin-bottom: 35px;">
+                <div class="report-header">
                     <div>
-                        <h1 style="font-size: 32px; color: #1e3a8a; font-weight: 800; margin: 0; letter-spacing: 0.5px;">KNS PRO</h1>
-                        <h2 style="font-size: 16px; color: #475569; margin: 6px 0 0 0; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">${title}</h2>
-                        ${subtitle ? `<p style="font-size: 13px; color: #64748b; margin: 6px 0 0 0;">${subtitle}</p>` : ''}
+                        <div class="brand-logo">KNS <span>PRO</span></div>
+                        <div class="report-title">${title}</div>
+                        ${subtitle ? `<div class="report-subtitle">${subtitle}</div>` : ''}
                     </div>
-                    <div style="text-align: right; background: #f8fafc; padding: 12px 18px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                        <p style="font-size: 12px; margin: 0 0 6px 0; color: #334155;"><b>Generation Date:</b> ${date}</p>
-                        <p style="font-size: 12px; margin: 0 0 6px 0; color: #334155;"><b>Active Profile:</b> ${globalConfig.activeProfile}</p>
-                        <p style="font-size: 12px; margin: 0; color: #334155;"><b>Financial Year:</b> ${fyName}</p>
+                    <div class="meta-box">
+                        <p><b>Date:</b> ${date}</p>
+                        <p><b>Profile:</b> ${globalConfig.activeProfile}</p>
+                        <p style="margin-bottom:0;"><b>FY:</b> ${fyName}</p>
                     </div>
                 </div>
             `;
@@ -1662,52 +1750,89 @@
 
         function getPremiumReportFooter() {
             return `
-                <div style="text-align: center; margin-top: 50px; font-size: 12px; color: #64748b; border-top: 1px solid #cbd5e1; padding-top: 20px;">
-                    <p style="margin:0; font-weight: 500;">This document is system generated by KNS Pro Financial Manager.</p>
-                    <p style="margin:4px 0 0 0; font-size: 10px;">Authorized strictly for internal use and review.</p>
+                <div class="signature-block">
+                    <div class="signature-line">Prepared By</div>
+                    <div class="signature-line">Authorized Signatory</div>
+                </div>
+                <div class="footer">
+                    <div>&copy; ${new Date().getFullYear()} KNS Pro Financial Manager. System Generated.</div>
+                    <div>Strictly Confidential Document</div>
                 </div>
             `;
+        }
+
+        // --- CUSTOM DATE RANGE PROMPT HELPER ---
+        function promptDateRange() {
+            let activeFy = state.financialYears.find(y => y.id === state.activeYearId);
+            let defStart = activeFy ? activeFy.startDate : '2026-04-01';
+            let defEnd = activeFy ? activeFy.endDate : '2027-03-31';
+            
+            if (confirm("Do you want to apply a custom date range filter for this report? (Cancel selection will use active financial year limits)")) {
+                let start = prompt("Enter Start Date (YYYY-MM-DD):", defStart);
+                if (!start) return null;
+                let end = prompt("Enter End Date (YYYY-MM-DD):", defEnd);
+                if (!end) return null;
+                return { startDate: start, endDate: end };
+            }
+            return { startDate: defStart, endDate: defEnd }; 
         }
 
         function printCurrentAccountReport() { 
             let acc = state.accounts.find(a => a.id === currentSelectedId); if(!acc) return;
             let date = new Date().toLocaleDateString('en-GB');
+            
+            let range = promptDateRange();
+            if (!range) return;
+
             let balance = getAccountBalance(acc.id);
             
-            let html = getPremiumReportHeader('Account Ledger Statement', `Account Name: <b>${acc.name}</b> | Category: ${acc.category.toUpperCase()}`);
+            let html = getPremiumReportHeader('Account Ledger Statement', `Account Name: <b>${acc.name}</b> | Category: ${acc.category.toUpperCase()}<br>Period: ${formatDateForDisplay(range.startDate)} to ${formatDateForDisplay(range.endDate)}`);
             
             html += `
-                <div style="background: #eff6ff; border-left: 5px solid #2563eb; padding: 20px; border-radius: 8px; margin-bottom: 35px;">
-                    <p style="font-size: 12px; text-transform: uppercase; color: #475569; margin: 0 0 5px 0; font-weight: 700;">Closing Balance</p>
-                    <h3 style="font-size: 24px; color: #1e3a8a; margin: 0; font-weight: 800;">${formatCurrency(balance)}</h3>
-                    <p style="font-size: 13px; color: #64748b; margin: 8px 0 0 0;">Description: ${acc.description || 'N/A'}</p>
+                <div class="summary-card" style="border-left: 5px solid #2563eb;">
+                    <div>
+                        <p class="summary-label">Closing Balance</p>
+                        <h3 class="summary-value" style="color: #1e3a8a;">${formatCurrency(balance)}</h3>
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="font-size: 12px; color: #64748b; margin: 0;">Description</p>
+                        <p style="font-size: 13px; font-weight: 500; color: #334155; margin: 4px 0 0 0;">${acc.description || 'N/A'}</p>
+                    </div>
                 </div>
                 
-                <h3 style="font-size: 15px; color: #0f172a; text-transform: uppercase; margin-bottom: 15px; font-weight: 700;">Transaction Log</h3>
-                <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 30px;">
+                <h3 style="font-size: 13px; color: #0f172a; text-transform: uppercase; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Transaction Log</h3>
+                <table class="data-table">
                     <thead>
-                        <tr style="background: #1e293b; color: #ffffff;">
-                            <th style="padding: 12px 15px; text-align: left; font-weight: 600; border-radius: 6px 0 0 0;">Date</th>
-                            <th style="padding: 12px 15px; text-align: left; font-weight: 600;">Particulars</th>
-                            <th style="padding: 12px 15px; text-align: right; font-weight: 600; border-radius: 0 6px 0 0;">Amount</th>
+                        <tr>
+                            <th>Date</th>
+                            <th>Particulars</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
             `;
 
-            let transactions = state.transactions.filter(t => isTransactionInActiveYear(t.date) && (t.fromId === acc.id || t.toId === acc.id));
+            let transactions = state.transactions.filter(t => {
+                let txDate = t.date;
+                if (t.date.includes('/')) {
+                    let parts = t.date.split('/');
+                    if (parts.length === 3) txDate = `${parts[2]}-${parts[1]}-${parts[0]}`; 
+                }
+                return txDate >= range.startDate && txDate <= range.endDate && (t.fromId === acc.id || t.toId === acc.id);
+            });
+
             if(transactions.length === 0) {
-                html += `<tr><td colspan="3" style="padding: 20px; text-align: center; color: #64748b; border-bottom: 1px solid #e2e8f0;">No transactions found for this account in the current Financial Year.</td></tr>`;
+                html += `<tr><td colspan="3" style="padding: 20px; text-align: center; color: #64748b;">No transactions found for this account in the selected period.</td></tr>`;
             } else {
                 transactions.forEach(t => {
                     let isCredit = (t.toId === acc.id);
-                    let amtColor = isCredit ? '#16a34a' : '#dc2626';
+                    let amtClass = isCredit ? 'text-success' : 'text-danger';
                     let sign = isCredit ? '+' : '-';
                     html += `
-                        <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
-                            <td style="padding: 14px 15px; color: #475569; font-weight: 500;">${t.date}</td>
-                            <td style="padding: 14px 15px; color: #1e293b; font-weight: 600;">${t.description}</td>
-                            <td style="padding: 14px 15px; text-align: right; color: ${amtColor}; font-weight: 700;">${sign} ${formatCurrency(t.amount)}</td>
+                        <tr>
+                            <td style="font-weight: 500;">${t.date}</td>
+                            <td style="font-weight: 600; color: #1e293b;">${t.description}</td>
+                            <td class="${amtClass}">${sign} ${formatCurrency(t.amount)}</td>
                         </tr>
                     `;
                 });
@@ -1719,47 +1844,65 @@
         function printCurrentPartyReport() { 
             let party = state.parties.find(p => p.id === currentSelectedId); if(!party) return;
             let date = new Date().toLocaleDateString('en-GB');
+            
+            let range = promptDateRange();
+            if (!range) return;
+
             let balance = getPartyBalance(party.id);
             let statusBadge = balance >= 0 
-                ? '<span style="background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 20px; font-size: 12px;">RECEIVABLE (Dr)</span>' 
-                : '<span style="background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 20px; font-size: 12px;">PAYABLE (Cr)</span>';
+                ? '<span style="background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;">RECEIVABLE (Dr)</span>' 
+                : '<span style="background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;">PAYABLE (Cr)</span>';
             
-            let html = getPremiumReportHeader('Party Financial Statement', `Party Entity: <b>${party.name}</b> | Type: ${party.type.toUpperCase()}`);
+            let html = getPremiumReportHeader('Party Financial Statement', `Party Entity: <b>${party.name}</b> | Type: ${party.type.toUpperCase()}<br>Period: ${formatDateForDisplay(range.startDate)} to ${formatDateForDisplay(range.endDate)}`);
             
             html += `
-                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 5px solid ${balance >= 0 ? '#10b981' : '#ef4444'}; padding: 20px; border-radius: 8px; margin-bottom: 35px; display: flex; justify-content: space-between; align-items: center;">
+                <div class="summary-card" style="border-left: 5px solid ${balance >= 0 ? '#10b981' : '#ef4444'};">
                     <div>
-                        <p style="font-size: 12px; text-transform: uppercase; color: #475569; margin: 0 0 5px 0; font-weight: 700;">Net Outstanding Balance</p>
-                        <h3 style="font-size: 24px; color: #0f172a; margin: 0 0 8px 0; font-weight: 800;">${formatCurrency(Math.abs(balance))}</h3>
-                        <p style="font-size: 13px; color: #64748b; margin: 0;">Description: ${party.description || 'N/A'}</p>
+                        <p class="summary-label">Net Outstanding Balance</p>
+                        <h3 class="summary-value">${formatCurrency(Math.abs(balance))}</h3>
+                        <p style="font-size: 12px; color: #64748b; margin: 8px 0 0 0;"><b>Description / Notes:</b> ${party.description || 'N/A'}</p>
+                        <p style="font-size: 12px; color: #1e293b; margin: 6px 0 0 0;"><b>Opening Balance:</b> ${formatCurrency(party.openingBalance || 0)}</p>
                     </div>
                     <div>${statusBadge}</div>
                 </div>
                 
-                <h3 style="font-size: 15px; color: #0f172a; text-transform: uppercase; margin-bottom: 15px; font-weight: 700;">Ledger Transaction History</h3>
-                <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 30px;">
+                <h3 style="font-size: 13px; color: #0f172a; text-transform: uppercase; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Ledger Transaction History</h3>
+                <table class="data-table">
                     <thead>
-                        <tr style="background: #1e293b; color: #ffffff;">
-                            <th style="padding: 12px 15px; text-align: left; font-weight: 600; border-radius: 6px 0 0 0;">Date</th>
-                            <th style="padding: 12px 15px; text-align: left; font-weight: 600;">Particulars Description</th>
-                            <th style="padding: 12px 15px; text-align: right; font-weight: 600; border-radius: 0 6px 0 0;">Flow Amount</th>
+                        <tr>
+                            <th>Date</th>
+                            <th>Particulars Description</th>
+                            <th>Flow Amount</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <tr style="background: #f1f5f9; font-weight: 600;">
+                            <td>-</td>
+                            <td>[Opening Balance Baseline]</td>
+                            <td>${formatCurrency(party.openingBalance || 0)}</td>
+                        </tr>
             `;
 
-            let transactions = state.transactions.filter(t => isTransactionInActiveYear(t.date) && (t.fromId === party.id || t.toId === party.id));
+            let transactions = state.transactions.filter(t => {
+                let txDate = t.date;
+                if (t.date.includes('/')) {
+                    let parts = t.date.split('/');
+                    if (parts.length === 3) txDate = `${parts[2]}-${parts[1]}-${parts[0]}`; 
+                }
+                return txDate >= range.startDate && txDate <= range.endDate && (t.fromId === party.id || t.toId === party.id);
+            });
+
             if(transactions.length === 0) {
-                html += `<tr><td colspan="3" style="padding: 20px; text-align: center; color: #64748b; border-bottom: 1px solid #e2e8f0;">No transactional history found for this party ledger.</td></tr>`;
+                html += `<tr><td colspan="3" style="padding: 20px; text-align: center; color: #64748b;">No transactional history logged for this period.</td></tr>`;
             } else {
                 transactions.forEach(t => {
                     let isPlus = (t.toId === party.id);
-                    let color = isPlus ? '#16a34a' : '#dc2626';
+                    let amtClass = isPlus ? 'text-success' : 'text-danger';
                     html += `
-                        <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
-                            <td style="padding: 14px 15px; color: #475569;">${t.date}</td>
-                            <td style="padding: 14px 15px; color: #1e293b; font-weight: 600;">${t.description}</td>
-                            <td style="padding: 14px 15px; text-align: right; color: ${color}; font-weight: 700;">${isPlus ? '+' : '-'} ${formatCurrency(t.amount)}</td>
+                        <tr>
+                            <td style="font-weight: 500;">${t.date}</td>
+                            <td style="font-weight: 600; color: #1e293b;">${t.description}</td>
+                            <td class="${amtClass}">${isPlus ? '+' : '-'} ${formatCurrency(t.amount)}</td>
                         </tr>
                     `;
                 });
@@ -1771,36 +1914,51 @@
         function printCurrentDonationReport() {
             let don = state.donations.find(d => d.id === currentSelectedId); if(!don) return;
             let date = new Date().toLocaleDateString('en-GB');
+            
+            let range = promptDateRange();
+            if (!range) return;
+
             let balance = getDonationBalance(don.id);
             
-            let html = getPremiumReportHeader('Donation Fund Audit Report', `Fund Allocation Name: <b>${don.name}</b>`);
+            let html = getPremiumReportHeader('Donation Fund Audit Report', `Fund Allocation Name: <b>${don.name}</b><br>Period: ${formatDateForDisplay(range.startDate)} to ${formatDateForDisplay(range.endDate)}`);
             html += `
-                <div style="background: #fff1f2; border-left: 5px solid #e11d48; padding: 20px; border-radius: 8px; margin-bottom: 35px;">
-                    <p style="font-size: 12px; text-transform: uppercase; color: #475569; margin: 0 0 5px 0; font-weight: 700;">Available Net Balance</p>
-                    <h3 style="font-size: 24px; color: #9f1239; margin: 0; font-weight: 800;">${formatCurrency(balance)}</h3>
+                <div class="summary-card" style="border-left: 5px solid #e11d48; background: #fff1f2;">
+                    <div>
+                        <p class="summary-label" style="color: #be123c;">Available Net Balance</p>
+                        <h3 class="summary-value" style="color: #9f1239;">${formatCurrency(balance)}</h3>
+                    </div>
                 </div>
-                <h3 style="font-size: 15px; color: #0f172a; text-transform: uppercase; margin-bottom: 15px; font-weight: 700;">Fund Allocation Ledger Log</h3>
-                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <h3 style="font-size: 13px; color: #0f172a; text-transform: uppercase; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Fund Allocation Ledger Log</h3>
+                <table class="data-table">
                     <thead>
-                        <tr style="background: #1e293b; color: #ffffff;">
-                            <th style="padding: 12px 15px; text-align: left;">Date</th>
-                            <th style="padding: 12px 15px; text-align: left;">Particulars</th>
-                            <th style="padding: 12px 15px; text-align: right;">Amount</th>
+                        <tr>
+                            <th>Date</th>
+                            <th>Particulars</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
             `;
-            let transactions = state.transactions.filter(t => isTransactionInActiveYear(t.date) && (t.fromId === don.id || t.toId === don.id));
+            let transactions = state.transactions.filter(t => {
+                let txDate = t.date;
+                if (t.date.includes('/')) {
+                    let parts = t.date.split('/');
+                    if (parts.length === 3) txDate = `${parts[2]}-${parts[1]}-${parts[0]}`; 
+                }
+                return txDate >= range.startDate && txDate <= range.endDate && (t.fromId === don.id || t.toId === don.id);
+            });
+
             if(transactions.length === 0) {
-                html += `<tr><td colspan="3" style="padding: 20px; text-align: center; color: #64748b;">No fund transactions found.</td></tr>`;
+                html += `<tr><td colspan="3" style="padding: 20px; text-align: center; color: #64748b;">No fund transactions found for this period.</td></tr>`;
             } else {
                 transactions.forEach(t => {
                     let isCredit = (t.toId === don.id);
+                    let amtClass = isCredit ? 'text-success' : 'text-danger';
                     html += `
-                        <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 14px 15px; color: #475569;">${t.date}</td>
-                            <td style="padding: 14px 15px; font-weight: 600;">${t.description}</td>
-                            <td style="padding: 14px 15px; text-align: right; color: ${isCredit ? '#16a34a' : '#dc2626'}; font-weight: 700;">${isCredit ? '+' : '-'} ${formatCurrency(t.amount)}</td>
+                        <tr>
+                            <td style="font-weight: 500;">${t.date}</td>
+                            <td style="font-weight: 600; color: #1e293b;">${t.description}</td>
+                            <td class="${amtClass}">${isCredit ? '+' : '-'} ${formatCurrency(t.amount)}</td>
                         </tr>
                     `;
                 });
@@ -1811,36 +1969,75 @@
 
         function printFullSystemReport() {
             let date = new Date().toLocaleDateString('en-GB');
-            let html = getPremiumReportHeader('Consolidated System Audit Balance Sheet');
+            
+            let range = promptDateRange();
+            if (!range) return;
+
+            let html = getPremiumReportHeader('Consolidated System Audit Balance Sheet', `Period: ${formatDateForDisplay(range.startDate)} to ${formatDateForDisplay(range.endDate)}`);
             
             html += `
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 35px;">
-                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 15px; border-radius: 8px;">
-                        <span style="font-size: 11px; font-weight:700; color: #166534; text-transform:uppercase;">Gross Bank/Cash Reserves</span>
-                        <h3 style="font-size: 20px; margin: 5px 0 0 0; color: #14532d;">${formatCurrency(getBankCashTotal())}</h3>
+                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 20px; border-radius: 6px; border-left: 4px solid #166534;">
+                        <span style="font-size: 11px; font-weight:700; color: #166534; text-transform:uppercase; letter-spacing: 0.5px;">Gross Bank/Cash Reserves</span>
+                        <h3 style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; margin: 8px 0 0 0; color: #14532d;">${formatCurrency(getBankCashTotal())}</h3>
                     </div>
-                    <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 15px; border-radius: 8px;">
-                        <span style="font-size: 11px; font-weight:700; color: #991b1b; text-transform:uppercase;">Net Outstanding Liabilities</span>
-                        <h3 style="font-size: 20px; margin: 5px 0 0 0; color: #7f1d1d;">${formatCurrency(getPartiesNetBalance())}</h3>
+                    <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 20px; border-radius: 6px; border-left: 4px solid #991b1b;">
+                        <span style="font-size: 11px; font-weight:700; color: #991b1b; text-transform:uppercase; letter-spacing: 0.5px;">Net Outstanding Liabilities</span>
+                        <h3 style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; margin: 8px 0 0 0; color: #7f1d1d;">${formatCurrency(getPartiesNetBalance())}</h3>
                     </div>
                 </div>
                 
-                <h3 style="font-size: 14px; text-transform: uppercase; margin-bottom: 10px; color: #1e3a8a;">System Asset Ledgers</h3>
-                <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 30px;">
+                <h3 style="font-size: 13px; color: #0f172a; text-transform: uppercase; margin-top: 20px; margin-bottom: 8px; font-weight: 700; font-family: 'Montserrat', sans-serif; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">1. Bank & Cash Accounts</h3>
+                <table class="data-table">
                     <thead>
-                        <tr style="background: #334155; color: #ffffff;"><th style="padding: 10px; text-align: left;">Account/Ledger Item</th><th style="padding: 10px; text-align: left;">Type Category</th><th style="padding: 10px; text-align: right;">Calculated Standing Balance</th></tr>
+                        <tr><th>Account Item</th><th>Type Category</th><th>Calculated Standing Balance</th></tr>
                     </thead>
                     <tbody>
             `;
             state.accounts.forEach(a => {
-                html += `<tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight:600;">${a.name}</td><td style="padding: 10px; text-transform:uppercase; color:#64748b;">${a.category}</td><td style="padding: 10px; text-align: right; font-weight:700;">${formatCurrency(getAccountBalance(a.id))}</td></tr>`;
+                html += `<tr><td style="font-weight:600; color:#1e293b;">${a.name}</td><td style="text-transform:uppercase; color:#64748b; font-size:11px;">${a.category}</td><td style="font-family: 'Montserrat', sans-serif;">${formatCurrency(getAccountBalance(a.id))}</td></tr>`;
             });
+            if(state.accounts.length === 0) {
+                html += `<tr><td colspan="3" style="color:#64748b; text-align:center;">No accounts active.</td></tr>`;
+            }
+
+            html += `
+                    </tbody>
+                </table>
+
+                <h3 style="font-size: 13px; color: #0f172a; text-transform: uppercase; margin-top: 25px; margin-bottom: 8px; font-weight: 700; font-family: 'Montserrat', sans-serif; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">2. Party Ledgers</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Party Name</th><th>Type Category</th><th>Opening Balance</th><th>Current Balance</th></tr>
+                    </thead>
+                    <tbody>
+            `;
             state.parties.forEach(p => {
-                html += `<tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight:600;">${p.name}</td><td style="padding: 10px; color:#64748b;">PARTY (${p.type.toUpperCase()})</td><td style="padding: 10px; text-align: right; font-weight:700;">${formatCurrency(getPartyBalance(p.id))}</td></tr>`;
+                let bal = getPartyBalance(p.id);
+                html += `<tr><td style="font-weight:600; color:#1e293b;">${p.name}</td><td style="text-transform:uppercase; color:#64748b; font-size:11px;">PARTY (${p.type})</td><td>${formatCurrency(p.openingBalance || 0)}</td><td style="font-family: 'Montserrat', sans-serif; color: ${bal>=0?'#059669':'#e11d48'};">${formatCurrency(bal)} ${bal >= 0 ? '(Dr)' : '(Cr)'}</td></tr>`;
             });
+            if(state.parties.length === 0) {
+                html += `<tr><td colspan="4" style="color:#64748b; text-align:center;">No party ledgers configured.</td></tr>`;
+            }
+
+            html += `
+                    </tbody>
+                </table>
+
+                <h3 style="font-size: 13px; color: #0f172a; text-transform: uppercase; margin-top: 25px; margin-bottom: 8px; font-weight: 700; font-family: 'Montserrat', sans-serif; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">3. Donation Funds</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Fund Allocation Item</th><th>Description Summary</th><th>Available Net Balance</th></tr>
+                    </thead>
+                    <tbody>
+            `;
             state.donations.forEach(d => {
-                html += `<tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight:600;">${d.name}</td><td style="padding: 10px; color:#64748b;">DONATION FUND</td><td style="padding: 10px; text-align: right; font-weight:700;">${formatCurrency(getDonationBalance(d.id))}</td></tr>`;
+                html += `<tr><td style="font-weight:600; color:#1e293b;">${d.name}</td><td style="color:#64748b; font-size:11px;">${d.description || 'Allocation Fund Target'}</td><td style="font-family: 'Montserrat', sans-serif; font-weight:600; color:#2563eb;">${formatCurrency(getDonationBalance(d.id))}</td></tr>`;
             });
+            if(state.donations.length === 0) {
+                html += `<tr><td colspan="3" style="color:#64748b; text-align:center;">No donation targets structured.</td></tr>`;
+            }
+
             html += `</tbody></table>` + getPremiumReportFooter();
             generatePremiumPDF(html, `Consolidated_Financial_Report_${date.replace(/\//g,'-')}.pdf`);
         }
@@ -2223,3 +2420,4 @@
 </script>
 </body>
 </html>
+
